@@ -11,32 +11,59 @@
 
   <title>SIPRESENSI 13 - Scanner</title>
 
+  <!-- LIBRARY BARCODE SCANNER -->
+
+  <script
+    src="https://unpkg.com/html5-qrcode"
+    type="text/javascript">
+  </script>
+
   <style>
 
     * {
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       font-family: Arial, sans-serif;
-      background: #f4f7f6;
+
+      background:
+        linear-gradient(
+          135deg,
+          #e8f5e9,
+          #f4f7f6
+        );
+
       min-height: 100vh;
 
       display: flex;
+
       justify-content: center;
+
       align-items: center;
 
       padding: 20px;
+
     }
+
 
     .container {
+
       width: 100%;
-      max-width: 500px;
+
+      max-width: 520px;
+
     }
 
+
     .card {
+
       background: white;
+
       border-radius: 24px;
 
       padding: 25px;
@@ -46,39 +73,55 @@
         rgba(0,0,0,0.10);
 
       text-align: center;
+
     }
+
 
     .logo {
+
       font-size: 42px;
+
+      margin-bottom: 5px;
+
     }
 
+
     h1 {
-      margin: 5px 0 0;
+
+      margin: 0;
 
       color: #1b5e20;
 
       font-size: 28px;
+
     }
 
+
     .school {
+
       margin-top: 6px;
 
       color: #666;
 
       font-size: 15px;
+
     }
 
+
     .subtitle {
-      margin-top: 25px;
+
+      margin-top: 22px;
 
       font-weight: bold;
 
       font-size: 18px;
 
       color: #333;
+
     }
 
-    #videoKamera {
+
+    #reader {
 
       width: 100%;
 
@@ -86,10 +129,19 @@
 
       border-radius: 18px;
 
-      background: #000;
+      overflow: hidden;
 
-      display: none;
+      background: #111;
+
     }
+
+
+    #reader video {
+
+      border-radius: 18px;
+
+    }
+
 
     .status {
 
@@ -103,37 +155,56 @@
 
       color: #1b5e20;
 
-      font-size: 14px;
-
-      white-space: pre-line;
-    }
-
-    button {
-
-      width: 100%;
-
-      margin-top: 20px;
-
-      padding: 16px;
-
-      font-size: 17px;
-
-      border: none;
-
-      border-radius: 12px;
-
-      cursor: pointer;
-
-      background: #1b5e20;
-
-      color: white;
+      font-size: 15px;
 
       font-weight: bold;
+
+      white-space: pre-line;
+
     }
 
-    button:active {
-      transform: scale(0.98);
+
+    .hasil {
+
+      margin-top: 18px;
+
+      padding: 20px;
+
+      border-radius: 15px;
+
+      display: none;
+
     }
+
+
+    .berhasil {
+
+      background: #e8f5e9;
+
+      color: #1b5e20;
+
+    }
+
+
+    .error {
+
+      background: #ffebee;
+
+      color: #b71c1c;
+
+    }
+
+
+    .barcode {
+
+      margin-top: 10px;
+
+      font-size: 30px;
+
+      font-weight: bold;
+
+    }
+
 
     .footer {
 
@@ -142,6 +213,7 @@
       color: #999;
 
       font-size: 12px;
+
     }
 
   </style>
@@ -172,40 +244,40 @@
 
 
   <div class="subtitle">
-    TEST KAMERA
+    SCANNER BARCODE ABSENSI
   </div>
 
 
-  <button
-    onclick="aktifkanKamera()">
+  <!-- =========================
+       AREA SCANNER
+       ========================= -->
 
-    AKTIFKAN KAMERA
-
-  </button>
-
-
-  <video
-    id="videoKamera"
-    autoplay
-    playsinline
-    muted>
-  </video>
+  <div id="reader"></div>
 
 
   <div
     id="status"
     class="status">
 
-    Tekan tombol
-    <b>AKTIFKAN KAMERA</b>
-    untuk memulai.
+    ⏳ Menyiapkan scanner...
+
+  </div>
+
+
+  <!-- =========================
+       HASIL SCAN
+       ========================= -->
+
+  <div
+    id="hasil"
+    class="hasil">
 
   </div>
 
 
   <div class="footer">
 
-    SIPRESENSI 13 • Scanner Absensi
+    Arahkan barcode siswa ke kamera
 
   </div>
 
@@ -218,10 +290,17 @@
   <script>
 
 
-    let streamKamera = null;
+    let scanner;
+
+    let sedangScan =
+      false;
 
 
-    async function aktifkanKamera() {
+    // ==================================================
+    // MULAI SCANNER
+    // ==================================================
+
+    function mulaiScanner() {
 
 
       const status =
@@ -230,142 +309,306 @@
         );
 
 
-      const video =
-        document.getElementById(
-          "videoKamera"
+      status.innerText =
+        "📷 Menyiapkan kamera...";
+
+
+      scanner =
+        new Html5Qrcode(
+          "reader"
         );
 
 
-      // ========================================
-      // CEK SUPPORT KAMERA
-      // ========================================
-
-      if (
-        !navigator.mediaDevices ||
-        !navigator.mediaDevices.getUserMedia
-      ) {
-
-        status.innerText =
-          "❌ Browser tidak mendukung akses kamera.";
-
-        return;
-
-      }
+      Html5Qrcode.getCameras()
 
 
-      try {
+        .then(function(cameras) {
 
 
-        status.innerText =
-          "⏳ Meminta izin kamera...";
+          if (
+            !cameras ||
+            cameras.length === 0
+          ) {
+
+            status.innerText =
+              "❌ Kamera tidak ditemukan.";
+
+            return;
+
+          }
 
 
-        // ========================================
-        // MINTA AKSES KAMERA
-        // ========================================
+          // ==========================================
+          // PILIH KAMERA BELAKANG
+          // ==========================================
 
-        streamKamera =
-          await navigator.mediaDevices.getUserMedia({
+          let kameraId =
+            cameras[0].id;
 
-            video: {
 
-              facingMode: {
-                ideal: "environment"
+          for (
+            let i = 0;
+            i < cameras.length;
+            i++
+          ) {
+
+
+            const label =
+              (
+                cameras[i].label ||
+                ""
+              ).toLowerCase();
+
+
+            if (
+
+              label.includes("back") ||
+
+              label.includes("rear") ||
+
+              label.includes("environment")
+
+            ) {
+
+              kameraId =
+                cameras[i].id;
+
+              break;
+
+            }
+
+          }
+
+
+          // ==========================================
+          // START CAMERA
+          // ==========================================
+
+          scanner.start(
+
+            kameraId,
+
+            {
+
+              fps: 10,
+
+              qrbox: {
+
+                width: 300,
+
+                height: 160
+
               }
 
             },
 
-            audio: false
+
+            function(decodedText) {
+
+
+              if (
+                sedangScan
+              ) {
+
+                return;
+
+              }
+
+
+              sedangScan =
+                true;
+
+
+              barcodeTerbaca(
+                decodedText
+              );
+
+
+            },
+
+
+            function(errorMessage) {
+
+              // Jangan tampilkan
+              // error scanning
+
+            }
+
+          )
+
+
+          .then(function() {
+
+
+            status.innerText =
+              "🟢 SCANNER SIAP\n\n" +
+              "Arahkan BC001 ke kamera.";
+
+
+          })
+
+
+          .catch(function(error) {
+
+
+            console.error(
+              error
+            );
+
+
+            status.innerText =
+              "❌ Kamera gagal dimulai.";
 
           });
 
 
-        // ========================================
-        // TAMPILKAN KAMERA
-        // ========================================
-
-        video.srcObject =
-          streamKamera;
+        })
 
 
-        video.style.display =
-          "block";
+        .catch(function(error) {
 
 
-        status.innerText =
-          "✅ KAMERA BERHASIL AKTIF!\n\n" +
-          "Kamera siap digunakan.";
+          console.error(
+            error
+          );
 
 
-      }
+          status.innerText =
+            "❌ Tidak dapat mengakses kamera.";
+
+        });
+
+    }
 
 
-      catch (error) {
+
+    // ==================================================
+    // BARCODE TERBACA
+    // ==================================================
+
+    function barcodeTerbaca(
+      barcode
+    ) {
 
 
-        console.error(
-          "Camera error:",
-          error
+      const status =
+        document.getElementById(
+          "status"
         );
 
 
-        let pesan =
-          "❌ KAMERA TIDAK DAPAT DIAKSES\n\n";
+      const hasil =
+        document.getElementById(
+          "hasil"
+        );
 
 
-        if (
-          error.name ===
-          "NotAllowedError"
-        ) {
+      // ==========================================
+      // HENTIKAN SCAN SEMENTARA
+      // ==========================================
 
-          pesan +=
-            "Akses kamera ditolak oleh browser.";
+      try {
 
-
-        } else if (
-          error.name ===
-          "NotFoundError"
-        ) {
-
-          pesan +=
-            "Kamera tidak ditemukan.";
-
-
-        } else if (
-          error.name ===
-          "NotReadableError"
-        ) {
-
-          pesan +=
-            "Kamera sedang digunakan aplikasi lain.";
-
-
-        } else if (
-          error.name ===
-          "SecurityError"
-        ) {
-
-          pesan +=
-            "Browser memblokir akses kamera.";
-
-
-        } else {
-
-
-          pesan +=
-            error.name +
-            "\n\n" +
-            error.message;
-
-        }
-
-
-        status.innerText =
-          pesan;
+        scanner.pause(
+          true
+        );
 
       }
 
+      catch (error) {
+
+        console.log(
+          error
+        );
+
+      }
+
+
+      // ==========================================
+      // TAMPILKAN HASIL
+      // ==========================================
+
+      status.innerText =
+        "🟢 BARCODE TERBACA!";
+
+
+      hasil.style.display =
+        "block";
+
+
+      hasil.className =
+        "hasil berhasil";
+
+
+      hasil.innerHTML = `
+
+        <div>
+          ✓ BARCODE BERHASIL DIBACA
+        </div>
+
+        <div class="barcode">
+          ${barcode}
+        </div>
+
+      `;
+
+
+      // ==========================================
+      // TUNGGU LALU SIAP SCAN LAGI
+      // ==========================================
+
+      setTimeout(
+        function() {
+
+
+          hasil.style.display =
+            "none";
+
+
+          sedangScan =
+            false;
+
+
+          try {
+
+            scanner.resume();
+
+          }
+
+          catch (error) {
+
+            console.log(
+              error
+            );
+
+          }
+
+
+          status.innerText =
+            "🟢 SCANNER SIAP\n\n" +
+            "Arahkan barcode ke kamera.";
+
+
+        },
+        2500
+      );
+
     }
+
+
+
+    // ==================================================
+    // JALANKAN SAAT HALAMAN DIBUKA
+    // ==================================================
+
+    window.addEventListener(
+      "load",
+      function() {
+
+        mulaiScanner();
+
+      }
+    );
 
 
   </script>
