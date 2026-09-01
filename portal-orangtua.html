@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+<meta name="viewport"
+     content="width=device-width, initial-scale=1.0">
+
+  <title>Portal Orang Tua - SIPRESENSI 13</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f6;
+      color: #333;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin-top: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .header {
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 42px;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+      color: #1b5e20;
+    }
+
+    .school {
+      margin-top: 6px;
+      color: #666;
+    }
+
+    .subtitle {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #1b5e20;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+
+    #pesan {
+      display: none;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .error {
+      background: #ffebee;
+      color: #b71c1c;
+    }
+
+    .loading {
+      background: #fff8e1;
+      color: #795548;
+    }
+
+    #dashboard {
+      display: none;
+    }
+
+    .salam {
+      text-align: center;
+      color: #555;
+      margin-bottom: 18px;
+    }
+
+    .nama-anak {
+      text-align: center;
+      font-size: 25px;
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    .kelas-anak {
+      text-align: center;
+      margin-top: 5px;
+      color: #666;
+    }
+
+    .rekap {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      margin-top: 25px;
+    }
+
+    .rekap-item {
+      text-align: center;
+      background: #f5f5f5;
+      padding: 12px 4px;
+      border-radius: 10px;
+    }
+
+    .rekap-angka {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .rekap-label {
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    .riwayat-title {
+      margin-top: 28px;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .riwayat-item {
+      border-bottom: 1px solid #eee;
+      padding: 14px 0;
+    }
+
+    .tanggal {
+      font-weight: bold;
+    }
+
+    .detail {
+      color: #666;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .hadir {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .terlambat {
+      background: #fff3e0;
+      color: #e65100;
+    }
+
+    .sakit {
+      background: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .izin {
+      background: #f3e5f5;
+      color: #6a1b9a;
+    }
+
+    .alpa {
+      background: #ffebee;
+      color: #b71c1c;
+    }
+
+    .kosong {
+      text-align: center;
+      color: #888;
+      padding: 20px 0;
+    }
+
+    .logout {
+      background: #eeeeee;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 420px) {
+
+      .container {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .rekap {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+```
+<!-- ============================= -->
+<!-- LOGIN -->
+<!-- ============================= -->
+
+<div class="card" id="loginCard">
+
+  <div class="header">
+
+    <div class="logo">👨‍👩‍👧</div>
+
+    <h1>SIPRESENSI 13</h1>
+
+    <div class="school">
+      MTsN 13 Ciamis
+    </div>
+
+  </div>
+
+
+  <div class="subtitle">
+    Portal Orang Tua
+  </div>
+
+
+  <label for="nisn">
+    NISN Anak
+  </label>
+
+  <input
+    type="text"
+    id="nisn"
+    inputmode="numeric"
+    placeholder="Masukkan NISN anak"
+  >
+
+
+  <label for="nama">
+    Nama Anak
+  </label>
+
+  <input
+    type="text"
+    id="nama"
+    placeholder="Masukkan nama lengkap anak"
+  >
+
+
+  <button
+    id="btnLogin"
+    onclick="login()">
+
+    LIHAT KEHADIRAN
+
+  </button>
+
+
+  <div id="pesan"></div>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- DASHBOARD -->
+<!-- ============================= -->
+
+<div class="card" id="dashboard">
+
+  <div class="salam">
+    👋 Selamat datang
+  </div>
+
+
+  <div
+    class="nama-anak"
+    id="namaAnak">
+  </div>
+
+
+  <div
+    class="kelas-anak"
+    id="kelasAnak">
+  </div>
+
+
+  <!-- REKAP -->
+
+  <div class="rekap">
+
+    <div class="rekap-item">
+
+      <div
+        class="rekap-angka"
+        id="hadir">
+        0
+      </div>
+
+      <div class="rekap-label">
+        HADIR
+      </div>
+
+    </div>
+
+
+    <div class="rekap-item">
+
+      <div
+        class="rekap-angka"
+        id="terlambat">
+        0
+      </div>
+
+      <div class="rekap-label">
+        TERLAMBAT
+      </div>
+
+    </div>
+
+
+    <div class="rekap-item">
+
+      <div
+        class="rekap-angka"
+        id="sakit">
+        0
+      </div>
+
+      <div class="rekap-label">
+        SAKIT
+      </div>
+
+    </div>
+
+
+    <div class="rekap-item">
+
+      <div
+        class="rekap-angka"
+        id="izin">
+        0
+      </div>
+
+      <div class="rekap-label">
+        IZIN
+      </div>
+
+    </div>
+
+
+    <div class="rekap-item">
+
+      <div
+        class="rekap-angka"
+        id="alpa">
+        0
+      </div>
+
+      <div class="rekap-label">
+        ALPA
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- RIWAYAT -->
+
+  <div class="riwayat-title">
+    📋 Riwayat Kehadiran
+  </div>
+
+
+  <div id="riwayat"></div>
+
+
+  <button
+    class="logout"
+    onclick="logout()">
+
+    KEMBALI
+
+  </button>
+
+</div>
+```
+
+  </div>
+
+  <script>
+
+    // ==================================================
+    // LOGIN
+    // ==================================================
+
+    function login() {
+
+      const nisn =
+        document
+          .getElementById("nisn")
+          .value
+          .trim();
+
+
+      const nama =
+        document
+          .getElementById("nama")
+          .value
+          .trim();
+
+
+      const btn =
+        document
+          .getElementById("btnLogin");
+
+
+      if (!nisn || !nama) {
+
+        tampilkanPesan(
+          "NISN dan nama anak wajib diisi.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      btn.disabled = true;
+
+      btn.innerText =
+        "MEMERIKSA DATA...";
+
+
+      tampilkanPesan(
+        "⏳ Sedang memeriksa data...",
+        "loading"
+      );
+
+
+      // =================================================
+      // URL WEB APP GOOGLE APPS SCRIPT
+      // =================================================
+
+      const URL_APPS_SCRIPT =
+        "https://script.google.com/macros/s/AKfycbzgKtb2IyODbg4FbgfgWo3XkJ_k0OaL0kU5iZjWH95vqxgzz-nx0iNBwAogH0qwJCYY/exec";
+
+
+      fetch(
+        URL_APPS_SCRIPT,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            action:
+              "loginOrangtua",
+
+            nisn:
+              nisn,
+
+            nama:
+              nama
+
+          })
+
+        }
+      )
+
+      .then(response =>
+        response.json()
+      )
+
+      .then(data => {
+
+        btn.disabled = false;
+
+        btn.innerText =
+          "LIHAT KEHADIRAN";
+
+
+        if (data.success) {
+
+          tampilkanDashboard(data);
+
+        }
+
+        else {
+
+          tampilkanPesan(
+            data.message ||
+            "Data tidak ditemukan.",
+            "error"
+          );
+
+        }
+
+      })
+
+      .catch(error => {
+
+        btn.disabled = false;
+
+        btn.innerText =
+          "LIHAT KEHADIRAN";
+
+
+        tampilkanPesan(
+          "Tidak dapat terhubung ke server.",
+          "error"
+        );
+
+
+        console.error(error);
+
+      });
+
+    }
+
+
+    // ==================================================
+    // PESAN
+    // ==================================================
+
+    function tampilkanPesan(
+      text,
+      type
+    ) {
+
+      const pesan =
+        document
+          .getElementById("pesan");
+
+
+      pesan.style.display =
+        "block";
+
+      pesan.className =
+        type;
+
+      pesan.innerText =
+        text;
+
+    }
+
+
+    // ==================================================
+    // DASHBOARD
+    // ==================================================
+
+    function tampilkanDashboard(data) {
+
+      document
+        .getElementById("loginCard")
+        .style.display =
+        "none";
+
+
+      document
+        .getElementById("dashboard")
+        .style.display =
+        "block";
+
+
+      document
+        .getElementById("namaAnak")
+        .innerText =
+        data.akun.namaSiswa;
+
+
+      document
+        .getElementById("kelasAnak")
+        .innerText =
+        "Kelas " +
+        data.akun.kelas;
+
+
+      document
+        .getElementById("hadir")
+        .innerText =
+        data.rekap.hadir;
+
+
+      document
+        .getElementById("terlambat")
+        .innerText =
+        data.rekap.terlambat;
+
+
+      document
+        .getElementById("sakit")
+        .innerText =
+        data.rekap.sakit;
+
+
+      document
+        .getElementById("izin")
+        .innerText =
+        data.rekap.izin;
+
+
+      document
+        .getElementById("alpa")
+        .innerText =
+        data.rekap.alpa;
+
+
+      tampilkanRiwayat(
+        data.riwayat
+      );
+
+    }
+
+
+    // ==================================================
+    // RIWAYAT
+    // ==================================================
+
+    function tampilkanRiwayat(
+      riwayat
+    ) {
+
+      const container =
+        document
+          .getElementById("riwayat");
+
+
+      container.innerHTML =
+        "";
+
+
+      if (
+        !riwayat ||
+        riwayat.length === 0
+      ) {
+
+        container.innerHTML =
+          '<div class="kosong">' +
+          'Belum ada data kehadiran.' +
+          '</div>';
+
+        return;
+
+      }
+
+
+      // Terbaru di atas
+
+      const data =
+        [...riwayat].reverse();
+
+
+      data.forEach(
+        function(item) {
+
+          const div =
+            document.createElement(
+              "div"
+            );
+
+
+          div.className =
+            "riwayat-item";
+
+
+          const status =
+            String(
+              item.status || ""
+            )
+            .toLowerCase();
+
+
+          let statusClass =
+            "";
+
+
+          if (
+            status === "hadir"
+          ) {
+
+            statusClass =
+              "hadir";
+
+          }
+
+          else if (
+            status === "terlambat"
+          ) {
+
+            statusClass =
+              "terlambat";
+
+          }
+
+          else if (
+            status === "sakit"
+          ) {
+
+            statusClass =
+              "sakit";
+
+          }
+
+          else if (
+            status === "izin"
+          ) {
+
+            statusClass =
+              "izin";
+
+          }
+
+          else if (
+            status === "alpa"
+          ) {
+
+            statusClass =
+              "alpa";
+
+          }
+
+
+          div.innerHTML = `
+
+            <div class="tanggal">
+              ${item.tanggal}
+            </div>
+
+            <div class="detail">
+              ${item.hari}
+              •
+              ${item.jam}
+            </div>
+
+            <span class="status ${statusClass}">
+              ${item.status}
+            </span>
+
+          `;
+
+
+          container.appendChild(
+            div
+          );
+
+        }
+      );
+
+    }
+
+
+    // ==================================================
+    // LOGOUT
+    // ==================================================
+
+    function logout() {
+
+      document
+        .getElementById("dashboard")
+        .style.display =
+        "none";
+
+
+      document
+        .getElementById("loginCard")
+        .style.display =
+        "block";
+
+
+      document
+        .getElementById("nisn")
+        .value =
+        "";
+
+
+      document
+        .getElementById("nama")
+        .value =
+        "";
+
+
+      document
+        .getElementById("pesan")
+        .style.display =
+        "none";
+
+    }
+
+
+    // ==================================================
+    // ENTER
+    // ==================================================
+
+    document
+      .getElementById("nama")
+      .addEventListener(
+        "keypress",
+        function(event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            login();
+
+          }
+
+        }
+      );
+
+  </script>
+
+</body>
+
+</html>
