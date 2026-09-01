@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+<meta name="viewport"
+     content="width=device-width, initial-scale=1.0">
+
+  <title>SIPRESENSI 13 - Scanner</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f6;
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+
+      padding: 25px;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0,0,0,0.10);
+
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 42px;
+    }
+
+    h1 {
+      margin: 5px 0 0;
+
+      color: #1b5e20;
+
+      font-size: 28px;
+    }
+
+    .school {
+      margin-top: 6px;
+
+      color: #666;
+
+      font-size: 15px;
+    }
+
+    .subtitle {
+      margin-top: 25px;
+
+      font-weight: bold;
+
+      font-size: 18px;
+
+      color: #333;
+    }
+
+    #videoKamera {
+
+      width: 100%;
+
+      margin-top: 20px;
+
+      border-radius: 18px;
+
+      background: #000;
+
+      display: none;
+    }
+
+    .status {
+
+      margin-top: 15px;
+
+      padding: 14px;
+
+      border-radius: 12px;
+
+      background: #f1f8f2;
+
+      color: #1b5e20;
+
+      font-size: 14px;
+
+      white-space: pre-line;
+    }
+
+    button {
+
+      width: 100%;
+
+      margin-top: 20px;
+
+      padding: 16px;
+
+      font-size: 17px;
+
+      border: none;
+
+      border-radius: 12px;
+
+      cursor: pointer;
+
+      background: #1b5e20;
+
+      color: white;
+
+      font-weight: bold;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .footer {
+
+      margin-top: 20px;
+
+      color: #999;
+
+      font-size: 12px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+```
+<div class="card">
+
+
+  <div class="logo">
+    📷
+  </div>
+
+
+  <h1>
+    SIPRESENSI 13
+  </h1>
+
+
+  <div class="school">
+    MTsN 13 Ciamis
+  </div>
+
+
+  <div class="subtitle">
+    TEST KAMERA
+  </div>
+
+
+  <button
+    onclick="aktifkanKamera()">
+
+    AKTIFKAN KAMERA
+
+  </button>
+
+
+  <video
+    id="videoKamera"
+    autoplay
+    playsinline
+    muted>
+  </video>
+
+
+  <div
+    id="status"
+    class="status">
+
+    Tekan tombol
+    <b>AKTIFKAN KAMERA</b>
+    untuk memulai.
+
+  </div>
+
+
+  <div class="footer">
+
+    SIPRESENSI 13 • Scanner Absensi
+
+  </div>
+
+
+</div>
+```
+
+  </div>
+
+  <script>
+
+
+    let streamKamera = null;
+
+
+    async function aktifkanKamera() {
+
+
+      const status =
+        document.getElementById(
+          "status"
+        );
+
+
+      const video =
+        document.getElementById(
+          "videoKamera"
+        );
+
+
+      // ========================================
+      // CEK SUPPORT KAMERA
+      // ========================================
+
+      if (
+        !navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia
+      ) {
+
+        status.innerText =
+          "❌ Browser tidak mendukung akses kamera.";
+
+        return;
+
+      }
+
+
+      try {
+
+
+        status.innerText =
+          "⏳ Meminta izin kamera...";
+
+
+        // ========================================
+        // MINTA AKSES KAMERA
+        // ========================================
+
+        streamKamera =
+          await navigator.mediaDevices.getUserMedia({
+
+            video: {
+
+              facingMode: {
+                ideal: "environment"
+              }
+
+            },
+
+            audio: false
+
+          });
+
+
+        // ========================================
+        // TAMPILKAN KAMERA
+        // ========================================
+
+        video.srcObject =
+          streamKamera;
+
+
+        video.style.display =
+          "block";
+
+
+        status.innerText =
+          "✅ KAMERA BERHASIL AKTIF!\n\n" +
+          "Kamera siap digunakan.";
+
+
+      }
+
+
+      catch (error) {
+
+
+        console.error(
+          "Camera error:",
+          error
+        );
+
+
+        let pesan =
+          "❌ KAMERA TIDAK DAPAT DIAKSES\n\n";
+
+
+        if (
+          error.name ===
+          "NotAllowedError"
+        ) {
+
+          pesan +=
+            "Akses kamera ditolak oleh browser.";
+
+
+        } else if (
+          error.name ===
+          "NotFoundError"
+        ) {
+
+          pesan +=
+            "Kamera tidak ditemukan.";
+
+
+        } else if (
+          error.name ===
+          "NotReadableError"
+        ) {
+
+          pesan +=
+            "Kamera sedang digunakan aplikasi lain.";
+
+
+        } else if (
+          error.name ===
+          "SecurityError"
+        ) {
+
+          pesan +=
+            "Browser memblokir akses kamera.";
+
+
+        } else {
+
+
+          pesan +=
+            error.name +
+            "\n\n" +
+            error.message;
+
+        }
+
+
+        status.innerText =
+          pesan;
+
+      }
+
+    }
+
+
+  </script>
+
+</body>
+
+</html>
