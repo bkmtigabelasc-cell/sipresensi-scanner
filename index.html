@@ -11,8 +11,6 @@
 
   <title>SIPRESENSI 13 - Scanner</title>
 
-  <!-- LIBRARY BARCODE SCANNER -->
-
   <script
     src="https://unpkg.com/html5-qrcode"
     type="text/javascript">
@@ -24,196 +22,92 @@
       box-sizing: border-box;
     }
 
-
     body {
-
       margin: 0;
-
       font-family: Arial, sans-serif;
-
-      background:
-        linear-gradient(
-          135deg,
-          #e8f5e9,
-          #f4f7f6
-        );
-
+      background: #f4f7f6;
       min-height: 100vh;
-
       display: flex;
-
       justify-content: center;
-
       align-items: center;
-
       padding: 20px;
-
     }
-
 
     .container {
-
       width: 100%;
-
       max-width: 520px;
-
     }
-
 
     .card {
-
       background: white;
-
       border-radius: 24px;
-
       padding: 25px;
-
-      box-shadow:
-        0 15px 40px
-        rgba(0,0,0,0.10);
-
+      box-shadow: 0 15px 40px rgba(0,0,0,0.10);
       text-align: center;
-
     }
-
-
-    .logo {
-
-      font-size: 42px;
-
-      margin-bottom: 5px;
-
-    }
-
 
     h1 {
-
       margin: 0;
-
       color: #1b5e20;
-
       font-size: 28px;
-
     }
-
 
     .school {
-
       margin-top: 6px;
-
       color: #666;
-
       font-size: 15px;
-
     }
-
 
     .subtitle {
-
       margin-top: 22px;
-
       font-weight: bold;
-
       font-size: 18px;
-
-      color: #333;
-
     }
-
 
     #reader {
-
       width: 100%;
-
       margin-top: 20px;
-
       border-radius: 18px;
-
       overflow: hidden;
-
       background: #111;
-
     }
 
-
-    #reader video {
-
-      border-radius: 18px;
-
-    }
-
-
-    .status {
-
+    #status {
       margin-top: 15px;
-
       padding: 14px;
-
       border-radius: 12px;
-
       background: #f1f8f2;
-
       color: #1b5e20;
-
-      font-size: 15px;
-
       font-weight: bold;
-
       white-space: pre-line;
-
     }
 
-
-    .hasil {
-
+    #hasil {
       margin-top: 18px;
-
       padding: 20px;
-
       border-radius: 15px;
-
       display: none;
-
     }
-
 
     .berhasil {
-
       background: #e8f5e9;
-
       color: #1b5e20;
-
     }
-
 
     .error {
-
       background: #ffebee;
-
       color: #b71c1c;
-
     }
 
-
-    .barcode {
-
+    .nama {
       margin-top: 10px;
-
-      font-size: 30px;
-
+      font-size: 25px;
       font-weight: bold;
-
     }
 
-
-    .footer {
-
-      margin-top: 20px;
-
-      color: #999;
-
-      font-size: 12px;
-
+    .detail {
+      margin-top: 6px;
+      font-size: 16px;
     }
 
   </style>
@@ -222,396 +116,508 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
+
+  <div class="card">
 
 ```
-<div class="card">
+<h1>SIPRESENSI 13</h1>
 
+<div class="school">
+  MTsN 13 Ciamis
+</div>
 
-  <div class="logo">
-    📷
-  </div>
+<div class="subtitle">
+  SCANNER BARCODE ABSENSI
+</div>
 
+<div id="reader"></div>
 
-  <h1>
-    SIPRESENSI 13
-  </h1>
+<div id="status">
+  ⏳ Menyiapkan scanner...
+</div>
 
-
-  <div class="school">
-    MTsN 13 Ciamis
-  </div>
-
-
-  <div class="subtitle">
-    SCANNER BARCODE ABSENSI
-  </div>
-
-
-  <!-- =========================
-       AREA SCANNER
-       ========================= -->
-
-  <div id="reader"></div>
-
-
-  <div
-    id="status"
-    class="status">
-
-    ⏳ Menyiapkan scanner...
+<div id="hasil"></div>
+```
 
   </div>
-
-
-  <!-- =========================
-       HASIL SCAN
-       ========================= -->
-
-  <div
-    id="hasil"
-    class="hasil">
-
-  </div>
-
-
-  <div class="footer">
-
-    Arahkan barcode siswa ke kamera
-
-  </div>
-
 
 </div>
-```
 
-  </div>
+<script>
 
-  <script>
 
+// ======================================================
+// URL WEB APP APPS SCRIPT
+// ======================================================
 
-    let scanner;
+const URL_APPS_SCRIPT =
+"https://script.google.com/macros/s/AKfycbzgKtb2IyODbg4FbgfgWo3XkJ_k0OaL0kU5iZjWH95vqxgzz-nx0iNBwAogH0qwJCYY/exec";
 
-    let sedangScan =
-      false;
 
+// ======================================================
+// VARIABEL
+// ======================================================
 
-    // ==================================================
-    // MULAI SCANNER
-    // ==================================================
+let scanner = null;
 
-    function mulaiScanner() {
+let sedangProses = false;
 
 
-      const status =
-        document.getElementById(
-          "status"
-        );
+// ======================================================
+// MULAI SCANNER
+// ======================================================
 
+function mulaiScanner() {
 
-      status.innerText =
-        "📷 Menyiapkan kamera...";
+  const status =
+    document.getElementById("status");
 
+  status.innerText =
+    "📷 Meminta akses kamera...";
 
-      scanner =
-        new Html5Qrcode(
-          "reader"
-        );
 
+  scanner =
+    new Html5Qrcode("reader");
 
-      Html5Qrcode.getCameras()
 
+  Html5Qrcode.getCameras()
 
-        .then(function(cameras) {
+    .then(function(cameras) {
 
+      if (!cameras || cameras.length === 0) {
 
-          if (
-            !cameras ||
-            cameras.length === 0
-          ) {
+        status.innerText =
+          "❌ Kamera tidak ditemukan.";
 
-            status.innerText =
-              "❌ Kamera tidak ditemukan.";
-
-            return;
-
-          }
-
-
-          // ==========================================
-          // PILIH KAMERA BELAKANG
-          // ==========================================
-
-          let kameraId =
-            cameras[0].id;
-
-
-          for (
-            let i = 0;
-            i < cameras.length;
-            i++
-          ) {
-
-
-            const label =
-              (
-                cameras[i].label ||
-                ""
-              ).toLowerCase();
-
-
-            if (
-
-              label.includes("back") ||
-
-              label.includes("rear") ||
-
-              label.includes("environment")
-
-            ) {
-
-              kameraId =
-                cameras[i].id;
-
-              break;
-
-            }
-
-          }
-
-
-          // ==========================================
-          // START CAMERA
-          // ==========================================
-
-          scanner.start(
-
-            kameraId,
-
-            {
-
-              fps: 10,
-
-              qrbox: {
-
-                width: 300,
-
-                height: 160
-
-              }
-
-            },
-
-
-            function(decodedText) {
-
-
-              if (
-                sedangScan
-              ) {
-
-                return;
-
-              }
-
-
-              sedangScan =
-                true;
-
-
-              barcodeTerbaca(
-                decodedText
-              );
-
-
-            },
-
-
-            function(errorMessage) {
-
-              // Jangan tampilkan
-              // error scanning
-
-            }
-
-          )
-
-
-          .then(function() {
-
-
-            status.innerText =
-              "🟢 SCANNER SIAP\n\n" +
-              "Arahkan BC001 ke kamera.";
-
-
-          })
-
-
-          .catch(function(error) {
-
-
-            console.error(
-              error
-            );
-
-
-            status.innerText =
-              "❌ Kamera gagal dimulai.";
-
-          });
-
-
-        })
-
-
-        .catch(function(error) {
-
-
-          console.error(
-            error
-          );
-
-
-          status.innerText =
-            "❌ Tidak dapat mengakses kamera.";
-
-        });
-
-    }
-
-
-
-    // ==================================================
-    // BARCODE TERBACA
-    // ==================================================
-
-    function barcodeTerbaca(
-      barcode
-    ) {
-
-
-      const status =
-        document.getElementById(
-          "status"
-        );
-
-
-      const hasil =
-        document.getElementById(
-          "hasil"
-        );
-
-
-      // ==========================================
-      // HENTIKAN SCAN SEMENTARA
-      // ==========================================
-
-      try {
-
-        scanner.pause(
-          true
-        );
-
-      }
-
-      catch (error) {
-
-        console.log(
-          error
-        );
+        return;
 
       }
 
 
-      // ==========================================
-      // TAMPILKAN HASIL
-      // ==========================================
+      // Pilih kamera belakang
 
-      status.innerText =
-        "🟢 BARCODE TERBACA!";
+      let kameraId =
+        cameras[0].id;
 
 
-      hasil.style.display =
-        "block";
+      for (
+        let i = 0;
+        i < cameras.length;
+        i++
+      ) {
+
+        const label =
+          (
+            cameras[i].label || ""
+          ).toLowerCase();
 
 
-      hasil.className =
-        "hasil berhasil";
+        if (
+          label.includes("back") ||
+          label.includes("rear") ||
+          label.includes("environment")
+        ) {
+
+          kameraId =
+            cameras[i].id;
+
+          break;
+
+        }
+
+      }
 
 
-      hasil.innerHTML = `
+      scanner.start(
 
-        <div>
-          ✓ BARCODE BERHASIL DIBACA
-        </div>
+        kameraId,
 
-        <div class="barcode">
-          ${barcode}
-        </div>
+        {
+          fps: 10,
 
-      `;
+          qrbox: {
+            width: 300,
+            height: 160
+          },
 
+          formatsToSupport: [
 
-      // ==========================================
-      // TUNGGU LALU SIAP SCAN LAGI
-      // ==========================================
+            Html5QrcodeSupportedFormats.CODE_128,
 
-      setTimeout(
-        function() {
+            Html5QrcodeSupportedFormats.CODE_39,
 
+            Html5QrcodeSupportedFormats.EAN_13,
 
-          hasil.style.display =
-            "none";
+            Html5QrcodeSupportedFormats.EAN_8,
 
+            Html5QrcodeSupportedFormats.UPC_A,
 
-          sedangScan =
-            false;
+            Html5QrcodeSupportedFormats.UPC_E,
 
+            Html5QrcodeSupportedFormats.ITF
 
-          try {
-
-            scanner.resume();
-
-          }
-
-          catch (error) {
-
-            console.log(
-              error
-            );
-
-          }
-
-
-          status.innerText =
-            "🟢 SCANNER SIAP\n\n" +
-            "Arahkan barcode ke kamera.";
-
+          ]
 
         },
-        2500
+
+
+        function(decodedText) {
+
+          if (sedangProses) {
+            return;
+          }
+
+          sedangProses = true;
+
+          prosesHasilScan(
+            decodedText
+          );
+
+        },
+
+
+        function(errorMessage) {
+
+          // Abaikan error pembacaan
+          // selama kamera aktif
+
+        }
+
+      )
+
+      .then(function() {
+
+        status.innerText =
+          "🟢 SCANNER SIAP\n\n" +
+          "Arahkan barcode kartu siswa.";
+
+      })
+
+      .catch(function(error) {
+
+        console.error(error);
+
+        status.innerText =
+          "❌ Scanner gagal dimulai.";
+
+      });
+
+    })
+
+
+    .catch(function(error) {
+
+      console.error(error);
+
+      status.innerText =
+        "❌ Tidak dapat mengakses kamera.";
+
+    });
+
+}
+
+
+// ======================================================
+// HASIL BARCODE
+// ======================================================
+
+function prosesHasilScan(
+  hasilScan
+) {
+
+  const status =
+    document.getElementById("status");
+
+  const hasil =
+    document.getElementById("hasil");
+
+
+  status.innerText =
+    "🔍 Barcode terbaca:\n" +
+    hasilScan +
+    "\n\n⏳ Mencatat absensi...";
+
+
+  hasil.style.display =
+    "block";
+
+  hasil.className =
+    "hasil";
+
+
+  // ====================================================
+  // KIRIM KE APPS SCRIPT
+  // ====================================================
+
+  const url =
+    URL_APPS_SCRIPT +
+    "?action=absensi" +
+    "&hasilScan=" +
+    encodeURIComponent(
+      hasilScan
+    ) +
+    "&callback=hasilAbsensi";
+
+
+  const script =
+    document.createElement("script");
+
+
+  script.src = url;
+
+
+  script.onerror =
+    function() {
+
+      tampilkanError(
+        "Tidak dapat terhubung ke server absensi."
       );
 
-    }
+    };
 
 
+  document.body.appendChild(
+    script
+  );
 
-    // ==================================================
-    // JALANKAN SAAT HALAMAN DIBUKA
-    // ==================================================
+}
 
-    window.addEventListener(
-      "load",
-      function() {
 
-        mulaiScanner();
+// ======================================================
+// CALLBACK DARI APPS SCRIPT
+// ======================================================
 
-      }
+function hasilAbsensi(
+  response
+) {
+
+
+  const hasil =
+    document.getElementById("hasil");
+
+  const status =
+    document.getElementById("status");
+
+
+  if (
+    response &&
+    response.success
+  ) {
+
+
+    hasil.style.display =
+      "block";
+
+    hasil.className =
+      "hasil berhasil";
+
+
+    hasil.innerHTML = `
+
+      <div>
+        ✓ ABSENSI BERHASIL
+      </div>
+
+      <div class="nama">
+        ${response.nama}
+      </div>
+
+      <div class="detail">
+        Kelas ${response.kelas}
+      </div>
+
+      <div class="detail">
+        Status: ${response.status}
+      </div>
+
+      <div class="detail">
+        Jam: ${response.jam}
+      </div>
+
+    `;
+
+
+    status.innerText =
+      "🟢 ABSENSI TERCATAT";
+
+
+    // Suara
+
+    bicara(
+      "Absensi berhasil"
     );
 
 
-  </script>
+  }
+
+  else {
+
+
+    hasil.style.display =
+      "block";
+
+    hasil.className =
+      "hasil error";
+
+
+    hasil.innerHTML = `
+
+      <div>
+        ⚠️ ABSENSI GAGAL
+      </div>
+
+      <div class="detail">
+        ${
+          response &&
+          response.message
+            ? response.message
+            : "Terjadi kesalahan."
+        }
+      </div>
+
+    `;
+
+
+    status.innerText =
+      "🔴 ABSENSI GAGAL";
+
+
+    bicara(
+      "Absensi gagal"
+    );
+
+  }
+
+
+  // ====================================================
+  // SIAP SCAN LAGI
+  // ====================================================
+
+  setTimeout(
+    function() {
+
+
+      hasil.style.display =
+        "none";
+
+
+      sedangProses =
+        false;
+
+
+      status.innerText =
+        "🟢 SCANNER SIAP\n\n" +
+        "Arahkan barcode kartu siswa.";
+
+
+    },
+    3000
+  );
+
+}
+
+
+// ======================================================
+// ERROR
+// ======================================================
+
+function tampilkanError(
+  pesan
+) {
+
+  const hasil =
+    document.getElementById("hasil");
+
+  const status =
+    document.getElementById("status");
+
+
+  hasil.style.display =
+    "block";
+
+  hasil.className =
+    "hasil error";
+
+  hasil.innerHTML =
+    "⚠️ " + pesan;
+
+
+  status.innerText =
+    "🔴 GAGAL";
+
+  bicara(
+    "Absensi gagal"
+  );
+
+
+  setTimeout(
+    function() {
+
+      hasil.style.display =
+        "none";
+
+      sedangProses =
+        false;
+
+      status.innerText =
+        "🟢 SCANNER SIAP";
+
+    },
+    3000
+  );
+
+}
+
+
+// ======================================================
+// SUARA
+// ======================================================
+
+function bicara(
+  teks
+) {
+
+  if (
+    "speechSynthesis"
+    in window
+  ) {
+
+    const suara =
+      new SpeechSynthesisUtterance(
+        teks
+      );
+
+    suara.lang =
+      "id-ID";
+
+    suara.rate =
+      1;
+
+    window.speechSynthesis.speak(
+      suara
+    );
+
+  }
+
+}
+
+
+// ======================================================
+// JALANKAN
+// ======================================================
+
+window.addEventListener(
+  "load",
+  function() {
+
+    mulaiScanner();
+
+  }
+);
+
+
+</script>
 
 </body>
 
