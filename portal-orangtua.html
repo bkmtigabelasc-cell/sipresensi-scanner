@@ -1,3 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+  <title>Portal Orang Tua - SIPRESENSI 13</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7f6;
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #1b5e20;
+    }
+
+    .school {
+      margin-top: 6px;
+      color: #666;
+    }
+
+    .subtitle {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 19px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      margin-top: 15px;
+
+      font-size: 16px;
+
+      border:
+        1px solid #ddd;
+
+      border-radius: 10px;
+    }
+
+    button {
+      width: 100%;
+
+      margin-top: 15px;
+
+      padding: 15px;
+
+      font-size: 17px;
+
+      border: none;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      background: #1b5e20;
+
+      color: white;
+
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #hasil {
+      margin-top: 25px;
+    }
+
+    .success {
+      background: #e8f5e9;
+
+      color: #1b5e20;
+
+      padding: 20px;
+
+      border-radius: 12px;
+    }
+
+    .error {
+      background: #ffebee;
+
+      color: #b71c1c;
+
+      padding: 20px;
+
+      border-radius: 12px;
+    }
+
+    .nama {
+      font-size: 23px;
+
+      font-weight: bold;
+
+      margin-top: 8px;
+    }
+
+    .kelas {
+      margin-top: 5px;
+
+      font-size: 16px;
+    }
+
+    .rekap {
+      margin-top: 20px;
+
+      text-align: left;
+
+      background: white;
+
+      padding: 15px;
+
+      border-radius: 10px;
+    }
+
+    .riwayat {
+      margin-top: 10px;
+
+      padding: 12px;
+
+      background: white;
+
+      border-radius: 10px;
+
+      text-align: left;
+    }
+
+    .logout {
+      margin-top: 15px;
+
+      background: #757575;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <h1>SIPRESENSI 13</h1>
+
+      <div class="school">
+        MTsN 13 Ciamis
+      </div>
+
+      <div class="subtitle">
+        PORTAL ORANG TUA
+      </div>
+
+
+      <input
+        type="text"
+        id="nisn"
+        placeholder="Masukkan NISN anak"
+      >
+
+
+      <input
+        type="text"
+        id="nama"
+        placeholder="Masukkan nama anak"
+      >
+
+
+      <button onclick="loginOrangtua()">
+        LIHAT KEHADIRAN
+      </button>
+
+
+      <div id="hasil"></div>
+
+    </div>
+
+  </div>
+
+
 <script>
 
   const URL_APPS_SCRIPT =
@@ -18,6 +235,8 @@
 
     if (!nisn || !nama) {
 
+      hasil.className = "error";
+
       hasil.innerHTML =
         "⚠️ NISN dan nama siswa harus diisi.";
 
@@ -25,6 +244,8 @@
 
     }
 
+
+    hasil.className = "";
 
     hasil.innerHTML =
       "⏳ Memeriksa data...";
@@ -38,7 +259,6 @@
     window[callbackName] =
       function(response) {
 
-        // Hapus script JSONP
         const script =
           document.getElementById(callbackName);
 
@@ -46,8 +266,6 @@
           script.remove();
         }
 
-
-        // Hapus fungsi callback
         delete window[callbackName];
 
 
@@ -57,10 +275,14 @@
 
         } else {
 
+          hasil.className = "error";
+
           hasil.innerHTML =
             "❌ " +
-            (response.message ||
-             "Login gagal.");
+            (
+              response.message ||
+              "Login gagal."
+            );
 
         }
 
@@ -71,7 +293,8 @@
       document.createElement("script");
 
 
-    script.id = callbackName;
+    script.id =
+      callbackName;
 
 
     script.src =
@@ -87,6 +310,8 @@
 
     script.onerror =
       function() {
+
+        hasil.className = "error";
 
         hasil.innerHTML =
           "❌ Tidak dapat terhubung ke server.";
@@ -108,7 +333,6 @@
     const hasil =
       document.getElementById("hasil");
 
-
     const akun =
       data.akun;
 
@@ -126,37 +350,48 @@
           ${akun.namaSiswa}
         </div>
 
-        <div>
+        <div class="kelas">
           Kelas ${akun.kelas}
         </div>
 
-        <br>
 
-        <h3>REKAP KEHADIRAN</h3>
+        <div class="rekap">
 
-        <div>
-          Hadir: ${rekap.hadir}
+          <h3>
+            REKAP KEHADIRAN
+          </h3>
+
+          <p>
+            🟢 Hadir:
+            <strong>${rekap.hadir}</strong>
+          </p>
+
+          <p>
+            🟡 Terlambat:
+            <strong>${rekap.terlambat}</strong>
+          </p>
+
+          <p>
+            🔵 Sakit:
+            <strong>${rekap.sakit}</strong>
+          </p>
+
+          <p>
+            🟠 Izin:
+            <strong>${rekap.izin}</strong>
+          </p>
+
+          <p>
+            🔴 Alpa:
+            <strong>${rekap.alpa}</strong>
+          </p>
+
         </div>
 
-        <div>
-          Terlambat: ${rekap.terlambat}
-        </div>
 
-        <div>
-          Sakit: ${rekap.sakit}
-        </div>
-
-        <div>
-          Izin: ${rekap.izin}
-        </div>
-
-        <div>
-          Alpa: ${rekap.alpa}
-        </div>
-
-        <br>
-
-        <h3>RIWAYAT KEHADIRAN</h3>
+        <h3>
+          RIWAYAT KEHADIRAN
+        </h3>
 
     `;
 
@@ -166,33 +401,36 @@
       data.riwayat.length > 0
     ) {
 
-      data.riwayat.forEach(function(item) {
+      data.riwayat.forEach(
+        function(item) {
 
-        html += `
+          html += `
 
-          <div class="riwayat">
+            <div class="riwayat">
 
-            <strong>
-              ${item.tanggal}
-            </strong>
+              <strong>
+                ${item.tanggal}
+              </strong>
 
-            <br>
+              <br>
 
-            ${item.hari} -
-            ${item.jam}
+              ${item.hari}
+              -
+              ${item.jam}
 
-            <br>
+              <br>
 
-            Status:
-            <strong>
-              ${item.status}
-            </strong>
+              Status:
+              <strong>
+                ${item.status}
+              </strong>
 
-          </div>
+            </div>
 
-        `;
+          `;
 
-      });
+        }
+      );
 
     } else {
 
@@ -202,11 +440,27 @@
     }
 
 
-    html += "</div>";
+    html += `
+
+        <button
+          class="logout"
+          onclick="location.reload()"
+        >
+          KEMBALI
+        </button>
+
+      </div>
+
+    `;
 
 
-    hasil.innerHTML = html;
+    hasil.innerHTML =
+      html;
 
   }
 
 </script>
+
+</body>
+
+</html>
