@@ -1,770 +1,1044 @@
 <!DOCTYPE html>
 
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Portal Guru - SIPRESENSI 13</title>
+<head>
+
+  <base target="_top">
+
+  <meta charset="UTF-8">
+
+<meta name="viewport"
+     content="width=device-width, initial-scale=1">
+
+  <title>SIPRESENSI 13 - Portal Guru</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #e8f5e9, #f5faf6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+      background: #f5faf6;
       color: #333;
     }
 
     .container {
-      width: 100%;
-      max-width: 420px;
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: #1b5e20;
+      color: white;
+      padding: 24px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .header p {
+      margin: 4px 0;
+      opacity: .95;
     }
 
     .card {
       background: white;
-      border-radius: 22px;
-      padding: 32px 28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
     }
 
-    .logo {
+    .login-card {
+      max-width: 500px;
+      margin: 60px auto;
+    }
+
+    .login-title {
       text-align: center;
+      color: #1b5e20;
+      margin-bottom: 25px;
+    }
+
+    .login-title .icon {
       font-size: 48px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    h1 {
-      text-align: center;
+    .login-title h1 {
+      margin: 0 0 8px;
+    }
+
+    .login-title p {
       margin: 0;
-      font-size: 25px;
-    }
-
-    .subtitle {
-      text-align: center;
       color: #777;
-      margin: 8px 0 28px;
-      font-size: 14px;
     }
 
     label {
       display: block;
-      margin-bottom: 7px;
       font-weight: bold;
-      font-size: 14px;
+      margin-bottom: 7px;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
-      padding: 14px;
+      padding: 13px 14px;
       border: 1px solid #ddd;
       border-radius: 10px;
-      font-size: 16px;
-      margin-bottom: 18px;
+      font-size: 15px;
       outline: none;
+      background: white;
     }
 
-    input:focus {
-      border-color: #4caf50;
+    input:focus,
+    select:focus {
+      border-color: #43a047;
+      box-shadow: 0 0 0 2px rgba(67,160,71,.1);
+    }
+
+    .form-group {
+      margin-bottom: 17px;
     }
 
     button {
-      width: 100%;
-      padding: 14px;
       border: none;
       border-radius: 10px;
+      padding: 13px 18px;
+      font-size: 15px;
+      cursor: pointer;
       background: #2e7d32;
       color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
+      transition: .2s;
     }
 
     button:hover {
-      background: #256b29;
+      opacity: .9;
     }
 
     button:disabled {
-      background: #aaa;
+      opacity: .6;
       cursor: not-allowed;
     }
 
-    #hasil {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .success {
-      background: #e8f5e9;
-      border-radius: 12px;
-      padding: 18px;
-      color: #2e7d32;
-    }
-
-    .nama {
-      font-size: 18px;
+    .btn-login {
+      width: 100%;
+      font-size: 16px;
       font-weight: bold;
-      margin: 8px 0;
+      padding: 14px;
     }
 
-    .role {
-      color: #555;
-      margin-top: 5px;
+    .btn-secondary {
+      background: #757575;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #888;
-    }
-        /* ================================
-       DASHBOARD GURU
-       ================================ */
-
-    .dashboard {
-      text-align: left;
-    }
-
-    .dashboard-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: #e8f5e9;
-      padding: 18px;
-      border-radius: 16px;
-      margin-bottom: 22px;
-    }
-
-    .dashboard-icon {
-      font-size: 38px;
+    .btn-refresh {
+      background: #1565c0;
     }
 
     .welcome {
-      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .welcome h2 {
+      margin: 0 0 6px;
+      color: #1b5e20;
+    }
+
+    .welcome p {
+      margin: 0;
       color: #777;
     }
 
-    .guru-name {
-      font-size: 17px;
-      font-weight: bold;
-      color: #2e7d32;
-      margin-top: 3px;
-    }
-
-    .guru-role {
-      font-size: 13px;
-      color: #666;
-      margin-top: 4px;
+    .dashboard {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.06);
     }
 
     .dashboard-title {
-      font-size: 20px;
+      font-size: 21px;
       font-weight: bold;
-      margin-bottom: 18px;
-      color: #333;
+      color: #1b5e20;
+      margin-bottom: 20px;
     }
 
     .section-title {
-      font-size: 14px;
+      font-size: 17px;
       font-weight: bold;
-      margin: 18px 0 10px;
-      color: #555;
+      margin-bottom: 12px;
+      color: #444;
     }
 
-    .stat-grid {
+    .stats {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 25px;
     }
 
     .stat-card {
-      background: #f8f8f8;
-      border-radius: 14px;
-      padding: 15px;
+      padding: 17px 10px;
+      border-radius: 13px;
       text-align: center;
+      background: #f8f8f8;
+      border: 1px solid #eee;
     }
 
     .stat-icon {
-      font-size: 22px;
+      font-size: 25px;
+      margin-bottom: 6px;
     }
 
     .stat-number {
-      font-size: 24px;
+      font-size: 25px;
       font-weight: bold;
-      margin-top: 4px;
+      margin-bottom: 4px;
     }
 
     .stat-label {
       font-size: 12px;
       color: #777;
-      margin-top: 3px;
     }
 
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
 
     .menu-button {
-      background: #f1f8f2;
-      color: #2e7d32;
-      border: 1px solid #dcebdd;
-      padding: 16px 10px;
-      border-radius: 12px;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    .menu-button span {
-      display: block;
-      font-size: 12px;
+      min-height: 105px;
+      background: #f8fff9;
+      color: #1b5e20;
+      border: 1px solid #dcefe0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
       font-weight: bold;
-      margin-top: 7px;
     }
 
     .menu-button:hover {
       background: #e8f5e9;
     }
 
-    .logout-button {
-      margin-top: 20px;
-      background: #757575;
+    .menu-button > span:first-of-type {
+      font-size: 14px;
     }
 
-    .logout-button:hover {
-      background: #555;
+    .menu-icon {
+      font-size: 30px;
     }
+
+    .result-message {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .class-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    .class-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1b5e20;
+    }
+
+    .date-info {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .rekap-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 15px 0 20px;
+    }
+
+    .rekap-card {
+      border-radius: 10px;
+      padding: 12px 7px;
+      text-align: center;
+      background: #f8f8f8;
+      border: 1px solid #eee;
+    }
+
+    .rekap-number {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .rekap-label {
+      font-size: 11px;
+      color: #666;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid #eee;
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+      font-size: 14px;
+    }
+
+    th {
+      background: #e8f5e9;
+      color: #1b5e20;
+      padding: 12px 10px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 11px 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    td:first-child,
+    th:first-child {
+      text-align: center;
+      width: 55px;
+    }
+
+    td:nth-child(3),
+    th:nth-child(3) {
+      text-align: center;
+      width: 110px;
+    }
+
+    td:nth-child(4),
+    th:nth-child(4) {
+      text-align: center;
+      width: 160px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .status-hadir {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status-terlambat {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .status-belum {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+
+    .status-izin {
+      background: #fff8e1;
+      color: #f57f17;
+    }
+
+    .status-sakit {
+      background: #ede7f6;
+      color: #6a1b9a;
+    }
+
+    .status-alpa {
+      background: #eeeeee;
+      color: #424242;
+    }
+
+    .empty-box {
+      padding: 30px 20px;
+      text-align: center;
+      background: #f8f8f8;
+      border-radius: 12px;
+      color: #777;
+    }
+
+    .loading {
+      padding: 25px;
+      text-align: center;
+      color: #777;
+    }
+
+    .footer {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      padding: 15px;
+    }
+
+    .logout-area {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .btn-logout {
+      background: #c62828;
+      padding: 9px 14px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+
+      .stats {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .rekap-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+    }
+
+    @media (max-width: 500px) {
+
+      .container {
+        padding: 12px;
+      }
+
+      .header {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 21px;
+      }
+
+      .card,
+      .dashboard {
+        padding: 17px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .rekap-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
   </style>
 
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
 
+  <!-- ========================================= -->
 
-<div class="card">
+  <!-- LOGIN GURU -->
 
-  <div class="logo">👩‍🏫</div>
+  <!-- ========================================= -->
 
-  <h1>SIPRESENSI 13</h1>
+  <div id="loginPage">
 
-  <div class="subtitle">
-    Portal Guru<br>
-    MTsN 13 Ciamis
+```
+<div class="card login-card">
+
+  <div class="login-title">
+
+    <div class="icon">
+      👨‍🏫
+    </div>
+
+    <h1>
+      Portal Guru
+    </h1>
+
+    <p>
+      SIPRESENSI 13
+    </p>
+
   </div>
 
-  <label for="nip">NIP</label>
 
-  <input
-    type="text"
-    id="nip"
-    placeholder="Masukkan NIP"
-    autocomplete="username"
-  >
+  <div class="form-group">
 
-  <label for="password">Password</label>
+    <label for="nip">
+      NIP
+    </label>
 
-  <input
-    type="password"
-    id="password"
-    placeholder="Masukkan password"
-    autocomplete="current-password"
-  >
+    <input
+      type="text"
+      id="nip"
+      placeholder="Masukkan NIP"
+      autocomplete="username"
+    >
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="password">
+      Password
+    </label>
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Masukkan password"
+      autocomplete="current-password"
+    >
+
+  </div>
+
 
   <button
     id="btnLogin"
+    class="btn-login"
     onclick="loginGuru()"
   >
-    MASUK
+    🔐 Masuk ke Portal Guru
   </button>
 
-  <div id="hasil"></div>
+
+  <div
+    id="hasil"
+    class="result-message"
+  ></div>
 
 </div>
-
-<div class="footer">
-  SIPRESENSI 13 • MTsN 13 Ciamis
-</div>
+```
 
   </div>
 
-  <script>
+  <!-- ========================================= -->
 
-    // ==========================================
-    // ALAMAT APPS SCRIPT
-    // ==========================================
+  <!-- APLIKASI GURU -->
 
-    const URL_APPS_SCRIPT =
-      "https://script.google.com/macros/s/AKfycbzgKtb2IyODbg4FbgfgWo3XkJ_k0OaL0kU5iZjWH95vqxgzz-nx0iNBwAogH0qwJCYY/exec";
+  <!-- ========================================= -->
 
+  <div id="appPage"
+       style="display:none;">
 
-    // ==========================================
-    // LOGIN GURU
-    // ==========================================
+```
+<!-- HEADER -->
 
-    function loginGuru() {
+<div class="header">
 
-      const nip =
-        document.getElementById("nip").value.trim();
+  <h1>
+    📚 SIPRESENSI 13
+  </h1>
 
-      const password =
-        document.getElementById("password").value.trim();
+  <p>
+    Portal Guru
+  </p>
 
-      const hasil =
-        document.getElementById("hasil");
+  <p id="infoGuru"></p>
 
-      const btn =
-        document.getElementById("btnLogin");
+  <div class="logout-area">
 
+    <button
+      class="btn-logout"
+      onclick="logoutGuru()"
+    >
+      Keluar
+    </button>
 
-      // Validasi
+  </div>
 
-      if (!nip || !password) {
+</div>
 
-        hasil.innerHTML =
-          "⚠️ NIP dan password harus diisi.";
 
-        return;
-      }
+<!-- HASIL / DASHBOARD -->
 
+<div id="hasil"></div>
 
-      // Tampilkan proses
 
-      hasil.innerHTML =
-        "⏳ Memeriksa akun...";
+<div class="footer">
+  SIPRESENSI 13 — MTsN 13 Ciamis
+</div>
+```
 
-      btn.disabled = true;
+  </div>
 
+</div>
 
-      // Nama callback unik
+<script>
 
-      const callbackName =
-        "hasilLoginGuru_" + Date.now();
 
+/****************************************************
+ * URL APPS SCRIPT
+ ****************************************************/
 
-      // Fungsi callback
+const URL_APPS_SCRIPT =
+  "https://script.google.com/macros/s/AKfycbzgKtb2IyODbg4FbgfgWo3XkJ_k0OaL0kU5iZjWH95vqxgzz-nx0iNBwAogH0qwJCYY/exec";
 
-      window[callbackName] =
-        function(response) {
 
-          const script =
-            document.getElementById(callbackName);
+/****************************************************
+ * DATA GURU
+ ****************************************************/
 
-          if (script) {
-            script.remove();
-          }
+window.akunGuru = null;
 
-          delete window[callbackName];
 
-          btn.disabled = false;
+/****************************************************
+ * LOGIN GURU
+ ****************************************************/
 
+function loginGuru() {
 
-          // Jika berhasil
+  const nip =
+    document
+      .getElementById("nip")
+      .value
+      .trim();
 
-          if (response.success) {
-
-            tampilkanDashboardAwal(response);
-
-          } else {
-
-            hasil.innerHTML =
-              "❌ " +
-              (response.message ||
-               "Login gagal.");
-
-          }
-
-        };
-
-
-      // Buat request JSONP
-
-      const script =
-        document.createElement("script");
-
-      script.id = callbackName;
-
-
-      script.src =
-        URL_APPS_SCRIPT +
-        "?action=loginGuru" +
-        "&nip=" +
-        encodeURIComponent(nip) +
-        "&password=" +
-        encodeURIComponent(password) +
-        "&callback=" +
-        callbackName;
-
-
-      script.onerror =
-        function() {
-
-          hasil.innerHTML =
-            "❌ Tidak dapat terhubung ke server.";
-
-          btn.disabled = false;
-
-          delete window[callbackName];
-
-          script.remove();
-
-        };
-
-
-      document.body.appendChild(script);
-
-    }
-
-
-    // ==========================================
-    // TAMPILKAN HASIL LOGIN
-    // ==========================================
-
-   function tampilkanDashboardAwal(data) {
-
-  const hasil = document.getElementById("hasil");
-  const akun = data.akun;
-  window.akunGuru = akun;
-
-  hasil.innerHTML = `
-
-    <div class="dashboard">
-
-      <!-- HEADER DASHBOARD -->
-      <div class="dashboard-header">
-        <div class="dashboard-icon">👋</div>
-
-        <div>
-          <div class="welcome">
-            Selamat Datang
-          </div>
-
-          <div class="guru-name">
-            ${akun.namaGuru}
-          </div>
-
-          <div class="guru-role">
-            ${akun.role}
-          </div>
-        </div>
-      </div>
-
-
-      <!-- JUDUL -->
-      <div class="dashboard-title">
-        📊 Dashboard Guru
-      </div>
-
-
-      <!-- KARTU ABSENSI -->
-      <div class="section-title">
-        Absensi Hari Ini
-      </div>
-
-      <div class="stat-grid">
-
-        <div class="stat-card hadir">
-          <div class="stat-icon">🟢</div>
-          <div class="stat-number" id="angkaHadir">0</div>
-          <div class="stat-label">Hadir</div>
-        </div>
-
-        <div class="stat-card terlambat">
-          <div class="stat-icon">🟡</div>
-          <div class="stat-number" id="angkaTerlambat">0</div>
-          <div class="stat-label">Terlambat</div>
-        </div>
-
-        <div class="stat-card izin">
-          <div class="stat-icon">🔵</div>
-          <div class="stat-number" id="angkaIzin">0</div>
-          <div class="stat-label">Izin</div>
-        </div>
-
-        <div class="stat-card sakit">
-          <div class="stat-icon">🟣</div>
-          <div class="stat-number" id="angkaSakit">0</div>
-          <div class="stat-label">Sakit</div>
-        </div>
-
-        <div class="stat-card alpa">
-          <div class="stat-icon">🔴</div>
-          <div class="stat-number" id="angkaAlpa">0</div>
-          <div class="stat-label">Alpa</div>
-        </div>
-
-      </div>
-
-
-      <!-- MENU -->
-      <div class="section-title">
-        Menu Guru
-      </div>
-
-      <div class="menu-grid">
-
-        <button
-  class="menu-button"
-  onclick="tampilkanAbsensiHariIni()"
->
-  📋
-  <span>Absensi Hari Ini</span>
-</button>
-
-        <button class="menu-button">
-          📅
-          <span>Rekap Bulanan</span>
-        </button>
-
-        <button class="menu-button">
-          👨‍🎓
-          <span>Data Siswa</span>
-        </button>
-
-        <button class="menu-button">
-          📊
-          <span>Statistik</span>
-        </button>
-
-      </div>
-
-
-      <!-- KELUAR -->
-      <button
-        class="logout-button"
-        onclick="location.reload()"
-      >
-        🚪 Keluar
-      </button>
-
-    </div>
-
-   `;
-
-  ambilDataDashboardGuru();
-
-}
-    function ambilDataDashboardGuru() {
-
-  const callbackName =
-    "hasilDashboardGuru_" + Date.now();
-
-  window[callbackName] = function(response) {
-
-    const script =
-      document.getElementById(callbackName);
-
-    if (script) {
-      script.remove();
-    }
-
-    delete window[callbackName];
-
-    if (!response.success) {
-      console.log(
-        "Gagal mengambil dashboard:",
-        response.message
-      );
-      return;
-    }
-
-    const statistik = response.statistik;
-
-    const angkaHadir =
-      document.getElementById("angkaHadir");
-
-    const angkaTerlambat =
-      document.getElementById("angkaTerlambat");
-
-    const angkaIzin =
-      document.getElementById("angkaIzin");
-
-    const angkaSakit =
-      document.getElementById("angkaSakit");
-
-    const angkaAlpa =
-      document.getElementById("angkaAlpa");
-
-
-    if (angkaHadir)
-      angkaHadir.textContent = statistik.hadir;
-
-    if (angkaTerlambat)
-      angkaTerlambat.textContent = statistik.terlambat;
-
-    if (angkaIzin)
-      angkaIzin.textContent = statistik.izin;
-
-    if (angkaSakit)
-      angkaSakit.textContent = statistik.sakit;
-
-    if (angkaAlpa)
-      angkaAlpa.textContent = statistik.alpa;
-  };
-
-
-  const script =
-    document.createElement("script");
-
-  script.id = callbackName;
-
-  script.src =
-    URL_APPS_SCRIPT +
-    "?action=dashboardGuru" +
-    "&callback=" +
-    callbackName;
-
-  script.onerror = function() {
-
-    console.log(
-      "Tidak dapat mengambil data dashboard."
-    );
-
-    delete window[callbackName];
-
-    script.remove();
-  };
-
-
-  document.body.appendChild(script);
-}
-    // ==========================================
-// ABSENSI HARI INI
-// ==========================================
-
-function tampilkanAbsensiHariIni() {
+  const password =
+    document
+      .getElementById("password")
+      .value
+      .trim();
 
   const hasil =
-    document.getElementById("hasil");
+    document
+      .getElementById("hasil");
 
-  hasil.innerHTML = `
+  const btn =
+    document
+      .getElementById("btnLogin");
 
-    <div class="dashboard">
 
-      <div class="dashboard-title">
-        📋 Absensi Hari Ini
-      </div>
+  if (!nip || !password) {
 
-      <div class="section-title">
-        Pilih Kelas
-      </div>
-
-      <select
-        id="pilihKelas"
-        onchange="ambilAbsensiHariIni()"
-        style="
-          width:100%;
-          padding:14px;
-          border:1px solid #ddd;
-          border-radius:10px;
-          font-size:16px;
-          margin-bottom:20px;
-        "
-      >
-
-        <option value="">
-          -- Pilih Kelas --
-        </option>
-
-        <option value="7A">7A</option>
-        <option value="7B">7B</option>
-        <option value="7C">7C</option>
-        <option value="7D">7D</option>
-        <option value="7E">7E</option>
-        <option value="7F">7F</option>
-        <option value="7G">7G</option>
-        <option value="7H">7H</option>
-        <option value="7I">7I</option>
-        <option value="7J">7J</option>
-        <option value="7K">7K</option>
-
-        <option value="8A">8A</option>
-        <option value="8B">8B</option>
-        <option value="8C">8C</option>
-        <option value="8D">8D</option>
-        <option value="8E">8E</option>
-        <option value="8F">8F</option>
-        <option value="8G">8G</option>
-        <option value="8H">8H</option>
-        <option value="8I">8I</option>
-
-        <option value="9A">9A</option>
-        <option value="9B">9B</option>
-        <option value="9C">9C</option>
-        <option value="9D">9D</option>
-        <option value="9E">9E</option>
-        <option value="9F">9F</option>
-        <option value="9G">9G</option>
-        <option value="9H">9H</option>
-        <option value="9I">9I</option>
-        <option value="9J">9J</option>
-        <option value="9K">9K</option>
-
-      </select>
-
-      <div id="hasilAbsensiHariIni">
-        Silakan pilih kelas.
-      </div>
-
-      <button
-        onclick="tampilkanDashboardAwal({
-          akun: window.akunGuru
-        })"
-        style="
-          margin-top:20px;
-          background:#757575;
-        "
-      >
-        ← Kembali ke Dashboard
-      </button>
-
-    </div>
-
-  `;
-}
-    function ambilAbsensiHariIni() {
-
-  const kelas =
-    document.getElementById("pilihKelas").value;
-
-  const tempat =
-    document.getElementById(
-      "hasilAbsensiHariIni"
-    );
-
-  if (!kelas) {
-
-    tempat.innerHTML =
-      "Silakan pilih kelas.";
+    hasil.innerHTML =
+      "⚠️ NIP dan password harus diisi.";
 
     return;
+
   }
 
-  tempat.innerHTML =
-    "⏳ Mengambil data absensi...";
+
+  hasil.innerHTML =
+    "⏳ Memeriksa akun...";
+
+  btn.disabled = true;
 
 
   const callbackName =
-    "hasilAbsensiHariIni_" + Date.now();
+    "hasilLoginGuru_" +
+    Date.now();
 
 
   window[callbackName] =
     function(response) {
 
       const script =
-        document.getElementById(callbackName);
+        document
+          .getElementById(
+            callbackName
+          );
+
+      if (script) {
+        script.remove();
+      }
+
+      delete window[callbackName];
+
+      btn.disabled = false;
+
+
+      if (response.success) {
+
+        tampilkanDashboardAwal(
+          response
+        );
+
+      }
+
+      else {
+
+        hasil.innerHTML =
+          "❌ " +
+          (
+            response.message ||
+            "Login gagal."
+          );
+
+      }
+
+    };
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.id =
+    callbackName;
+
+
+  script.src =
+    URL_APPS_SCRIPT +
+    "?action=loginGuru" +
+    "&nip=" +
+    encodeURIComponent(nip) +
+    "&password=" +
+    encodeURIComponent(password) +
+    "&callback=" +
+    callbackName;
+
+
+  script.onerror =
+    function() {
+
+      hasil.innerHTML =
+        "❌ Tidak dapat terhubung ke server.";
+
+      btn.disabled = false;
+
+      delete window[callbackName];
+
+      script.remove();
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+/****************************************************
+ * DASHBOARD AWAL
+ ****************************************************/
+
+function tampilkanDashboardAwal(
+  data
+) {
+
+  const loginPage =
+    document
+      .getElementById(
+        "loginPage"
+      );
+
+  const appPage =
+    document
+      .getElementById(
+        "appPage"
+      );
+
+  const hasil =
+    document
+      .getElementById(
+        "hasil"
+      );
+
+
+  const akun =
+    data.akun ||
+    window.akunGuru;
+
+
+  if (!akun) {
+
+    return;
+
+  }
+
+
+  window.akunGuru =
+    akun;
+
+
+  loginPage.style.display =
+    "none";
+
+  appPage.style.display =
+    "block";
+
+
+  document
+    .getElementById(
+      "infoGuru"
+    )
+    .innerHTML =
+      "👤 " +
+      akun.namaGuru +
+      " — " +
+      akun.role;
+
+
+  hasil.innerHTML = `
+
+    <div class="welcome">
+
+      <h2>
+        Selamat datang 👋
+      </h2>
+
+      <p>
+        Berikut adalah ringkasan absensi hari ini.
+      </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+      <div class="dashboard-title">
+        📊 Dashboard Absensi Hari Ini
+      </div>
+
+
+      <div class="stats">
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            🟢
+          </div>
+
+          <div
+            class="stat-number"
+            id="angkaHadir"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            HADIR
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            🔴
+          </div>
+
+          <div
+            class="stat-number"
+            id="angkaTerlambat"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            TERLAMBAT
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            🟡
+          </div>
+
+          <div
+            class="stat-number"
+            id="angkaIzin"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            IZIN
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            🟣
+          </div>
+
+          <div
+            class="stat-number"
+            id="angkaSakit"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            SAKIT
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">
+            ⚫
+          </div>
+
+          <div
+            class="stat-number"
+            id="angkaAlpa"
+          >
+            0
+          </div>
+
+          <div class="stat-label">
+            ALPA
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="section-title">
+        Menu
+      </div>
+
+
+      <div class="menu-grid">
+
+        <button
+          class="menu-button"
+          onclick="tampilkanAbsensiHariIni()"
+        >
+
+          <div class="menu-icon">
+            📋
+          </div>
+
+          <span>
+            Absensi Hari Ini
+          </span>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          onclick="fiturBelumTersedia('Rekap Bulanan')"
+        >
+
+          <div class="menu-icon">
+            📅
+          </div>
+
+          <span>
+            Rekap Bulanan
+          </span>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          onclick="fiturBelumTersedia('Data Siswa')"
+        >
+
+          <div class="menu-icon">
+            👨‍🎓
+          </div>
+
+          <span>
+            Data Siswa
+          </span>
+
+        </button>
+
+
+        <button
+          class="menu-button"
+          onclick="fiturBelumTersedia('Statistik')"
+        >
+
+          <div class="menu-icon">
+            📊
+          </div>
+
+          <span>
+            Statistik
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  ambilDataDashboardGuru();
+
+}
+
+
+/****************************************************
+ * AMBIL DASHBOARD GURU
+ ****************************************************/
+
+function ambilDataDashboardGuru() {
+
+  const callbackName =
+    "hasilDashboardGuru_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      const script =
+        document
+          .getElementById(
+            callbackName
+          );
 
       if (script) {
         script.remove();
@@ -775,156 +1049,352 @@ function tampilkanAbsensiHariIni() {
 
       if (!response.success) {
 
-        tempat.innerHTML =
-          "❌ " +
-          (response.message ||
-           "Gagal mengambil data.");
+        console.log(
+          "Gagal mengambil dashboard:",
+          response.message
+        );
 
         return;
+
       }
 
 
-      if (response.data.length === 0) {
-
-        tempat.innerHTML = `
-          <div style="
-            background:#f5f5f5;
-            padding:20px;
-            border-radius:12px;
-            text-align:center;
-          ">
-            Belum ada data absensi untuk kelas
-            <strong>${kelas}</strong>
-            hari ini.
-          </div>
-        `;
-
-        return;
-      }
+      const statistik =
+        response.statistik;
 
 
-      let html = `
+      const angkaHadir =
+        document
+          .getElementById(
+            "angkaHadir"
+          );
 
-        <div style="
-          overflow-x:auto;
-        ">
+      const angkaTerlambat =
+        document
+          .getElementById(
+            "angkaTerlambat"
+          );
 
-          <table style="
-            width:100%;
-            border-collapse:collapse;
-            font-size:13px;
-          ">
+      const angkaIzin =
+        document
+          .getElementById(
+            "angkaIzin"
+          );
 
-            <thead>
+      const angkaSakit =
+        document
+          .getElementById(
+            "angkaSakit"
+          );
 
-              <tr style="
-                background:#e8f5e9;
-              ">
-
-                <th style="padding:10px;">
-                  No
-                </th>
-
-                <th style="padding:10px;">
-                  Nama Siswa
-                </th>
-
-                <th style="padding:10px;">
-                  Jam
-                </th>
-
-                <th style="padding:10px;">
-                  Status
-                </th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-      `;
+      const angkaAlpa =
+        document
+          .getElementById(
+            "angkaAlpa"
+          );
 
 
-      response.data.forEach(
-        function(item, index) {
-
-          html += `
-
-            <tr>
-
-              <td style="
-                padding:10px;
-                text-align:center;
-                border-bottom:1px solid #eee;
-              ">
-                ${index + 1}
-              </td>
-
-              <td style="
-                padding:10px;
-                border-bottom:1px solid #eee;
-              ">
-                ${item.namaSiswa}
-              </td>
-
-              <td style="
-                padding:10px;
-                text-align:center;
-                border-bottom:1px solid #eee;
-              ">
-                ${item.jam}
-              </td>
-
-              <td style="
-                padding:10px;
-                text-align:center;
-                border-bottom:1px solid #eee;
-              ">
-                ${item.status}
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-      );
+      if (angkaHadir)
+        angkaHadir.textContent =
+          statistik.hadir;
 
 
-      html += `
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-        <div style="
-          margin-top:12px;
-          font-size:13px;
-          color:#777;
-          text-align:center;
-        ">
-          ${response.jumlah} siswa sudah melakukan
-          absensi hari ini.
-        </div>
-
-      `;
+      if (angkaTerlambat)
+        angkaTerlambat.textContent =
+          statistik.terlambat;
 
 
-      tempat.innerHTML = html;
+      if (angkaIzin)
+        angkaIzin.textContent =
+          statistik.izin;
+
+
+      if (angkaSakit)
+        angkaSakit.textContent =
+          statistik.sakit;
+
+
+      if (angkaAlpa)
+        angkaAlpa.textContent =
+          statistik.alpa;
 
     };
 
 
   const script =
-    document.createElement("script");
+    document.createElement(
+      "script"
+    );
 
-  script.id = callbackName;
+
+  script.id =
+    callbackName;
+
 
   script.src =
     URL_APPS_SCRIPT +
-    "?action=absensiHariIni" +
+    "?action=dashboardGuru" +
+    "&callback=" +
+    callbackName;
+
+
+  script.onerror =
+    function() {
+
+      console.log(
+        "Tidak dapat mengambil data dashboard."
+      );
+
+      delete window[callbackName];
+
+      script.remove();
+
+    };
+
+
+  document.body.appendChild(
+    script
+  );
+
+}
+
+
+/****************************************************
+ * ABSENSI HARI INI
+ ****************************************************/
+
+function tampilkanAbsensiHariIni() {
+
+  const hasil =
+    document
+      .getElementById(
+        "hasil"
+      );
+
+
+  hasil.innerHTML = `
+
+    <div class="dashboard">
+
+      <div class="dashboard-title">
+        📋 Absensi Hari Ini
+      </div>
+
+
+      <div class="section-title">
+        Pilih Kelas
+      </div>
+
+
+      <select
+        id="pilihKelas"
+        onchange="ambilStatusAbsensiKelas()"
+      >
+
+        <option value="">
+          -- Pilih Kelas --
+        </option>
+
+
+        <optgroup label="Kelas VII">
+
+          <option value="7A">7A</option>
+          <option value="7B">7B</option>
+          <option value="7C">7C</option>
+          <option value="7D">7D</option>
+          <option value="7E">7E</option>
+          <option value="7F">7F</option>
+          <option value="7G">7G</option>
+          <option value="7H">7H</option>
+          <option value="7I">7I</option>
+          <option value="7J">7J</option>
+          <option value="7K">7K</option>
+
+        </optgroup>
+
+
+        <optgroup label="Kelas VIII">
+
+          <option value="8A">8A</option>
+          <option value="8B">8B</option>
+          <option value="8C">8C</option>
+          <option value="8D">8D</option>
+          <option value="8E">8E</option>
+          <option value="8F">8F</option>
+          <option value="8G">8G</option>
+          <option value="8H">8H</option>
+          <option value="8I">8I</option>
+
+        </optgroup>
+
+
+        <optgroup label="Kelas IX">
+
+          <option value="9A">9A</option>
+          <option value="9B">9B</option>
+          <option value="9C">9C</option>
+          <option value="9D">9D</option>
+          <option value="9E">9E</option>
+          <option value="9F">9F</option>
+          <option value="9G">9G</option>
+          <option value="9H">9H</option>
+          <option value="9I">9I</option>
+          <option value="9J">9J</option>
+          <option value="9K">9K</option>
+
+        </optgroup>
+
+      </select>
+
+
+      <div
+        id="hasilAbsensiHariIni"
+        style="margin-top:20px;"
+      >
+
+        <div class="empty-box">
+          Silakan pilih kelas.
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn-secondary"
+        onclick="tampilkanDashboardAwal({
+          akun: window.akunGuru
+        })"
+        style="margin-top:20px;"
+      >
+
+        ← Kembali ke Dashboard
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+/****************************************************
+ * AMBIL STATUS ABSENSI KELAS
+ *
+ * MENGGUNAKAN:
+ * statusAbsensiKelas
+ *
+ * MENAMPILKAN SELURUH SISWA
+ ****************************************************/
+
+function ambilStatusAbsensiKelas() {
+
+  const select =
+    document
+      .getElementById(
+        "pilihKelas"
+      );
+
+
+  const tempat =
+    document
+      .getElementById(
+        "hasilAbsensiHariIni"
+      );
+
+
+  if (!select || !tempat) {
+    return;
+  }
+
+
+  const kelas =
+    select.value;
+
+
+  if (!kelas) {
+
+    tempat.innerHTML = `
+
+      <div class="empty-box">
+        Silakan pilih kelas.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  tempat.innerHTML = `
+
+    <div class="loading">
+      ⏳ Mengambil data absensi kelas ${kelas}...
+    </div>
+
+  `;
+
+
+  const callbackName =
+    "hasilStatusAbsensiKelas_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      const script =
+        document
+          .getElementById(
+            callbackName
+          );
+
+      if (script) {
+        script.remove();
+      }
+
+      delete window[callbackName];
+
+
+      if (!response.success) {
+
+        tempat.innerHTML = `
+
+          <div class="empty-box">
+            ❌
+            ${response.message ||
+              "Gagal mengambil data."}
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      tampilkanDataStatusAbsensi(
+        response,
+        tempat
+      );
+
+    };
+
+
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  script.id =
+    callbackName;
+
+
+  script.src =
+    URL_APPS_SCRIPT +
+    "?action=statusAbsensiKelas" +
     "&kelas=" +
     encodeURIComponent(kelas) +
     "&callback=" +
@@ -934,8 +1404,13 @@ function tampilkanAbsensiHariIni() {
   script.onerror =
     function() {
 
-      tempat.innerHTML =
-        "❌ Tidak dapat terhubung ke server.";
+      tempat.innerHTML = `
+
+        <div class="empty-box">
+          ❌ Tidak dapat terhubung ke server.
+        </div>
+
+      `;
 
       delete window[callbackName];
 
@@ -944,10 +1419,554 @@ function tampilkanAbsensiHariIni() {
     };
 
 
-  document.body.appendChild(script);
+  document.body.appendChild(
+    script
+  );
 
 }
-  </script>
+
+
+/****************************************************
+ * TAMPILKAN DATA STATUS ABSENSI
+ ****************************************************/
+
+function tampilkanDataStatusAbsensi(
+  response,
+  tempat
+) {
+
+  const rekap =
+    response.rekap || {};
+
+
+  let html = `
+
+    <div class="class-header">
+
+      <div>
+
+        <div class="class-title">
+          Kelas ${response.kelas}
+        </div>
+
+        <div class="date-info">
+          📅 ${formatTanggalIndonesia(response.tanggal)}
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn-refresh"
+        onclick="ambilStatusAbsensiKelas()"
+      >
+        🔄 Perbarui Data
+      </button>
+
+    </div>
+
+
+    <div class="rekap-grid">
+
+
+      <div class="rekap-card">
+
+        <div class="rekap-number">
+          ${rekap.hadir || 0}
+        </div>
+
+        <div class="rekap-label">
+          🟢 HADIR
+        </div>
+
+      </div>
+
+
+      <div class="rekap-card">
+
+        <div class="rekap-number">
+          ${rekap.terlambat || 0}
+        </div>
+
+        <div class="rekap-label">
+          🔴 TERLAMBAT
+        </div>
+
+      </div>
+
+
+      <div class="rekap-card">
+
+        <div class="rekap-number">
+          ${rekap.izin || 0}
+        </div>
+
+        <div class="rekap-label">
+          🟡 IZIN
+        </div>
+
+      </div>
+
+
+      <div class="rekap-card">
+
+        <div class="rekap-number">
+          ${rekap.sakit || 0}
+        </div>
+
+        <div class="rekap-label">
+          🟣 SAKIT
+        </div>
+
+      </div>
+
+
+      <div class="rekap-card">
+
+        <div class="rekap-number">
+          ${rekap.alpa || 0}
+        </div>
+
+        <div class="rekap-label">
+          ⚫ ALPA
+        </div>
+
+      </div>
+
+
+      <div class="rekap-card">
+
+        <div class="rekap-number">
+          ${rekap.belumAbsen || 0}
+        </div>
+
+        <div class="rekap-label">
+          🟠 BELUM ABSEN
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div class="section-title">
+
+      👨‍🎓 Daftar Siswa
+      (${response.jumlahSiswa || 0} siswa)
+
+    </div>
+
+  `;
+
+
+  if (
+    !response.data ||
+    response.data.length === 0
+  ) {
+
+    html += `
+
+      <div class="empty-box">
+        Tidak ada data siswa untuk kelas
+        <strong>${response.kelas}</strong>.
+      </div>
+
+    `;
+
+    tempat.innerHTML =
+      html;
+
+    return;
+
+  }
+
+
+  html += `
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              No
+            </th>
+
+            <th>
+              Nama Siswa
+            </th>
+
+            <th>
+              Jam
+            </th>
+
+            <th>
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+  `;
+
+
+  response.data.forEach(
+    function(item, index) {
+
+      const statusClass =
+        getStatusClass(
+          item.status
+        );
+
+
+      const statusIcon =
+        getStatusIcon(
+          item.status
+        );
+
+
+      const jam =
+        item.jam ||
+        "—";
+
+
+      html += `
+
+        <tr>
+
+          <td>
+            ${index + 1}
+          </td>
+
+
+          <td>
+            ${escapeHtml(
+              item.namaSiswa
+            )}
+          </td>
+
+
+          <td>
+            ${jam}
+          </td>
+
+
+          <td>
+
+            <span
+              class="status ${statusClass}"
+            >
+              ${statusIcon}
+              ${escapeHtml(
+                item.status
+              )}
+            </span>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  html += `
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <div
+      style="
+        margin-top:12px;
+        text-align:center;
+        font-size:13px;
+        color:#777;
+      "
+    >
+
+      Total ${response.jumlahSiswa}
+      siswa kelas ${response.kelas}
+
+    </div>
+
+  `;
+
+
+  tempat.innerHTML =
+    html;
+
+}
+
+
+/****************************************************
+ * STATUS CLASS
+ ****************************************************/
+
+function getStatusClass(
+  status
+) {
+
+  const s =
+    String(status || "")
+      .trim()
+      .toUpperCase();
+
+
+  if (s === "HADIR") {
+    return "status-hadir";
+  }
+
+  if (s === "TERLAMBAT") {
+    return "status-terlambat";
+  }
+
+  if (s === "BELUM ABSEN") {
+    return "status-belum";
+  }
+
+  if (s === "IZIN") {
+    return "status-izin";
+  }
+
+  if (s === "SAKIT") {
+    return "status-sakit";
+  }
+
+  if (s === "ALPA") {
+    return "status-alpa";
+  }
+
+
+  return "";
+
+}
+
+
+/****************************************************
+ * STATUS ICON
+ ****************************************************/
+
+function getStatusIcon(
+  status
+) {
+
+  const s =
+    String(status || "")
+      .trim()
+      .toUpperCase();
+
+
+  if (s === "HADIR") {
+    return "🟢";
+  }
+
+  if (s === "TERLAMBAT") {
+    return "🔴";
+  }
+
+  if (s === "BELUM ABSEN") {
+    return "🟠";
+  }
+
+  if (s === "IZIN") {
+    return "🟡";
+  }
+
+  if (s === "SAKIT") {
+    return "🟣";
+  }
+
+  if (s === "ALPA") {
+    return "⚫";
+  }
+
+
+  return "⚪";
+
+}
+
+
+/****************************************************
+ * FORMAT TANGGAL INDONESIA
+ ****************************************************/
+
+function formatTanggalIndonesia(
+  tanggal
+) {
+
+  if (!tanggal) {
+    return "";
+  }
+
+
+  const bagian =
+    tanggal.split("-");
+
+
+  if (bagian.length !== 3) {
+    return tanggal;
+  }
+
+
+  const tahun =
+    bagian[0];
+
+  const bulan =
+    parseInt(
+      bagian[1],
+      10
+    );
+
+  const hari =
+    bagian[2];
+
+
+  const namaBulan = [
+
+    "",
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember"
+
+  ];
+
+
+  return (
+    parseInt(hari, 10) +
+    " " +
+    namaBulan[bulan] +
+    " " +
+    tahun
+  );
+
+}
+
+
+/****************************************************
+ * ESCAPE HTML
+ ****************************************************/
+
+function escapeHtml(
+  text
+) {
+
+  return String(
+    text || ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/****************************************************
+ * FITUR YANG BELUM DIBUAT
+ ****************************************************/
+
+function fiturBelumTersedia(
+  namaFitur
+) {
+
+  alert(
+    "🚧 Fitur " +
+    namaFitur +
+    " sedang dalam tahap pengembangan."
+  );
+
+}
+
+
+/****************************************************
+ * LOGOUT
+ ****************************************************/
+
+function logoutGuru() {
+
+  window.akunGuru =
+    null;
+
+
+  document
+    .getElementById(
+      "appPage"
+    )
+    .style.display =
+    "none";
+
+
+  document
+    .getElementById(
+      "loginPage"
+    )
+    .style.display =
+    "block";
+
+
+  document
+    .getElementById(
+      "nip"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "password"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "hasil"
+    )
+    .innerHTML = "";
+
+}
+
+
+</script>
 
 </body>
+
 </html>
