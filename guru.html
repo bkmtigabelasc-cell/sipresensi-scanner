@@ -476,31 +476,31 @@
 
         <div class="stat-card hadir">
           <div class="stat-icon">🟢</div>
-          <div class="stat-number">0</div>
+          <div class="stat-number" id="angkaHadir">0</div>
           <div class="stat-label">Hadir</div>
         </div>
 
         <div class="stat-card terlambat">
           <div class="stat-icon">🟡</div>
-          <div class="stat-number">0</div>
+          <div class="stat-number" id="angkaTerlambat">0</div>
           <div class="stat-label">Terlambat</div>
         </div>
 
         <div class="stat-card izin">
           <div class="stat-icon">🔵</div>
-          <div class="stat-number">0</div>
+          <div class="stat-number" id="angkaIzin">0</div>
           <div class="stat-label">Izin</div>
         </div>
 
         <div class="stat-card sakit">
           <div class="stat-icon">🟣</div>
-          <div class="stat-number">0</div>
+          <div class="stat-number" id="angkaSakit">0</div>
           <div class="stat-label">Sakit</div>
         </div>
 
         <div class="stat-card alpa">
           <div class="stat-icon">🔴</div>
-          <div class="stat-number">0</div>
+          <div class="stat-number" id="angkaAlpa">0</div>
           <div class="stat-label">Alpa</div>
         </div>
 
@@ -547,8 +547,94 @@
 
     </div>
 
-  `;
+   `;
 
+  ambilDataDashboardGuru();
+
+}
+    function ambilDataDashboardGuru() {
+
+  const callbackName =
+    "hasilDashboardGuru_" + Date.now();
+
+  window[callbackName] = function(response) {
+
+    const script =
+      document.getElementById(callbackName);
+
+    if (script) {
+      script.remove();
+    }
+
+    delete window[callbackName];
+
+    if (!response.success) {
+      console.log(
+        "Gagal mengambil dashboard:",
+        response.message
+      );
+      return;
+    }
+
+    const statistik = response.statistik;
+
+    const angkaHadir =
+      document.getElementById("angkaHadir");
+
+    const angkaTerlambat =
+      document.getElementById("angkaTerlambat");
+
+    const angkaIzin =
+      document.getElementById("angkaIzin");
+
+    const angkaSakit =
+      document.getElementById("angkaSakit");
+
+    const angkaAlpa =
+      document.getElementById("angkaAlpa");
+
+
+    if (angkaHadir)
+      angkaHadir.textContent = statistik.hadir;
+
+    if (angkaTerlambat)
+      angkaTerlambat.textContent = statistik.terlambat;
+
+    if (angkaIzin)
+      angkaIzin.textContent = statistik.izin;
+
+    if (angkaSakit)
+      angkaSakit.textContent = statistik.sakit;
+
+    if (angkaAlpa)
+      angkaAlpa.textContent = statistik.alpa;
+  };
+
+
+  const script =
+    document.createElement("script");
+
+  script.id = callbackName;
+
+  script.src =
+    URL_APPS_SCRIPT +
+    "?action=dashboardGuru" +
+    "&callback=" +
+    callbackName;
+
+  script.onerror = function() {
+
+    console.log(
+      "Tidak dapat mengambil data dashboard."
+    );
+
+    delete window[callbackName];
+
+    script.remove();
+  };
+
+
+  document.body.appendChild(script);
 }
   </script>
 
