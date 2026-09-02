@@ -436,6 +436,7 @@
 
   const hasil = document.getElementById("hasil");
   const akun = data.akun;
+  window.akunGuru = akun;
 
   hasil.innerHTML = `
 
@@ -514,10 +515,13 @@
 
       <div class="menu-grid">
 
-        <button class="menu-button">
-          📋
-          <span>Absensi Hari Ini</span>
-        </button>
+        <button
+  class="menu-button"
+  onclick="tampilkanAbsensiHariIni()"
+>
+  📋
+  <span>Absensi Hari Ini</span>
+</button>
 
         <button class="menu-button">
           📅
@@ -635,6 +639,313 @@
 
 
   document.body.appendChild(script);
+}
+    // ==========================================
+// ABSENSI HARI INI
+// ==========================================
+
+function tampilkanAbsensiHariIni() {
+
+  const hasil =
+    document.getElementById("hasil");
+
+  hasil.innerHTML = `
+
+    <div class="dashboard">
+
+      <div class="dashboard-title">
+        📋 Absensi Hari Ini
+      </div>
+
+      <div class="section-title">
+        Pilih Kelas
+      </div>
+
+      <select
+        id="pilihKelas"
+        onchange="ambilAbsensiHariIni()"
+        style="
+          width:100%;
+          padding:14px;
+          border:1px solid #ddd;
+          border-radius:10px;
+          font-size:16px;
+          margin-bottom:20px;
+        "
+      >
+
+        <option value="">
+          -- Pilih Kelas --
+        </option>
+
+        <option value="7A">7A</option>
+        <option value="7B">7B</option>
+        <option value="7C">7C</option>
+        <option value="7D">7D</option>
+        <option value="7E">7E</option>
+        <option value="7F">7F</option>
+        <option value="7G">7G</option>
+        <option value="7H">7H</option>
+        <option value="7I">7I</option>
+        <option value="7J">7J</option>
+        <option value="7K">7K</option>
+
+        <option value="8A">8A</option>
+        <option value="8B">8B</option>
+        <option value="8C">8C</option>
+        <option value="8D">8D</option>
+        <option value="8E">8E</option>
+        <option value="8F">8F</option>
+        <option value="8G">8G</option>
+        <option value="8H">8H</option>
+        <option value="8I">8I</option>
+
+        <option value="9A">9A</option>
+        <option value="9B">9B</option>
+        <option value="9C">9C</option>
+        <option value="9D">9D</option>
+        <option value="9E">9E</option>
+        <option value="9F">9F</option>
+        <option value="9G">9G</option>
+        <option value="9H">9H</option>
+        <option value="9I">9I</option>
+        <option value="9J">9J</option>
+        <option value="9K">9K</option>
+
+      </select>
+
+      <div id="hasilAbsensiHariIni">
+        Silakan pilih kelas.
+      </div>
+
+      <button
+        onclick="tampilkanDashboardAwal({
+          akun: window.akunGuru
+        })"
+        style="
+          margin-top:20px;
+          background:#757575;
+        "
+      >
+        ← Kembali ke Dashboard
+      </button>
+
+    </div>
+
+  `;
+}
+    function ambilAbsensiHariIni() {
+
+  const kelas =
+    document.getElementById("pilihKelas").value;
+
+  const tempat =
+    document.getElementById(
+      "hasilAbsensiHariIni"
+    );
+
+  if (!kelas) {
+
+    tempat.innerHTML =
+      "Silakan pilih kelas.";
+
+    return;
+  }
+
+  tempat.innerHTML =
+    "⏳ Mengambil data absensi...";
+
+
+  const callbackName =
+    "hasilAbsensiHariIni_" + Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      const script =
+        document.getElementById(callbackName);
+
+      if (script) {
+        script.remove();
+      }
+
+      delete window[callbackName];
+
+
+      if (!response.success) {
+
+        tempat.innerHTML =
+          "❌ " +
+          (response.message ||
+           "Gagal mengambil data.");
+
+        return;
+      }
+
+
+      if (response.data.length === 0) {
+
+        tempat.innerHTML = `
+          <div style="
+            background:#f5f5f5;
+            padding:20px;
+            border-radius:12px;
+            text-align:center;
+          ">
+            Belum ada data absensi untuk kelas
+            <strong>${kelas}</strong>
+            hari ini.
+          </div>
+        `;
+
+        return;
+      }
+
+
+      let html = `
+
+        <div style="
+          overflow-x:auto;
+        ">
+
+          <table style="
+            width:100%;
+            border-collapse:collapse;
+            font-size:13px;
+          ">
+
+            <thead>
+
+              <tr style="
+                background:#e8f5e9;
+              ">
+
+                <th style="padding:10px;">
+                  No
+                </th>
+
+                <th style="padding:10px;">
+                  Nama Siswa
+                </th>
+
+                <th style="padding:10px;">
+                  Jam
+                </th>
+
+                <th style="padding:10px;">
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+      `;
+
+
+      response.data.forEach(
+        function(item, index) {
+
+          html += `
+
+            <tr>
+
+              <td style="
+                padding:10px;
+                text-align:center;
+                border-bottom:1px solid #eee;
+              ">
+                ${index + 1}
+              </td>
+
+              <td style="
+                padding:10px;
+                border-bottom:1px solid #eee;
+              ">
+                ${item.namaSiswa}
+              </td>
+
+              <td style="
+                padding:10px;
+                text-align:center;
+                border-bottom:1px solid #eee;
+              ">
+                ${item.jam}
+              </td>
+
+              <td style="
+                padding:10px;
+                text-align:center;
+                border-bottom:1px solid #eee;
+              ">
+                ${item.status}
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      );
+
+
+      html += `
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div style="
+          margin-top:12px;
+          font-size:13px;
+          color:#777;
+          text-align:center;
+        ">
+          ${response.jumlah} siswa sudah melakukan
+          absensi hari ini.
+        </div>
+
+      `;
+
+
+      tempat.innerHTML = html;
+
+    };
+
+
+  const script =
+    document.createElement("script");
+
+  script.id = callbackName;
+
+  script.src =
+    URL_APPS_SCRIPT +
+    "?action=absensiHariIni" +
+    "&kelas=" +
+    encodeURIComponent(kelas) +
+    "&callback=" +
+    callbackName;
+
+
+  script.onerror =
+    function() {
+
+      tempat.innerHTML =
+        "❌ Tidak dapat terhubung ke server.";
+
+      delete window[callbackName];
+
+      script.remove();
+
+    };
+
+
+  document.body.appendChild(script);
+
 }
   </script>
 
