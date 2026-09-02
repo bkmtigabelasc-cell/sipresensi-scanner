@@ -127,6 +127,124 @@
       font-size: 12px;
       color: #888;
     }
+        /* ================================
+       DASHBOARD GURU
+       ================================ */
+
+    .dashboard {
+      text-align: left;
+    }
+
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #e8f5e9;
+      padding: 18px;
+      border-radius: 16px;
+      margin-bottom: 22px;
+    }
+
+    .dashboard-icon {
+      font-size: 38px;
+    }
+
+    .welcome {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .guru-name {
+      font-size: 17px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-top: 3px;
+    }
+
+    .guru-role {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .dashboard-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 18px;
+      color: #333;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: bold;
+      margin: 18px 0 10px;
+      color: #555;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .stat-card {
+      background: #f8f8f8;
+      border-radius: 14px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .stat-icon {
+      font-size: 22px;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #777;
+      margin-top: 3px;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .menu-button {
+      background: #f1f8f2;
+      color: #2e7d32;
+      border: 1px solid #dcebdd;
+      padding: 16px 10px;
+      border-radius: 12px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .menu-button span {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 7px;
+    }
+
+    .menu-button:hover {
+      background: #e8f5e9;
+    }
+
+    .logout-button {
+      margin-top: 20px;
+      background: #757575;
+    }
+
+    .logout-button:hover {
+      background: #555;
+    }
   </style>
 
 </head>
@@ -135,7 +253,7 @@
 
   <div class="container">
 
-```
+
 <div class="card">
 
   <div class="logo">👩‍🏫</div>
@@ -179,7 +297,6 @@
 <div class="footer">
   SIPRESENSI 13 • MTsN 13 Ciamis
 </div>
-```
 
   </div>
 
@@ -315,45 +432,124 @@
     // TAMPILKAN HASIL LOGIN
     // ==========================================
 
-    function tampilkanDashboardAwal(data) {
+   function tampilkanDashboardAwal(data) {
 
-      const hasil =
-        document.getElementById("hasil");
+  const hasil = document.getElementById("hasil");
+  const akun = data.akun;
 
-      const akun =
-        data.akun;
+  hasil.innerHTML = `
 
+    <div class="dashboard">
 
-      hasil.innerHTML = `
+      <!-- HEADER DASHBOARD -->
+      <div class="dashboard-header">
+        <div class="dashboard-icon">👋</div>
 
-        <div class="success">
-
-          <div style="font-size:30px;">
-            ✓
+        <div>
+          <div class="welcome">
+            Selamat Datang
           </div>
 
-          <div style="font-weight:bold;">
-            LOGIN BERHASIL
-          </div>
-
-          <div class="nama">
+          <div class="guru-name">
             ${akun.namaGuru}
           </div>
 
-          <div class="role">
+          <div class="guru-role">
             ${akun.role}
           </div>
+        </div>
+      </div>
 
-          <div style="margin-top:10px;font-size:13px;">
-            ID Akun: ${akun.idAkunGuru}
-          </div>
 
+      <!-- JUDUL -->
+      <div class="dashboard-title">
+        📊 Dashboard Guru
+      </div>
+
+
+      <!-- KARTU ABSENSI -->
+      <div class="section-title">
+        Absensi Hari Ini
+      </div>
+
+      <div class="stat-grid">
+
+        <div class="stat-card hadir">
+          <div class="stat-icon">🟢</div>
+          <div class="stat-number">0</div>
+          <div class="stat-label">Hadir</div>
         </div>
 
-      `;
+        <div class="stat-card terlambat">
+          <div class="stat-icon">🟡</div>
+          <div class="stat-number">0</div>
+          <div class="stat-label">Terlambat</div>
+        </div>
 
-    }
+        <div class="stat-card izin">
+          <div class="stat-icon">🔵</div>
+          <div class="stat-number">0</div>
+          <div class="stat-label">Izin</div>
+        </div>
 
+        <div class="stat-card sakit">
+          <div class="stat-icon">🟣</div>
+          <div class="stat-number">0</div>
+          <div class="stat-label">Sakit</div>
+        </div>
+
+        <div class="stat-card alpa">
+          <div class="stat-icon">🔴</div>
+          <div class="stat-number">0</div>
+          <div class="stat-label">Alpa</div>
+        </div>
+
+      </div>
+
+
+      <!-- MENU -->
+      <div class="section-title">
+        Menu Guru
+      </div>
+
+      <div class="menu-grid">
+
+        <button class="menu-button">
+          📋
+          <span>Absensi Hari Ini</span>
+        </button>
+
+        <button class="menu-button">
+          📅
+          <span>Rekap Bulanan</span>
+        </button>
+
+        <button class="menu-button">
+          👨‍🎓
+          <span>Data Siswa</span>
+        </button>
+
+        <button class="menu-button">
+          📊
+          <span>Statistik</span>
+        </button>
+
+      </div>
+
+
+      <!-- KELUAR -->
+      <button
+        class="logout-button"
+        onclick="location.reload()"
+      >
+        🚪 Keluar
+      </button>
+
+    </div>
+
+  `;
+
+}
   </script>
 
 </body>
