@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>SIPRESENSI 13 - Portal Guru</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5faf6;
+      color: #333;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      margin-top: 70px;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0;
+      color: #1b5e20;
+      font-size: 25px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin: 8px 0 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 2px rgba(46,125,50,.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2e7d32;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block;
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .error {
+      display: block;
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    .loading {
+      display: block;
+      background: #fff8e1;
+      color: #795548;
+    }
+
+    .result-card {
+      margin-top: 20px;
+      padding: 18px;
+      background: #f8fff9;
+      border: 1px solid #dcefe0;
+      border-radius: 12px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 20px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="login-card">
+
+```
+<div class="logo">
+  👨‍🏫
+</div>
+
+<h1>
+  Portal Guru
+</h1>
+
+<div class="subtitle">
+  SIPRESENSI 13 — MTsN 13 Ciamis
+</div>
+
+
+<div class="form-group">
+
+  <label for="nip">
+    NIP
+  </label>
+
+  <input
+    type="text"
+    id="nip"
+    placeholder="Masukkan NIP"
+    autocomplete="username"
+  >
+
+</div>
+
+
+<div class="form-group">
+
+  <label for="password">
+    Password
+  </label>
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Masukkan password"
+    autocomplete="current-password"
+  >
+
+</div>
+
+
+<button
+  id="btnLogin"
+  onclick="loginGuru()"
+>
+  🔐 Masuk
+</button>
+
+
+<div
+  id="message"
+  class="message"
+></div>
+
+
+<div
+  id="hasilGuru"
+  style="display:none;"
+></div>
+
+
+<div class="footer">
+  SIPRESENSI 13
+</div>
+```
+
+  </div>
+
+</div>
+
+<script>
+
+/*
+====================================================
+ KONFIGURASI APPS SCRIPT
+====================================================
+*/
+
+const URL_APPS_SCRIPT =
+  "https://script.google.com/macros/s/AKfycbzaCM6KNPCNn7F3APcoUrZgMV2leVrewa62lJSIJCGF4ZpOJc0sWw1AXCpdddeBZmjKSA/exec";
+
+
+/*
+====================================================
+ LOGIN GURU
+====================================================
+*/
+
+function loginGuru() {
+
+  const nip =
+    document.getElementById("nip").value.trim();
+
+  const password =
+    document.getElementById("password").value.trim();
+
+  const message =
+    document.getElementById("message");
+
+  const button =
+    document.getElementById("btnLogin");
+
+
+  /*
+  ----------------------------------------------
+  VALIDASI
+  ----------------------------------------------
+  */
+
+  if (!nip) {
+
+    tampilkanPesan(
+      "NIP harus diisi.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (!password) {
+
+    tampilkanPesan(
+      "Password harus diisi.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  /*
+  ----------------------------------------------
+  TAMPILKAN LOADING
+  ----------------------------------------------
+  */
+
+  tampilkanPesan(
+    "⏳ Sedang memeriksa akun...",
+    "loading"
+  );
+
+  button.disabled = true;
+
+
+  /*
+  ----------------------------------------------
+  BUAT CALLBACK JSONP
+  ----------------------------------------------
+  */
+
+  const callbackName =
+    "loginGuruCallback_" + Date.now();
+
+
+  window[callbackName] =
+    function(response) {
+
+      /*
+      Hapus script JSONP
+      */
+
+      const script =
+        document.getElementById(callbackName);
+
+      if (script) {
+        script.remove();
+      }
+
+
+      delete window[callbackName];
+
+
+      button.disabled = false;
+
+
+      /*
+      ------------------------------------------
+      CEK RESPONSE
+      ------------------------------------------
+      */
+
+      console.log(
+        "Response login guru:",
+        response
+      );
+
+
+      if (!response) {
+
+        tampilkanPesan(
+          "Server tidak mengirim response.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      /*
+      ------------------------------------------
+      LOGIN BERHASIL
+      ------------------------------------------
+      */
+
+      if (response.success === true) {
+
+        tampilkanPesan(
+          "✅ Login berhasil.",
+          "success"
+        );
+
+
+        tampilkanDataGuru(
+          response
+        );
+
+
+        return;
+      }
+
+
+      /*
+      ------------------------------------------
+      LOGIN GAGAL
+      ------------------------------------------
+      */
+
+      tampilkanPesan(
+        "❌ " +
+        (
+          response.message ||
+          "NIP atau password salah."
+        ),
+        "error"
+      );
+
+    };
+
+
+  /*
+  ----------------------------------------------
+  BUAT SCRIPT JSONP
+  ----------------------------------------------
+  */
+
+  const script =
+    document.createElement("script");
+
+
+  script.id =
+    callbackName;
+
+
+  script.src =
+    URL_APPS_SCRIPT +
+    "?action=loginGuru" +
+    "&nip=" +
+    encodeURIComponent(nip) +
+    "&password=" +
+    encodeURIComponent(password) +
+    "&callback=" +
+    encodeURIComponent(callbackName);
+
+
+  /*
+  ----------------------------------------------
+  JIKA GAGAL TERHUBUNG
+  ----------------------------------------------
+  */
+
+  script.onerror =
+    function() {
+
+      button.disabled = false;
+
+
+      tampilkanPesan(
+        "❌ Tidak dapat terhubung ke Apps Script.",
+        "error"
+      );
+
+
+      delete window[callbackName];
+
+      script.remove();
+
+    };
+
+
+  /*
+  ----------------------------------------------
+  KIRIM REQUEST
+  ----------------------------------------------
+  */
+
+  document.body.appendChild(script);
+
+}
+
+
+/*
+====================================================
+ TAMPILKAN PESAN
+====================================================
+*/
+
+function tampilkanPesan(
+  teks,
+  tipe
+) {
+
+  const message =
+    document.getElementById("message");
+
+
+  message.textContent =
+    teks;
+
+
+  message.className =
+    "message " + tipe;
+
+}
+
+
+/*
+====================================================
+ TAMPILKAN DATA GURU
+====================================================
+*/
+
+function tampilkanDataGuru(
+  response
+) {
+
+  const hasil =
+    document.getElementById("hasilGuru");
+
+
+  const akun =
+    response.akun;
+
+
+  if (!akun) {
+
+    hasil.style.display =
+      "block";
+
+    hasil.innerHTML =
+      "<strong>Login berhasil.</strong><br>" +
+      "Namun data akun tidak ditemukan dalam response.";
+
+    return;
+  }
+
+
+  /*
+  Simpan sementara
+  */
+
+  window.akunGuru =
+    akun;
+
+
+  hasil.style.display =
+    "block";
+
+
+  hasil.innerHTML = `
+
+    <div class="result-card">
+
+      <strong>Login berhasil ✅</strong>
+
+      <br><br>
+
+      <strong>Nama:</strong><br>
+      ${escapeHtml(
+        akun.namaGuru || "-"
+      )}
+
+      <br>
+
+      <strong>NIP:</strong><br>
+      ${escapeHtml(
+        akun.nip || "-"
+      )}
+
+      <br>
+
+      <strong>Role:</strong><br>
+      ${escapeHtml(
+        akun.role || "-"
+      )}
+
+      <br>
+
+      <strong>Status Akun:</strong><br>
+      ${escapeHtml(
+        akun.statusAkun || "-"
+      )}
+
+    </div>
+
+  `;
+
+}
+
+
+/*
+====================================================
+ ESCAPE HTML
+====================================================
+*/
+
+function escapeHtml(
+  text
+) {
+
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+</body>
+
+</html>
