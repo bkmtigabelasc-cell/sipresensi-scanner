@@ -1,388 +1,1001 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>SIPRESENSI 13 - Portal Guru</title>
+<title>Portal Guru - MTsN 13 Ciamis</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
 
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f6f9;
-      color: #333;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    /* =========================
-       LOGIN
-    ========================== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #263238;
+}
 
-    .login-page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+/* =========================================
+   LOGIN
+========================================= */
 
-    .login-box {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    }
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
 
-    .login-title {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 18px;
+  padding: 35px 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.10);
+}
 
-    .login-title h1 {
-      color: #176b3a;
-      font-size: 25px;
-      margin-bottom: 8px;
-    }
+.logo {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #0d6b45;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+}
 
-    .login-title p {
-      color: #777;
-      font-size: 14px;
-    }
+.login-title {
+  text-align: center;
+  margin-bottom: 5px;
+  color: #0d6b45;
+}
 
-    .form-group {
-      margin-bottom: 18px;
-    }
+.login-subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 30px;
+}
 
-    .form-group label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 7px;
-      font-size: 14px;
-    }
+.form-group {
+  margin-bottom: 18px;
+}
 
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font-size: 15px;
-    }
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: bold;
+  font-size: 14px;
+}
 
-    .btn-login {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 7px;
-      background: #176b3a;
-      color: white;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.form-group input,
+select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d4d8dc;
+  border-radius: 9px;
+  font-size: 15px;
+  outline: none;
+}
 
-    .btn-login:disabled {
-      background: #999;
-    }
+.form-group input:focus,
+select:focus {
+  border-color: #0d6b45;
+}
 
-    #pesanLogin {
-      text-align: center;
-      margin-top: 15px;
-      min-height: 20px;
-      font-size: 14px;
-    }
+.btn {
+  border: none;
+  border-radius: 9px;
+  padding: 13px 18px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+}
 
-    /* =========================
-       DASHBOARD
-    ========================== */
+.btn-primary {
+  width: 100%;
+  background: #0d6b45;
+  color: white;
+}
 
-    #dashboardPage {
-      display: none;
-      min-height: 100vh;
-    }
+.btn-primary:hover {
+  background: #095437;
+}
 
-    .header {
-      background: #176b3a;
-      color: white;
-      padding: 18px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.message {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  display: none;
+  font-size: 14px;
+}
 
-    .header h1 {
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
+.message.error {
+  display: block;
+  background: #fde8e8;
+  color: #b42318;
+}
 
-    .header p {
-      font-size: 13px;
-      opacity: 0.9;
-    }
+.message.success {
+  display: block;
+  background: #e8f7ee;
+  color: #176b3a;
+}
 
-    .btn-logout {
-      background: transparent;
-      border: 1px solid white;
-      color: white;
-      padding: 9px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
 
-    .container {
-      max-width: 1000px;
-      margin: 25px auto;
-      padding: 0 20px;
-    }
+/* =========================================
+   APP
+========================================= */
 
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 22px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    }
+.app {
+  display: none;
+  min-height: 100vh;
+}
 
-    .card h2 {
-      color: #176b3a;
-      font-size: 18px;
-      margin-bottom: 18px;
-    }
+.header {
+  background: #0d6b45;
+  color: white;
+  padding: 18px 25px;
+}
 
-    /* IDENTITAS */
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
 
-    .profile-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
+.header-title {
+  margin: 0;
+  font-size: 22px;
+}
 
-    .profile-item {
-      background: #f7f9fa;
-      padding: 13px;
-      border-radius: 7px;
-    }
+.header-subtitle {
+  margin: 5px 0 0;
+  opacity: .9;
+  font-size: 14px;
+}
 
-    .profile-item small {
-      display: block;
-      color: #777;
-      margin-bottom: 5px;
-    }
+.user-box {
+  text-align: right;
+}
 
-    .profile-item strong {
-      font-size: 14px;
-    }
+.user-name {
+  font-weight: bold;
+}
 
-    /* STATISTIK */
+.user-role {
+  font-size: 13px;
+  opacity: .85;
+}
 
-    .statistik-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-    }
+.btn-logout {
+  margin-top: 6px;
+  padding: 7px 12px;
+  background: rgba(255,255,255,.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,.3);
+  border-radius: 7px;
+  cursor: pointer;
+}
 
-    .statistik {
-      background: #f7f9fa;
-      padding: 18px 10px;
-      text-align: center;
-      border-radius: 8px;
-    }
 
-    .statistik .angka {
-      font-size: 25px;
-      font-weight: bold;
-      color: #176b3a;
-      margin-bottom: 5px;
-    }
+/* =========================================
+   NAVIGATION
+========================================= */
 
-    .statistik .label {
-      font-size: 12px;
-      color: #666;
-    }
+.nav {
+  background: white;
+  border-bottom: 1px solid #ddd;
+}
 
-    #pesanDashboard {
-      margin-top: 15px;
-      padding: 12px;
-      background: #f5f5f5;
-      border-radius: 7px;
-      font-size: 14px;
-    }
+.nav-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  overflow-x: auto;
+}
 
-    @media (max-width: 700px) {
+.nav button {
+  background: none;
+  border: none;
+  padding: 15px 18px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #666;
+  white-space: nowrap;
+}
 
-      .statistik-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+.nav button.active {
+  color: #0d6b45;
+  border-bottom: 3px solid #0d6b45;
+}
 
-      .profile-grid {
-        grid-template-columns: 1fr;
-      }
 
-      .header {
-        padding: 15px;
-      }
+/* =========================================
+   CONTENT
+========================================= */
 
-      .header h1 {
-        font-size: 18px;
-      }
-    }
-  </style>
+.content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 25px 18px 50px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.page-title {
+  margin: 0 0 5px;
+  font-size: 25px;
+}
+
+.page-description {
+  margin: 0 0 25px;
+  color: #777;
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.welcome-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 13px;
+  padding: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.stat-label {
+  color: #777;
+  font-size: 13px;
+}
+
+.stat-number {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 7px;
+  color: #0d6b45;
+}
+
+
+/* =========================================
+   ABSENSI
+========================================= */
+
+.control-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.control-row {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.control-item {
+  min-width: 180px;
+}
+
+.control-item label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.btn-refresh {
+  background: #0d6b45;
+  color: white;
+}
+
+.btn-refresh:hover {
+  background: #095437;
+}
+
+.rekap-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.rekap-card {
+  background: white;
+  padding: 17px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.rekap-card .label {
+  font-size: 12px;
+  color: #777;
+}
+
+.rekap-card .number {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.table-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.table-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 13px 15px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f8faf9;
+  color: #555;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-HADIR {
+  background: #e7f6ed;
+  color: #177245;
+}
+
+.status-TERLAMBAT {
+  background: #fff4d6;
+  color: #9a6700;
+}
+
+.status-IZIN {
+  background: #e8f0ff;
+  color: #315ea8;
+}
+
+.status-SAKIT {
+  background: #f0e9ff;
+  color: #6941a5;
+}
+
+.status-ALPA,
+.status-BELUM-ABSEN {
+  background: #fde8e8;
+  color: #b42318;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+}
+
+.empty {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+}
+
+
+/* =========================================
+   PENGEMBANGAN
+========================================= */
+
+.development {
+  background: white;
+  padding: 40px;
+  text-align: center;
+  border-radius: 15px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.development-icon {
+  font-size: 45px;
+  margin-bottom: 15px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rekap-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .header-inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .user-box {
+    text-align: left;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rekap-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .content {
+    padding: 18px 12px 40px;
+  }
+
+  .page-title {
+    font-size: 21px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
 
-  <!-- ==================================
-       LOGIN
-  =================================== -->
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
-  <div id="loginPage" class="login-page">
+<div id="loginPage" class="login-page">
 
-    <div class="login-box">
+  <div class="login-card">
 
-      <div class="login-title">
-        <h1>SIPRESENSI 13</h1>
-        <p>Portal Guru</p>
-      </div>
+    <div class="logo">
+      G
+    </div>
 
-      <div class="form-group">
+    <h2 class="login-title">
+      PORTAL GURU
+    </h2>
 
-        <label for="nip">
-          NIP
-        </label>
-
-        <input
-          type="text"
-          id="nip"
-          placeholder="Masukkan NIP"
-        >
-
-      </div>
+    <div class="login-subtitle">
+      MTsN 13 Ciamis
+    </div>
 
 
-      <div class="form-group">
+    <div class="form-group">
 
-        <label for="password">
-          Password
-        </label>
+      <label for="nip">
+        NIP
+      </label>
 
-        <input
-          type="password"
-          id="password"
-          placeholder="Masukkan password"
-        >
-
-      </div>
-
-
-      <button
-        id="btnLogin"
-        class="btn-login"
-        onclick="loginGuru()"
+      <input
+        type="text"
+        id="nip"
+        placeholder="Masukkan NIP"
+        autocomplete="username"
       >
-        LOGIN
-      </button>
-
-
-      <div id="pesanLogin"></div>
 
     </div>
 
+
+    <div class="form-group">
+
+      <label for="password">
+        Password
+      </label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Masukkan password"
+        autocomplete="current-password"
+      >
+
+    </div>
+
+
+    <button
+      class="btn btn-primary"
+      onclick="loginGuru()"
+      id="btnLogin"
+    >
+      Masuk
+    </button>
+
+
+    <div
+      id="loginMessage"
+      class="message"
+    ></div>
+
   </div>
 
+</div>
 
 
-  <!-- ==================================
-       DASHBOARD
-  =================================== -->
 
-  <div id="dashboardPage">
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
 
-    <div class="header">
+<div id="app" class="app">
+
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="header-inner">
 
       <div>
-        <h1>SIPRESENSI 13</h1>
-        <p>Portal Guru</p>
+
+        <h1 class="header-title">
+          Portal Guru
+        </h1>
+
+        <p class="header-subtitle">
+          MTsN 13 Ciamis
+        </p>
+
       </div>
 
+
+      <div class="user-box">
+
+        <div
+          class="user-name"
+          id="userName"
+        >
+          -
+        </div>
+
+        <div
+          class="user-role"
+          id="userRole"
+        >
+          -
+        </div>
+
+        <button
+          class="btn-logout"
+          onclick="logoutGuru()"
+        >
+          Keluar
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- NAVIGATION -->
+
+  <nav class="nav">
+
+    <div class="nav-inner">
+
       <button
-        class="btn-logout"
-        onclick="logoutGuru()"
+        class="active"
+        onclick="showPage('dashboard', this)"
       >
-        Logout
+        Dashboard
+      </button>
+
+      <button
+        onclick="showPage('absensi', this)"
+      >
+        Absensi Hari Ini
+      </button>
+
+      <button
+        onclick="showPage('rekap', this)"
+      >
+        Rekap Bulanan
+      </button>
+
+      <button
+        onclick="showPage('statistik', this)"
+      >
+        Statistik
       </button>
 
     </div>
 
+  </nav>
 
-    <div class="container">
 
 
-      <!-- IDENTITAS GURU -->
+  <!-- CONTENT -->
 
-      <div class="card">
+  <main class="content">
 
-        <h2>
-          Identitas Guru
-        </h2>
 
-        <div class="profile-grid">
+    <!-- =================================================
+         DASHBOARD
+    ================================================= -->
 
-          <div class="profile-item">
+    <section
+      id="page-dashboard"
+      class="page active"
+    >
 
-            <small>
-              Nama Guru
-            </small>
+      <h2 class="page-title">
+        Dashboard
+      </h2>
 
-            <strong id="namaGuru">
-              -
-            </strong>
+      <p class="page-description">
+        Selamat datang di Portal Guru MTsN 13 Ciamis.
+      </p>
+
+
+      <div class="welcome-card">
+
+        <h3>
+          Selamat datang,
+          <span id="welcomeName">Guru</span>!
+        </h3>
+
+        <p>
+          Gunakan menu di atas untuk melihat data
+          kehadiran peserta didik.
+        </p>
+
+      </div>
+
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Hadir
+          </div>
+
+          <div
+            class="stat-number"
+            id="dashboardHadir"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Terlambat
+          </div>
+
+          <div
+            class="stat-number"
+            id="dashboardTerlambat"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Izin
+          </div>
+
+          <div
+            class="stat-number"
+            id="dashboardIzin"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Sakit
+          </div>
+
+          <div
+            class="stat-number"
+            id="dashboardSakit"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+            Alpa
+          </div>
+
+          <div
+            class="stat-number"
+            id="dashboardAlpa"
+          >
+            0
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ABSENSI HARI INI
+    ================================================= -->
+
+    <section
+      id="page-absensi"
+      class="page"
+    >
+
+      <h2 class="page-title">
+        Absensi Hari Ini
+      </h2>
+
+      <p class="page-description">
+        Lihat kehadiran peserta didik berdasarkan kelas.
+      </p>
+
+
+      <!-- CONTROL -->
+
+      <div class="control-card">
+
+        <div class="control-row">
+
+          <div class="control-item">
+
+            <label for="kelasSelect">
+              Pilih Kelas
+            </label>
+
+            <select id="kelasSelect">
+
+              <option value="">
+                -- Pilih Kelas --
+              </option>
+
+              <option value="7A">
+                7A
+              </option>
+
+              <option value="7B">
+                7B
+              </option>
+
+              <option value="7C">
+                7C
+              </option>
+
+              <option value="7D">
+                7D
+              </option>
+
+              <option value="8A">
+                8A
+              </option>
+
+              <option value="8B">
+                8B
+              </option>
+
+              <option value="8C">
+                8C
+              </option>
+
+              <option value="8D">
+                8D
+              </option>
+
+              <option value="9A">
+                9A
+              </option>
+
+              <option value="9B">
+                9B
+              </option>
+
+              <option value="9C">
+                9C
+              </option>
+
+              <option value="9D">
+                9D
+              </option>
+
+            </select>
 
           </div>
 
 
-          <div class="profile-item">
+          <button
+            class="btn btn-refresh"
+            onclick="loadAbsensi()"
+          >
+            Tampilkan
+          </button>
 
-            <small>
-              NIP
-            </small>
+        </div>
 
-            <strong id="nipGuru">
-              -
-            </strong>
+      </div>
 
+
+      <!-- REKAP -->
+
+      <div
+        id="rekapAbsensi"
+        class="rekap-grid"
+      >
+
+        <div class="rekap-card">
+
+          <div class="label">
+            Jumlah Siswa
           </div>
 
-
-          <div class="profile-item">
-
-            <small>
-              Role
-            </small>
-
-            <strong id="roleGuru">
-              -
-            </strong>
-
+          <div
+            class="number"
+            id="jumlahSiswa"
+          >
+            0
           </div>
 
+        </div>
 
-          <div class="profile-item">
 
-            <small>
-              Status Akun
-            </small>
+        <div class="rekap-card">
 
-            <strong id="statusGuru">
-              -
-            </strong>
+          <div class="label">
+            Hadir
+          </div>
 
+          <div
+            class="number"
+            id="jumlahHadir"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="rekap-card">
+
+          <div class="label">
+            Terlambat
+          </div>
+
+          <div
+            class="number"
+            id="jumlahTerlambat"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="rekap-card">
+
+          <div class="label">
+            Izin
+          </div>
+
+          <div
+            class="number"
+            id="jumlahIzin"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="rekap-card">
+
+          <div class="label">
+            Sakit
+          </div>
+
+          <div
+            class="number"
+            id="jumlahSakit"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="rekap-card">
+
+          <div class="label">
+            Belum Absen
+          </div>
+
+          <div
+            class="number"
+            id="jumlahBelumAbsen"
+          >
+            0
           </div>
 
         </div>
@@ -391,546 +1004,1131 @@
 
 
 
-      <!-- STATISTIK -->
+      <!-- TABLE -->
 
-      <div class="card">
+      <div class="table-card">
 
-        <h2>
-          Statistik Kehadiran
-        </h2>
+        <div class="table-header">
 
+          Daftar Siswa
 
-        <div class="statistik-grid">
-
-          <div class="statistik">
-
-            <div
-              id="statHadir"
-              class="angka"
-            >
-              0
-            </div>
-
-            <div class="label">
-              Hadir
-            </div>
-
-          </div>
-
-
-          <div class="statistik">
-
-            <div
-              id="statTerlambat"
-              class="angka"
-            >
-              0
-            </div>
-
-            <div class="label">
-              Terlambat
-            </div>
-
-          </div>
-
-
-          <div class="statistik">
-
-            <div
-              id="statIzin"
-              class="angka"
-            >
-              0
-            </div>
-
-            <div class="label">
-              Izin
-            </div>
-
-          </div>
-
-
-          <div class="statistik">
-
-            <div
-              id="statSakit"
-              class="angka"
-            >
-              0
-            </div>
-
-            <div class="label">
-              Sakit
-            </div>
-
-          </div>
-
-
-          <div class="statistik">
-
-            <div
-              id="statAlpa"
-              class="angka"
-            >
-              0
-            </div>
-
-            <div class="label">
-              Alpa
-            </div>
-
-          </div>
+          <span
+            id="tanggalAbsensi"
+            style="font-weight:normal;color:#777;"
+          >
+          </span>
 
         </div>
 
 
-        <div id="pesanDashboard">
-          Menunggu data dashboard...
+        <div
+          id="tableContainer"
+          class="table-wrapper"
+        >
+
+          <div class="empty">
+            Silakan pilih kelas terlebih dahulu.
+          </div>
+
         </div>
 
       </div>
 
+    </section>
 
-    </div>
 
-  </div>
 
+    <!-- =================================================
+         REKAP BULANAN
+    ================================================= -->
 
+    <section
+      id="page-rekap"
+      class="page"
+    >
 
-  <script>
+      <h2 class="page-title">
+        Rekap Bulanan
+      </h2>
 
-    /* ==================================
-       URL APPS SCRIPT
-    =================================== */
+      <p class="page-description">
+        Rekap kehadiran peserta didik per bulan.
+      </p>
 
-    const URL_APPS_SCRIPT =
-      "https://script.google.com/macros/s/AKfycbzaCM6KNPCNn7F3APcoUrZgMV2leVrewa62lJSIJCGF4ZpOJc0sWw1AXCpdddeBZmjKSA/exec";
 
+      <div class="development">
 
-    /* ==================================
-       DATA AKUN
-    =================================== */
+        <div class="development-icon">
+          📊
+        </div>
 
-    window.akunGuru = null;
+        <h3>
+          Fitur sedang dikembangkan
+        </h3>
 
+        <p>
+          Rekap bulanan akan kita bangun setelah
+          fitur Absensi Hari Ini selesai.
+        </p>
 
+      </div>
 
-    /* ==================================
-       LOGIN
-    =================================== */
+    </section>
 
-    function loginGuru() {
 
-      const nip =
-        document.getElementById("nip")
-          .value
-          .trim();
 
+    <!-- =================================================
+         STATISTIK
+    ================================================= -->
 
-      const password =
-        document.getElementById("password")
-          .value
-          .trim();
+    <section
+      id="page-statistik"
+      class="page"
+    >
 
+      <h2 class="page-title">
+        Statistik
+      </h2>
 
-      const pesan =
-        document.getElementById("pesanLogin");
+      <p class="page-description">
+        Analisis data kehadiran peserta didik.
+      </p>
 
 
-      const tombol =
-        document.getElementById("btnLogin");
+      <div class="development">
 
+        <div class="development-icon">
+          📈
+        </div>
 
-      if (!nip) {
+        <h3>
+          Fitur sedang dikembangkan
+        </h3>
 
-        pesan.style.color = "red";
+        <p>
+          Statistik kehadiran akan kita bangun
+          pada tahap berikutnya.
+        </p>
 
-        pesan.textContent =
-          "NIP wajib diisi.";
+      </div>
 
-        return;
-      }
+    </section>
 
 
-      if (!password) {
+  </main>
 
-        pesan.style.color = "red";
+</div>
 
-        pesan.textContent =
-          "Password wajib diisi.";
 
-        return;
-      }
 
+<script>
 
-      tombol.disabled = true;
+/* =====================================================
+   KONFIGURASI
+===================================================== */
 
-      tombol.textContent =
-        "MEMPROSES...";
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzaCM6KNPCNn7F3APcoUrZgMV2leVrewa62lJSIJCGF4ZpOJc0sWw1AXCpdddeBZmjKSA/exec";
 
 
-      pesan.style.color = "#555";
+/* =====================================================
+   DATA GURU
+===================================================== */
 
-      pesan.textContent =
-        "Memeriksa akun...";
+let akunGuru = null;
 
 
-      const callbackName =
-        "callbackLoginGuru_" +
-        Date.now();
+/* =====================================================
+   JSONP
+===================================================== */
 
+function callAPI(action, params = {}) {
 
-      window[callbackName] =
-        function(response) {
+  return new Promise(function(resolve, reject) {
 
-          console.log(
-            "Response login:",
-            response
-          );
+    const callbackName =
+      "guruCallback_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random() * 10000);
 
 
-          tombol.disabled = false;
+    const script =
+      document.createElement("script");
 
-          tombol.textContent =
-            "LOGIN";
 
+    const query =
+      new URLSearchParams({
 
-          if (!response) {
+        action: action,
 
-            pesan.style.color = "red";
+        callback: callbackName,
 
-            pesan.textContent =
-              "Tidak ada response dari server.";
+        ...params
 
-            delete window[callbackName];
+      });
 
-            return;
-          }
 
+    const url =
+      API_URL +
+      "?" +
+      query.toString();
 
-          if (!response.success) {
 
-            pesan.style.color = "red";
+    const timeout =
+      setTimeout(function() {
 
-            pesan.textContent =
-              response.message ||
-              "Login gagal.";
+        cleanup();
 
-            delete window[callbackName];
-
-            return;
-          }
-
-
-          /* LOGIN BERHASIL */
-
-          window.akunGuru =
-            response.akun;
-
-
-          pesan.style.color =
-            "green";
-
-          pesan.textContent =
-            "Login berhasil.";
-
-
-          tampilkanDashboard();
-
-
-          delete window[callbackName];
-
-        };
-
-
-      const script =
-        document.createElement("script");
-
-
-      script.src =
-        URL_APPS_SCRIPT +
-        "?action=loginGuru" +
-        "&nip=" +
-        encodeURIComponent(nip) +
-        "&password=" +
-        encodeURIComponent(password) +
-        "&callback=" +
-        callbackName;
-
-
-      script.onerror =
-        function() {
-
-          tombol.disabled = false;
-
-          tombol.textContent =
-            "LOGIN";
-
-          pesan.style.color =
-            "red";
-
-          pesan.textContent =
-            "Gagal terhubung ke server.";
-
-          delete window[callbackName];
-
-        };
-
-
-      document.body.appendChild(script);
-
-    }
-
-
-
-    /* ==================================
-       TAMPILKAN DASHBOARD
-    =================================== */
-
-    function tampilkanDashboard() {
-
-      const akun =
-        window.akunGuru;
-
-
-      if (!akun) {
-
-        console.error(
-          "Data akun tidak ditemukan."
+        reject(
+          new Error(
+            "Server tidak merespons."
+          )
         );
 
-        return;
-      }
+      }, 15000);
 
 
-      /* IDENTITAS */
+    window[callbackName] =
+      function(response) {
 
-      document.getElementById("namaGuru")
-        .textContent =
-        akun.namaGuru || "-";
+        clearTimeout(timeout);
 
+        cleanup();
 
-      document.getElementById("nipGuru")
-        .textContent =
-        akun.nip || "-";
+        resolve(response);
 
-
-      document.getElementById("roleGuru")
-        .textContent =
-        akun.role || "-";
+      };
 
 
-      document.getElementById("statusGuru")
-        .textContent =
-        akun.statusAkun || "-";
+    script.onerror =
+      function() {
 
+        clearTimeout(timeout);
 
-      /* TAMPILKAN DASHBOARD */
+        cleanup();
 
-      document.getElementById("loginPage")
-        .style.display =
-        "none";
-
-
-      document.getElementById("dashboardPage")
-        .style.display =
-        "block";
-
-
-      /* PANGGIL DATA DASHBOARD */
-
-      ambilDashboardGuru();
-
-    }
-
-
-
-    /* ==================================
-       AMBIL DASHBOARD GURU
-    =================================== */
-
-    function ambilDashboardGuru() {
-
-      const pesan =
-        document.getElementById(
-          "pesanDashboard"
+        reject(
+          new Error(
+            "Gagal menghubungi server."
+          )
         );
 
-
-      pesan.textContent =
-        "Mengambil data dashboard...";
+      };
 
 
-      const callbackName =
-        "callbackDashboardGuru_" +
-        Date.now();
+    script.src = url;
+
+    document.body.appendChild(script);
 
 
-      window[callbackName] =
-        function(response) {
+    function cleanup() {
 
-          console.log(
-            "Response dashboardGuru:",
-            response
-          );
+      delete window[callbackName];
 
-
-          if (!response) {
-
-            pesan.textContent =
-              "Tidak ada response dashboard.";
-
-            delete window[callbackName];
-
-            return;
-          }
-
-
-          if (!response.success) {
-
-            pesan.textContent =
-              response.message ||
-              "Gagal mengambil dashboard.";
-
-            delete window[callbackName];
-
-            return;
-          }
-
-
-          /* =========================
-             STATISTIK
-          ========================== */
-
-          const statistik =
-            response.statistik || {};
-
-
-          document.getElementById(
-            "statHadir"
-          ).textContent =
-            statistik.hadir || 0;
-
-
-          document.getElementById(
-            "statTerlambat"
-          ).textContent =
-            statistik.terlambat || 0;
-
-
-          document.getElementById(
-            "statIzin"
-          ).textContent =
-            statistik.izin || 0;
-
-
-          document.getElementById(
-            "statSakit"
-          ).textContent =
-            statistik.sakit || 0;
-
-
-          document.getElementById(
-            "statAlpa"
-          ).textContent =
-            statistik.alpa || 0;
-
-
-          pesan.textContent =
-            response.message ||
-            "Data dashboard berhasil diambil.";
-
-
-          delete window[callbackName];
-
-        };
-
-
-      const script =
-        document.createElement("script");
-
-
-      script.src =
-        URL_APPS_SCRIPT +
-        "?action=dashboardGuru" +
-        "&callback=" +
-        callbackName;
-
-
-      script.onerror =
-        function() {
-
-          pesan.textContent =
-            "Gagal terhubung ke dashboard.";
-
-          delete window[callbackName];
-
-        };
-
-
-      document.body.appendChild(script);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
 
     }
 
+  });
+
+}
 
 
-    /* ==================================
-       LOGOUT
-    =================================== */
+/* =====================================================
+   LOGIN GURU
+===================================================== */
 
-    function logoutGuru() {
+async function loginGuru() {
 
-      window.akunGuru = null;
+  const nip =
+    document
+      .getElementById("nip")
+      .value
+      .trim();
 
-
-      document.getElementById(
-        "dashboardPage"
-      ).style.display =
-        "none";
-
-
-      document.getElementById(
-        "loginPage"
-      ).style.display =
-        "flex";
-
-
-      document.getElementById("nip")
-        .value = "";
-
-
-      document.getElementById("password")
-        .value = "";
-
-
-      document.getElementById(
-        "pesanLogin"
-      ).textContent = "";
-
-    }
-
-
-
-    /* ==================================
-       ENTER UNTUK LOGIN
-    =================================== */
-
+  const password =
     document
       .getElementById("password")
-      .addEventListener(
-        "keydown",
-        function(event) {
+      .value
+      .trim();
 
-          if (event.key === "Enter") {
 
-            loginGuru();
+  const message =
+    document.getElementById(
+      "loginMessage"
+    );
 
-          }
+  const button =
+    document.getElementById(
+      "btnLogin"
+    );
 
+
+  message.className =
+    "message";
+
+  message.textContent =
+    "";
+
+
+  if (!nip) {
+
+    showLoginMessage(
+      "NIP wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!password) {
+
+    showLoginMessage(
+      "Password wajib diisi.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "Memeriksa...";
+
+
+  try {
+
+    const response =
+      await callAPI(
+        "loginGuru",
+        {
+          nip: nip,
+          password: password
         }
       );
 
-  </script>
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      showLoginMessage(
+        response &&
+        response.message
+          ? response.message
+          : "Login gagal.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    akunGuru =
+      response.akun;
+
+
+    // Simpan ke session browser
+    sessionStorage.setItem(
+      "akunGuru",
+      JSON.stringify(
+        akunGuru
+      )
+    );
+
+
+    tampilkanPortal();
+
+  }
+
+  catch (error) {
+
+    showLoginMessage(
+      error.message,
+      "error"
+    );
+
+  }
+
+  finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "Masuk";
+
+  }
+
+}
+
+
+/* =====================================================
+   PESAN LOGIN
+===================================================== */
+
+function showLoginMessage(
+  text,
+  type
+) {
+
+  const message =
+    document.getElementById(
+      "loginMessage"
+    );
+
+  message.textContent =
+    text;
+
+  message.className =
+    "message " +
+    type;
+
+}
+
+
+/* =====================================================
+   TAMPILKAN PORTAL
+===================================================== */
+
+function tampilkanPortal() {
+
+  document
+    .getElementById("loginPage")
+    .style.display = "none";
+
+
+  document
+    .getElementById("app")
+    .style.display = "block";
+
+
+  if (!akunGuru) {
+    return;
+  }
+
+
+  document
+    .getElementById("userName")
+    .textContent =
+      akunGuru.namaGuru || "-";
+
+
+  document
+    .getElementById("userRole")
+    .textContent =
+      akunGuru.role || "-";
+
+
+  document
+    .getElementById("welcomeName")
+    .textContent =
+      akunGuru.namaGuru || "Guru";
+
+
+  // Ambil dashboard sementara
+  loadDashboard();
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+async function loadDashboard() {
+
+  try {
+
+    const response =
+      await callAPI(
+        "dashboardGuru"
+      );
+
+
+    if (
+      !response ||
+      !response.success
+    ) {
+      return;
+    }
+
+
+    const statistik =
+      response.statistik || {};
+
+
+    document
+      .getElementById(
+        "dashboardHadir"
+      )
+      .textContent =
+        statistik.hadir || 0;
+
+
+    document
+      .getElementById(
+        "dashboardTerlambat"
+      )
+      .textContent =
+        statistik.terlambat || 0;
+
+
+    document
+      .getElementById(
+        "dashboardIzin"
+      )
+      .textContent =
+        statistik.izin || 0;
+
+
+    document
+      .getElementById(
+        "dashboardSakit"
+      )
+      .textContent =
+        statistik.sakit || 0;
+
+
+    document
+      .getElementById(
+        "dashboardAlpa"
+      )
+      .textContent =
+        statistik.alpa || 0;
+
+  }
+
+  catch (error) {
+
+    console.log(
+      "Dashboard:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   ABSENSI HARI INI
+===================================================== */
+
+async function loadAbsensi() {
+
+  const kelas =
+    document
+      .getElementById(
+        "kelasSelect"
+      )
+      .value
+      .trim();
+
+
+  if (!kelas) {
+
+    document
+      .getElementById(
+        "tableContainer"
+      )
+      .innerHTML = `
+        <div class="empty">
+          Silakan pilih kelas terlebih dahulu.
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  const tableContainer =
+    document.getElementById(
+      "tableContainer"
+    );
+
+
+  tableContainer.innerHTML = `
+    <div class="loading">
+      Memuat data absensi...
+    </div>
+  `;
+
+
+  try {
+
+    const response =
+      await callAPI(
+        "statusAbsensiKelas",
+        {
+          kelas: kelas
+        }
+      );
+
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      tableContainer.innerHTML = `
+        <div class="empty">
+          ${
+            response &&
+            response.message
+              ? response.message
+              : "Gagal mengambil data."
+          }
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    tampilkanRekap(
+      response
+    );
+
+
+    tampilkanTabelSiswa(
+      response.data || []
+    );
+
+  }
+
+  catch (error) {
+
+    tableContainer.innerHTML = `
+      <div class="empty">
+        ${escapeHTML(error.message)}
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   TAMPILKAN REKAP
+===================================================== */
+
+function tampilkanRekap(
+  response
+) {
+
+  const rekap =
+    response.rekap || {};
+
+
+  document
+    .getElementById(
+      "jumlahSiswa"
+    )
+    .textContent =
+      response.jumlahSiswa || 0;
+
+
+  document
+    .getElementById(
+      "jumlahHadir"
+    )
+    .textContent =
+      rekap.hadir || 0;
+
+
+  document
+    .getElementById(
+      "jumlahTerlambat"
+    )
+    .textContent =
+      rekap.terlambat || 0;
+
+
+  document
+    .getElementById(
+      "jumlahIzin"
+    )
+    .textContent =
+      rekap.izin || 0;
+
+
+  document
+    .getElementById(
+      "jumlahSakit"
+    )
+    .textContent =
+      rekap.sakit || 0;
+
+
+  document
+    .getElementById(
+      "jumlahBelumAbsen"
+    )
+    .textContent =
+      rekap.belumAbsen || 0;
+
+
+  document
+    .getElementById(
+      "tanggalAbsensi"
+    )
+    .textContent =
+      response.tanggal
+        ? " — " + formatTanggal(response.tanggal)
+        : "";
+
+}
+
+
+/* =====================================================
+   TABEL SISWA
+===================================================== */
+
+function tampilkanTabelSiswa(
+  data
+) {
+
+  const container =
+    document.getElementById(
+      "tableContainer"
+    );
+
+
+  if (!data.length) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Tidak ada data siswa.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  let html = `
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th style="width:60px;">
+            No
+          </th>
+
+          <th>
+            Nama Siswa
+          </th>
+
+          <th style="width:130px;">
+            Jam
+          </th>
+
+          <th style="width:160px;">
+            Status
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+  `;
+
+
+  data.forEach(function(
+    siswa,
+    index
+  ) {
+
+    const status =
+      String(
+        siswa.status || ""
+      )
+      .toUpperCase();
+
+
+    const statusClass =
+      status.replace(
+        /\s+/g,
+        "-"
+      );
+
+
+    html += `
+
+      <tr>
+
+        <td>
+          ${index + 1}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            siswa.namaSiswa
+          )}
+        </td>
+
+        <td>
+          ${
+            siswa.jam
+              ? escapeHTML(
+                  siswa.jam
+                )
+              : "-"
+          }
+        </td>
+
+        <td>
+
+          <span
+            class="status status-${statusClass}"
+          >
+            ${escapeHTML(status)}
+          </span>
+
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+
+  html += `
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  container.innerHTML =
+    html;
+
+}
+
+
+/* =====================================================
+   NAVIGASI
+===================================================== */
+
+function showPage(
+  pageName,
+  button
+) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(function(page) {
+
+      page.classList.remove(
+        "active"
+      );
+
+    });
+
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(function(btn) {
+
+      btn.classList.remove(
+        "active"
+      );
+
+    });
+
+
+  const page =
+    document.getElementById(
+      "page-" + pageName
+    );
+
+
+  if (page) {
+
+    page.classList.add(
+      "active"
+    );
+
+  }
+
+
+  if (button) {
+
+    button.classList.add(
+      "active"
+    );
+
+  }
+
+
+  // Jika masuk halaman absensi,
+  // tampilkan data jika kelas sudah dipilih.
+  if (
+    pageName === "absensi"
+  ) {
+
+    const kelas =
+      document
+        .getElementById(
+          "kelasSelect"
+        )
+        .value;
+
+
+    if (kelas) {
+
+      loadAbsensi();
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logoutGuru() {
+
+  akunGuru = null;
+
+  sessionStorage.removeItem(
+    "akunGuru"
+  );
+
+
+  document
+    .getElementById("app")
+    .style.display = "none";
+
+
+  document
+    .getElementById("loginPage")
+    .style.display = "flex";
+
+
+  document
+    .getElementById("nip")
+    .value = "";
+
+
+  document
+    .getElementById("password")
+    .value = "";
+
+
+  document
+    .getElementById("loginMessage")
+    .className =
+      "message";
+
+}
+
+
+/* =====================================================
+   CEK SESSION
+===================================================== */
+
+function cekSession() {
+
+  const saved =
+    sessionStorage.getItem(
+      "akunGuru"
+    );
+
+
+  if (!saved) {
+    return;
+  }
+
+
+  try {
+
+    akunGuru =
+      JSON.parse(saved);
+
+
+    if (
+      akunGuru &&
+      akunGuru.nip
+    ) {
+
+      tampilkanPortal();
+
+    }
+
+  }
+
+  catch (error) {
+
+    sessionStorage.removeItem(
+      "akunGuru"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   FORMAT TANGGAL
+===================================================== */
+
+function formatTanggal(
+  tanggal
+) {
+
+  try {
+
+    const bagian =
+      tanggal.split("-");
+
+
+    if (bagian.length !== 3) {
+      return tanggal;
+    }
+
+
+    const tahun =
+      bagian[0];
+
+    const bulan =
+      parseInt(
+        bagian[1],
+        10
+      );
+
+    const hari =
+      bagian[2];
+
+
+    const namaBulan = [
+
+      "",
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember"
+
+    ];
+
+
+    return (
+      parseInt(hari, 10) +
+      " " +
+      namaBulan[bulan] +
+      " " +
+      tahun
+    );
+
+  }
+
+  catch (error) {
+
+    return tanggal;
+
+  }
+
+}
+
+
+/* =====================================================
+   KEAMANAN OUTPUT HTML
+===================================================== */
+
+function escapeHTML(
+  value
+) {
+
+  return String(
+    value == null
+      ? ""
+      : value
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* =====================================================
+   ENTER UNTUK LOGIN
+===================================================== */
+
+document
+  .getElementById("password")
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        loginGuru();
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   MULAI
+===================================================== */
+
+cekSession();
+
+</script>
 
 </body>
 </html>
