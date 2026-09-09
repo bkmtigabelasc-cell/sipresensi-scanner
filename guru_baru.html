@@ -2103,7 +2103,28 @@ function ubahStatusSiswa(
     );
 
 
-  /* =====================================================
+  if (
+    keterangan === null
+  ) {
+
+    return;
+
+  }
+
+
+  simpanStatusDariPortal(
+    idSiswa,
+    namaSiswa,
+    kelas,
+    status,
+    alasan,
+    keterangan
+  );
+
+}
+
+
+/* =====================================================
    SIMPAN STATUS ABSENSI
 ===================================================== */
 
@@ -2121,11 +2142,15 @@ async function simpanStatusDariPortal(
     // Tanggal hari ini
     const tanggal =
       new Date()
-        .toISOString()
-        .slice(0, 10);
+        .toLocaleDateString(
+          "en-CA",
+          {
+            timeZone: "Asia/Jakarta"
+          }
+        );
 
 
-    // Nama guru yang sedang login
+    // Guru yang sedang login
     const diinputOleh =
       akunGuru &&
       akunGuru.namaGuru
@@ -2137,82 +2162,37 @@ async function simpanStatusDariPortal(
       await callAPI(
         "simpanStatusAbsensi",
         {
-          tanggal: tanggal,
-          idSiswa: idSiswa,
-          namaSiswa: namaSiswa,
-          kelas: kelas,
-          status: status,
-          alasan: alasan,
-          keterangan: keterangan,
-          diinputOleh: diinputOleh
+          tanggal:
+            tanggal,
+
+          idSiswa:
+            idSiswa,
+
+          namaSiswa:
+            namaSiswa,
+
+          kelas:
+            kelas,
+
+          status:
+            status,
+
+          alasan:
+            alasan,
+
+          keterangan:
+            keterangan,
+
+          diinputOleh:
+            diinputOleh
         }
       );
 
 
-    if (
-      !response ||
-      !response.success
-    ) {
-
-      alert(
-        response &&
-        response.message
-          ? response.message
-          : "Gagal menyimpan status."
-      );
-
-      return;
-
-    }
-
-
-    alert(
-      response.message ||
-      "Status absensi berhasil disimpan."
+    console.log(
+      "Hasil simpan status:",
+      response
     );
-
-
-    // Muat ulang data setelah berhasil
-    loadAbsensi();
-
-  }
-
-  catch (error) {
-
-    alert(
-      "Gagal menyimpan status: " +
-      error.message
-    );
-
-  }
-
-}
-  /* =====================================================
-   SIMPAN STATUS ABSENSI
-===================================================== */
-
-async function simpanStatusDariPortal(
-  idSiswa,
-  namaSiswa,
-  kelas,
-  status,
-  alasan,
-  keterangan
-) {
-
-  try {
-
-    const response =
-      await callAPI(
-        "simpanStatusAbsensi",
-        {
-          idSiswa: idSiswa,
-          kelas: kelas,
-          status: status,
-          alasan: alasan,
-          keterangan: keterangan
-        }
-      );
 
 
     if (
@@ -2244,6 +2224,12 @@ async function simpanStatusDariPortal(
   }
 
   catch (error) {
+
+    console.error(
+      "Gagal menyimpan status:",
+      error
+    );
+
 
     alert(
       "Gagal menyimpan status: " +
