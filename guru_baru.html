@@ -965,7 +965,20 @@ th {
           </div>
 
         </div>
+<div class="rekap-card">
 
+  <div class="label">
+    Alpa
+  </div>
+
+  <div
+    class="number"
+    id="jumlahAlpa"
+  >
+    0
+  </div>
+
+</div>
       </div>
 
 
@@ -1738,6 +1751,11 @@ function tampilkanRekap(response) {
     .getElementById("jumlahSakit")
     .textContent =
       response.sakit || 0;
+  
+  document
+  .getElementById("jumlahAlpa")
+  .textContent =
+    response.alpa || 0;
 
   document
     .getElementById("jumlahBelumAbsen")
@@ -2037,14 +2055,45 @@ function tampilkanTabelSiswa(
     html;
 
 }
-  /* =====================================================
-   UBAH STATUS SISWA
-===================================================== */
+function ubahStatusSiswa(idSiswa, namaSiswa, kelas, statusLama) {
 
-function ubahStatusSiswa(idSiswa, namaSiswa, kelas, status) {
+  const pilihan = prompt(
+    "Ubah status " + namaSiswa + ".\n\n" +
+    "Status saat ini: " + statusLama + "\n\n" +
+    "Ketik salah satu:\n" +
+    "IZIN\n" +
+    "SAKIT\n" +
+    "ALPA"
+  );
+
+  if (pilihan === null) return;
+
+  const statusBaru = pilihan
+    .trim()
+    .toUpperCase();
+
+  const statusValid = [
+    "IZIN",
+    "SAKIT",
+    "ALPA"
+  ];
+
+  if (!statusValid.includes(statusBaru)) {
+
+    alert(
+      "Status tidak valid.\n\n" +
+      "Silakan masukkan IZIN, SAKIT, atau ALPA."
+    );
+
+    return;
+  }
 
   const alasan = prompt(
-    "Masukkan alasan " + status + " untuk " + namaSiswa + ":"
+    "Masukkan alasan " +
+    statusBaru +
+    " untuk " +
+    namaSiswa +
+    ":"
   );
 
   if (alasan === null) return;
@@ -2059,12 +2108,11 @@ function ubahStatusSiswa(idSiswa, namaSiswa, kelas, status) {
     idSiswa,
     namaSiswa,
     kelas,
-    status,
+    statusBaru,
     alasan,
     keterangan
   );
 }
-
 /* =====================================================
    SIMPAN STATUS ABSENSI
 ===================================================== */
