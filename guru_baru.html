@@ -1712,66 +1712,40 @@ async function loadAbsensi() {
    TAMPILKAN REKAP
 ===================================================== */
 
-function tampilkanRekap(
-  response
-) {
-
-  const rekap =
-    response.rekap || {};
-
+function tampilkanRekap(response) {
 
   document
-    .getElementById(
-      "jumlahSiswa"
-    )
+    .getElementById("jumlahSiswa")
     .textContent =
       response.jumlahSiswa || 0;
 
-
   document
-    .getElementById(
-      "jumlahHadir"
-    )
+    .getElementById("jumlahHadir")
     .textContent =
-      rekap.hadir || 0;
-
+      response.hadir || 0;
 
   document
-    .getElementById(
-      "jumlahTerlambat"
-    )
+    .getElementById("jumlahTerlambat")
     .textContent =
-      rekap.terlambat || 0;
-
+      response.terlambat || 0;
 
   document
-    .getElementById(
-      "jumlahIzin"
-    )
+    .getElementById("jumlahIzin")
     .textContent =
-      rekap.izin || 0;
-
+      response.izin || 0;
 
   document
-    .getElementById(
-      "jumlahSakit"
-    )
+    .getElementById("jumlahSakit")
     .textContent =
-      rekap.sakit || 0;
-
+      response.sakit || 0;
 
   document
-    .getElementById(
-      "jumlahBelumAbsen"
-    )
+    .getElementById("jumlahBelumAbsen")
     .textContent =
-      rekap.belumAbsen || 0;
-
+      response.belumAbsen || 0;
 
   document
-    .getElementById(
-      "tanggalAbsensi"
-    )
+    .getElementById("tanggalAbsensi")
     .textContent =
       response.tanggal
         ? " — " + formatTanggal(response.tanggal)
@@ -1779,10 +1753,6 @@ function tampilkanRekap(
 
 }
 
-
-/* =====================================================
-   TABEL SISWA
-===================================================== */
 
 /* =====================================================
    TABEL SISWA
@@ -2071,46 +2041,29 @@ function tampilkanTabelSiswa(
    UBAH STATUS SISWA
 ===================================================== */
 
-function ubahStatusSiswa(
-  idSiswa,
-  namaSiswa,
-  kelas,
-  status
-) {
+function ubahStatusSiswa(idSiswa, namaSiswa, kelas, status) {
 
-  const alasan =
-    prompt(
-      "Alasan " +
-      status +
-      " untuk " +
-      namaSiswa +
-      ":"
-    );
+  const alasan = prompt(
+    "Masukkan alasan " + status + " untuk " + namaSiswa + ":"
+  );
 
+  if (alasan === null) return;
 
-  if (
-    alasan === null
-  ) {
+  const keterangan = prompt(
+    "Masukkan keterangan tambahan (boleh dikosongkan):"
+  );
 
-    return;
+  if (keterangan === null) return;
 
-  }
-
-
-  const keterangan =
-    prompt(
-      "Keterangan tambahan (opsional):"
-    );
-
-
-  if (
-    keterangan === null
-  ) {
-
-    return;
-
-  }
-
+  simpanStatusDariPortal(
+    idSiswa,
+    namaSiswa,
+    kelas,
+    status,
+    alasan,
+    keterangan
+  );
+}
 
 /* =====================================================
    SIMPAN STATUS ABSENSI
