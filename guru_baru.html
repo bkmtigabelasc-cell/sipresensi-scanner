@@ -1770,6 +1770,10 @@ function tampilkanRekap(
    TABEL SISWA
 ===================================================== */
 
+/* =====================================================
+   TABEL SISWA
+===================================================== */
+
 function tampilkanTabelSiswa(
   data
 ) {
@@ -1780,7 +1784,7 @@ function tampilkanTabelSiswa(
     );
 
 
-  if (!data.length) {
+  if (!data || !data.length) {
 
     container.innerHTML = `
       <div class="empty">
@@ -1813,8 +1817,8 @@ function tampilkanTabelSiswa(
             Jam
           </th>
 
-          <th style="width:160px;">
-            Status
+          <th style="width:260px;">
+            Status / Aksi
           </th>
 
         </tr>
@@ -1834,6 +1838,7 @@ function tampilkanTabelSiswa(
       String(
         siswa.status || ""
       )
+      .trim()
       .toUpperCase();
 
 
@@ -1844,6 +1849,149 @@ function tampilkanTabelSiswa(
       );
 
 
+    /*
+     * Tombol aksi
+     */
+
+    let tombolAksi = "";
+
+
+    if (
+      status === "BELUM ABSEN"
+    ) {
+
+      tombolAksi = `
+
+        <div
+          style="
+            margin-top:8px;
+            display:flex;
+            gap:6px;
+            flex-wrap:wrap;
+          "
+        >
+
+          <button
+            type="button"
+            class="btn-status"
+            onclick="ubahStatusSiswa(
+              '${escapeHTML(siswa.idSiswa)}',
+              '${escapeHTML(siswa.namaSiswa)}',
+              '${escapeHTML(siswa.kelas)}',
+              'IZIN'
+            )"
+          >
+            IZIN
+          </button>
+
+
+          <button
+            type="button"
+            class="btn-status"
+            onclick="ubahStatusSiswa(
+              '${escapeHTML(siswa.idSiswa)}',
+              '${escapeHTML(siswa.namaSiswa)}',
+              '${escapeHTML(siswa.kelas)}',
+              'SAKIT'
+            )"
+          >
+            SAKIT
+          </button>
+
+
+          <button
+            type="button"
+            class="btn-status"
+            onclick="ubahStatusSiswa(
+              '${escapeHTML(siswa.idSiswa)}',
+              '${escapeHTML(siswa.namaSiswa)}',
+              '${escapeHTML(siswa.kelas)}',
+              'ALPA'
+            )"
+          >
+            ALPA
+          </button>
+
+        </div>
+
+      `;
+
+    }
+
+    else if (
+      status === "IZIN" ||
+      status === "SAKIT" ||
+      status === "ALPA"
+    ) {
+
+      tombolAksi = `
+
+        <div
+          style="margin-top:8px;"
+        >
+
+          <button
+            type="button"
+            class="btn-status"
+            onclick="ubahStatusSiswa(
+              '${escapeHTML(siswa.idSiswa)}',
+              '${escapeHTML(siswa.namaSiswa)}',
+              '${escapeHTML(siswa.kelas)}',
+              '${escapeHTML(status)}'
+            )"
+          >
+            Ubah Status
+          </button>
+
+        </div>
+
+      `;
+
+    }
+
+
+    /*
+     * Alasan dan keterangan
+     */
+
+    let detailStatus = "";
+
+
+    if (siswa.alasan) {
+
+      detailStatus += `
+        <div
+          style="
+            margin-top:6px;
+            font-size:12px;
+            color:#777;
+          "
+        >
+          Alasan:
+          ${escapeHTML(siswa.alasan)}
+        </div>
+      `;
+
+    }
+
+
+    if (siswa.keterangan) {
+
+      detailStatus += `
+        <div
+          style="
+            margin-top:3px;
+            font-size:12px;
+            color:#777;
+          "
+        >
+          ${escapeHTML(siswa.keterangan)}
+        </div>
+      `;
+
+    }
+
+
     html += `
 
       <tr>
@@ -1852,11 +2000,13 @@ function tampilkanTabelSiswa(
           ${index + 1}
         </td>
 
+
         <td>
           ${escapeHTML(
             siswa.namaSiswa
           )}
         </td>
+
 
         <td>
           ${
@@ -1868,6 +2018,7 @@ function tampilkanTabelSiswa(
           }
         </td>
 
+
         <td>
 
           <span
@@ -1875,6 +2026,10 @@ function tampilkanTabelSiswa(
           >
             ${escapeHTML(status)}
           </span>
+
+          ${detailStatus}
+
+          ${tombolAksi}
 
         </td>
 
@@ -1898,8 +2053,6 @@ function tampilkanTabelSiswa(
     html;
 
 }
-
-
 /* =====================================================
    NAVIGASI
 ===================================================== */
