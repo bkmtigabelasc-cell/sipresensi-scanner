@@ -829,59 +829,11 @@ th {
 
             <select id="kelasSelect">
 
-              <option value="">
-                -- Pilih Kelas --
-              </option>
+  <option value="">
+    Memuat daftar kelas...
+  </option>
 
-              <option value="7A">
-                7A
-              </option>
-
-              <option value="7B">
-                7B
-              </option>
-
-              <option value="7C">
-                7C
-              </option>
-
-              <option value="7D">
-                7D
-              </option>
-
-              <option value="8A">
-                8A
-              </option>
-
-              <option value="8B">
-                8B
-              </option>
-
-              <option value="8C">
-                8C
-              </option>
-
-              <option value="8D">
-                8D
-              </option>
-
-              <option value="9A">
-                9A
-              </option>
-
-              <option value="9B">
-                9B
-              </option>
-
-              <option value="9C">
-                9C
-              </option>
-
-              <option value="9D">
-                9D
-              </option>
-
-            </select>
+</select>
 
           </div>
 
@@ -1435,9 +1387,11 @@ function tampilkanPortal() {
       akunGuru.namaGuru || "Guru";
 
 
-  // Ambil dashboard sementara
+   // Ambil dashboard
   loadDashboard();
 
+  // Ambil daftar kelas dari DATA_KELAS
+  loadDaftarKelas();
 }
 
 
@@ -1519,7 +1473,126 @@ async function loadDashboard() {
 
 }
 
+/* =====================================================
+   DAFTAR KELAS
+===================================================== */
 
+async function loadDaftarKelas() {
+
+  const select =
+    document.getElementById(
+      "kelasSelect"
+    );
+
+  if (!select) {
+    return;
+  }
+
+  select.innerHTML = `
+    <option value="">
+      Memuat daftar kelas...
+    </option>
+  `;
+
+  try {
+
+    const response =
+      await callAPI(
+        "daftarKelasGuru"
+      );
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      select.innerHTML = `
+        <option value="">
+          Gagal memuat kelas
+        </option>
+      `;
+
+      console.log(
+        "Daftar kelas:",
+        response
+      );
+
+      return;
+
+    }
+
+    const data =
+      response.data || [];
+
+    if (!data.length) {
+
+      select.innerHTML = `
+        <option value="">
+          Tidak ada kelas aktif
+        </option>
+      `;
+
+      return;
+
+    }
+
+    select.innerHTML = `
+      <option value="">
+        -- Pilih Kelas --
+      </option>
+    `;
+
+    data.forEach(function(kelas) {
+
+      const option =
+        document.createElement("option");
+
+      option.value =
+        kelas.namaKelas;
+
+      option.textContent =
+        kelas.namaKelas;
+
+      option.dataset.kelasId =
+        kelas.kelasId;
+
+      option.dataset.waliKelas =
+        kelas.waliKelas;
+
+      option.dataset.tingkat =
+        kelas.tingkat;
+
+      option.dataset.tahunPelajaran =
+        kelas.tahunPelajaran;
+
+      select.appendChild(option);
+
+    });
+
+    console.log(
+      "Daftar kelas berhasil dimuat:",
+      data.length,
+      "kelas"
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Gagal memuat daftar kelas:",
+      error
+    );
+
+    select.innerHTML = `
+      <option value="">
+        Gagal menghubungi server
+      </option>
+    `;
+
+  }
+
+}
 /* =====================================================
    ABSENSI HARI INI
 ===================================================== */
