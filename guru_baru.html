@@ -434,6 +434,20 @@ th {
   padding: 30px;
   color: #777;
 }
+  .btn-status {
+  border: none;
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #0d6b45;
+  color: white;
+}
+
+.btn-status:hover {
+  background: #095437;
+}
 
 
 /* =========================================
@@ -2051,6 +2065,192 @@ function tampilkanTabelSiswa(
 
   container.innerHTML =
     html;
+
+}
+  /* =====================================================
+   UBAH STATUS SISWA
+===================================================== */
+
+function ubahStatusSiswa(
+  idSiswa,
+  namaSiswa,
+  kelas,
+  status
+) {
+
+  const alasan =
+    prompt(
+      "Alasan " +
+      status +
+      " untuk " +
+      namaSiswa +
+      ":"
+    );
+
+
+  if (
+    alasan === null
+  ) {
+
+    return;
+
+  }
+
+
+  const keterangan =
+    prompt(
+      "Keterangan tambahan (opsional):"
+    );
+
+
+  /* =====================================================
+   SIMPAN STATUS ABSENSI
+===================================================== */
+
+async function simpanStatusDariPortal(
+  idSiswa,
+  namaSiswa,
+  kelas,
+  status,
+  alasan,
+  keterangan
+) {
+
+  try {
+
+    // Tanggal hari ini
+    const tanggal =
+      new Date()
+        .toISOString()
+        .slice(0, 10);
+
+
+    // Nama guru yang sedang login
+    const diinputOleh =
+      akunGuru &&
+      akunGuru.namaGuru
+        ? akunGuru.namaGuru
+        : "Guru";
+
+
+    const response =
+      await callAPI(
+        "simpanStatusAbsensi",
+        {
+          tanggal: tanggal,
+          idSiswa: idSiswa,
+          namaSiswa: namaSiswa,
+          kelas: kelas,
+          status: status,
+          alasan: alasan,
+          keterangan: keterangan,
+          diinputOleh: diinputOleh
+        }
+      );
+
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      alert(
+        response &&
+        response.message
+          ? response.message
+          : "Gagal menyimpan status."
+      );
+
+      return;
+
+    }
+
+
+    alert(
+      response.message ||
+      "Status absensi berhasil disimpan."
+    );
+
+
+    // Muat ulang data setelah berhasil
+    loadAbsensi();
+
+  }
+
+  catch (error) {
+
+    alert(
+      "Gagal menyimpan status: " +
+      error.message
+    );
+
+  }
+
+}
+  /* =====================================================
+   SIMPAN STATUS ABSENSI
+===================================================== */
+
+async function simpanStatusDariPortal(
+  idSiswa,
+  namaSiswa,
+  kelas,
+  status,
+  alasan,
+  keterangan
+) {
+
+  try {
+
+    const response =
+      await callAPI(
+        "simpanStatusAbsensi",
+        {
+          idSiswa: idSiswa,
+          kelas: kelas,
+          status: status,
+          alasan: alasan,
+          keterangan: keterangan
+        }
+      );
+
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      alert(
+        response &&
+        response.message
+          ? response.message
+          : "Gagal menyimpan status."
+      );
+
+      return;
+
+    }
+
+
+    alert(
+      response.message ||
+      "Status absensi berhasil disimpan."
+    );
+
+
+    // Muat ulang tabel
+    loadAbsensi();
+
+  }
+
+  catch (error) {
+
+    alert(
+      "Gagal menyimpan status: " +
+      error.message
+    );
+
+  }
 
 }
 /* =====================================================
