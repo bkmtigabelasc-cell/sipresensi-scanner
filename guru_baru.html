@@ -2756,33 +2756,31 @@ function simpanStatusModal() {
 
 
   const alasan =
-    document
-      .getElementById("Alasan")
-      .value
-      .trim();
+  document
+    .getElementById("modalAlasan")
+    .value
+    .trim();
+
+const keterangan =
+  document
+    .getElementById("modalKeterangan")
+    .value
+    .trim();
 
 
-  const keterangan =
-    document
-      .getElementById("Keterangan")
-      .value
-      .trim();
+if (!alasan) {
 
+  alert(
+    "Alasan wajib diisi."
+  );
 
-  if (!alasan) {
+  document
+    .getElementById("modalAlasan")
+    .focus();
 
-    alert(
-      "Alasan wajib diisi."
-    );
+  return;
 
-    document
-      .getElementById("Alasan")
-      .focus();
-
-    return;
-
-  }
-
+}
 
   if (
     data.statusBaru ===
