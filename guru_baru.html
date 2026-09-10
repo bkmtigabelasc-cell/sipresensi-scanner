@@ -1474,6 +1474,167 @@ th {
 </div>
 
 
+<!-- =====================================================
+     MODAL UBAH STATUS SISWA
+===================================================== -->
+
+<div
+  id="modalStatus"
+  class="modal-status"
+>
+
+  <div class="modal-status-box">
+
+    <div class="modal-status-header">
+
+      <h3>
+        Ubah Status Absensi
+      </h3>
+
+      <button
+        type="button"
+        class="modal-close"
+        onclick="tutupModalStatus()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-status-body">
+
+      <div class="modal-siswa-info">
+
+        <div
+          id="modalNamaSiswa"
+          class="modal-nama-siswa"
+        >
+          -
+        </div>
+
+        <div
+          id="modalKelasSiswa"
+          class="modal-kelas-siswa"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="modal-status-lama">
+
+        Status saat ini:
+
+        <strong id="modalStatusLama">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Pilih Status Baru
+        </label>
+
+
+        <div class="status-options">
+
+          <button
+            type="button"
+            class="status-option"
+            data-status="IZIN"
+            onclick="pilihStatusModal('IZIN')"
+          >
+            IZIN
+          </button>
+
+
+          <button
+            type="button"
+            class="status-option"
+            data-status="SAKIT"
+            onclick="pilihStatusModal('SAKIT')"
+          >
+            SAKIT
+          </button>
+
+
+          <button
+            type="button"
+            class="status-option"
+            data-status="ALPA"
+            onclick="pilihStatusModal('ALPA')"
+          >
+            ALPA
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="modalAlasan">
+          Alasan
+        </label>
+
+        <textarea
+          id="modalAlasan"
+          rows="3"
+          placeholder="Masukkan alasan..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="modalKeterangan">
+          Keterangan Tambahan
+        </label>
+
+        <textarea
+          id="modalKeterangan"
+          rows="3"
+          placeholder="Boleh dikosongkan..."
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-status-footer">
+
+      <button
+        type="button"
+        class="btn-modal-batal"
+        onclick="tutupModalStatus()"
+      >
+        Batal
+      </button>
+
+
+      <button
+        type="button"
+        class="btn-modal-simpan"
+        onclick="simpanStatusModal()"
+      >
+        Simpan Perubahan
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 
 <script>
 
@@ -3058,165 +3219,6 @@ document
 
     }
   );
-<!-- =====================================================
-     MODAL UBAH STATUS SISWA
-===================================================== -->
-
-<div
-  id="modalStatus"
-  class="modal-status"
->
-
-  <div class="modal-status-box">
-
-    <div class="modal-status-header">
-
-      <h3>
-        Ubah Status Absensi
-      </h3>
-
-      <button
-        type="button"
-        class="modal-close"
-        onclick="tutupModalStatus()"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="modal-status-body">
-
-      <div class="modal-siswa-info">
-
-        <div
-          id="modalNamaSiswa"
-          class="modal-nama-siswa"
-        >
-          -
-        </div>
-
-        <div
-          id="modalKelasSiswa"
-          class="modal-kelas-siswa"
-        >
-          -
-        </div>
-
-      </div>
-
-
-      <div class="modal-status-lama">
-
-        Status saat ini:
-
-        <strong id="modalStatusLama">
-          -
-        </strong>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Pilih Status Baru
-        </label>
-
-
-        <div class="status-options">
-
-          <button
-            type="button"
-            class="status-option"
-            data-status="IZIN"
-            onclick="pilihStatusModal('IZIN')"
-          >
-            IZIN
-          </button>
-
-
-          <button
-            type="button"
-            class="status-option"
-            data-status="SAKIT"
-            onclick="pilihStatusModal('SAKIT')"
-          >
-            SAKIT
-          </button>
-
-
-          <button
-            type="button"
-            class="status-option"
-            data-status="ALPA"
-            onclick="pilihStatusModal('ALPA')"
-          >
-            ALPA
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label for="modalAlasan">
-          Alasan
-        </label>
-
-        <textarea
-          id="modalAlasan"
-          rows="3"
-          placeholder="Masukkan alasan..."
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label for="modalKeterangan">
-          Keterangan Tambahan
-        </label>
-
-        <textarea
-          id="modalKeterangan"
-          rows="3"
-          placeholder="Boleh dikosongkan..."
-        ></textarea>
-
-      </div>
-
-    </div>
-
-
-    <div class="modal-status-footer">
-
-      <button
-        type="button"
-        class="btn-modal-batal"
-        onclick="tutupModalStatus()"
-      >
-        Batal
-      </button>
-
-
-      <button
-        type="button"
-        class="btn-modal-simpan"
-        onclick="simpanStatusModal()"
-      >
-        Simpan Perubahan
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
 
 /* =====================================================
    MULAI
