@@ -512,7 +512,382 @@ th {
   }
 
 }
+/* =====================================================
+   MODAL UBAH STATUS SISWA
+===================================================== */
 
+.modal-status {
+  display: none;
+
+  position: fixed;
+  z-index: 9999;
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+
+/* Modal aktif */
+
+.modal-status.active {
+  display: flex;
+}
+
+
+/* Kotak modal */
+
+.modal-status-box {
+  width: 100%;
+  max-width: 480px;
+
+  background: #ffffff;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.20);
+
+  overflow: hidden;
+
+  animation: modalMasuk 0.2s ease;
+}
+
+
+/* Animasi */
+
+@keyframes modalMasuk {
+
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* Header modal */
+
+.modal-status-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 22px;
+
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+.modal-status-header h3 {
+  margin: 0;
+
+  font-size: 19px;
+
+  color: #263238;
+}
+
+
+/* Tombol X */
+
+.modal-close {
+  border: none;
+
+  background: transparent;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  color: #777;
+
+  cursor: pointer;
+
+  padding: 0 4px;
+}
+
+
+.modal-close:hover {
+  color: #222;
+}
+
+
+/* Isi modal */
+
+.modal-status-body {
+  padding: 20px 22px;
+}
+
+
+/* Informasi siswa */
+
+.modal-siswa-info {
+  background: #f4f6f8;
+
+  border-radius: 9px;
+
+  padding: 12px 14px;
+
+  margin-bottom: 12px;
+}
+
+
+.modal-nama-siswa {
+  font-size: 16px;
+
+  font-weight: bold;
+
+  color: #263238;
+
+  margin-bottom: 4px;
+}
+
+
+.modal-kelas-siswa {
+  font-size: 14px;
+
+  color: #607d8b;
+}
+
+
+/* Status lama */
+
+.modal-status-lama {
+  font-size: 14px;
+
+  margin-bottom: 18px;
+
+  color: #555;
+}
+
+
+.modal-status-lama strong {
+  color: #0d6b45;
+
+  margin-left: 4px;
+}
+
+
+/* Form */
+
+.form-group {
+  margin-bottom: 17px;
+}
+
+
+.form-group label {
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  color: #37474f;
+
+  margin-bottom: 7px;
+}
+
+
+/* Pilihan status */
+
+.status-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+
+.status-option {
+  border: 2px solid #d9dfe3;
+
+  background: #ffffff;
+
+  color: #455a64;
+
+  padding: 11px 8px;
+
+  border-radius: 8px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    0.2s ease;
+}
+
+
+.status-option:hover {
+  border-color: #0d6b45;
+
+  color: #0d6b45;
+}
+
+
+/* Status yang dipilih */
+
+.status-option.selected {
+  background: #0d6b45;
+
+  border-color: #0d6b45;
+
+  color: #ffffff;
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+  width: 100%;
+
+  min-height: 75px;
+
+  padding: 10px 11px;
+
+  border: 1px solid #cfd8dc;
+
+  border-radius: 7px;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 14px;
+
+  color: #263238;
+
+  resize: vertical;
+
+  outline: none;
+}
+
+
+.form-group textarea:focus {
+  border-color: #0d6b45;
+
+  box-shadow:
+    0 0 0 2px rgba(13, 107, 69, 0.10);
+}
+
+
+/* Footer */
+
+.modal-status-footer {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding: 15px 22px;
+
+  background: #fafafa;
+
+  border-top: 1px solid #e5e5e5;
+}
+
+
+/* Tombol batal */
+
+.btn-modal-batal {
+  border: none;
+
+  background: #e9ecef;
+
+  color: #37474f;
+
+  padding: 10px 17px;
+
+  border-radius: 7px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+
+.btn-modal-batal:hover {
+  background: #dfe3e6;
+}
+
+
+/* Tombol simpan */
+
+.btn-modal-simpan {
+  border: none;
+
+  background: #0d6b45;
+
+  color: #ffffff;
+
+  padding: 10px 18px;
+
+  border-radius: 7px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+
+.btn-modal-simpan:hover {
+  background: #095538;
+}
+
+
+/* =====================================================
+   RESPONSIVE MODAL
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .modal-status {
+    padding: 12px;
+  }
+
+
+  .modal-status-box {
+    max-width: 100%;
+
+    border-radius: 12px;
+  }
+
+
+  .modal-status-header {
+    padding: 16px 18px;
+  }
+
+
+  .modal-status-body {
+    padding: 18px;
+  }
+
+
+  .modal-status-footer {
+    padding: 14px 18px;
+  }
+
+
+  .status-options {
+    grid-template-columns: 1fr;
+  }
+
+}
 </style>
 </head>
 
@@ -2055,22 +2430,82 @@ function tampilkanTabelSiswa(
     html;
 
 }
-function ubahStatusSiswa(idSiswa, namaSiswa, kelas, statusLama) {
+/* =====================================================
+   UBAH STATUS SISWA
+===================================================== */
 
-  const pilihan = prompt(
-    "Ubah status " + namaSiswa + ".\n\n" +
-    "Status saat ini: " + statusLama + "\n\n" +
-    "Ketik salah satu:\n" +
-    "IZIN\n" +
-    "SAKIT\n" +
-    "ALPA"
-  );
+let siswaSedangDiubah = {
+  idSiswa: "",
+  namaSiswa: "",
+  kelas: "",
+  statusLama: "",
+  statusBaru: ""
+};
 
-  if (pilihan === null) return;
 
-  const statusBaru = pilihan
-    .trim()
-    .toUpperCase();
+function ubahStatusSiswa(
+  idSiswa,
+  namaSiswa,
+  kelas,
+  statusLama
+) {
+
+  siswaSedangDiubah = {
+
+    idSiswa: idSiswa,
+
+    namaSiswa: namaSiswa,
+
+    kelas: kelas,
+
+    statusLama: statusLama,
+
+    statusBaru: ""
+
+  };
+
+
+  document
+    .getElementById("modalNamaSiswa")
+    .textContent = namaSiswa;
+
+
+  document
+    .getElementById("modalKelasSiswa")
+    .textContent =
+      "Kelas " + kelas;
+
+
+  document
+    .getElementById("modalStatusLama")
+    .textContent =
+      statusLama;
+
+
+  document
+    .getElementById("modalAlasan")
+    .value = "";
+
+
+  document
+    .getElementById("modalKeterangan")
+    .value = "";
+
+
+  resetPilihanStatus();
+
+
+  document
+    .getElementById("modalStatus")
+    .classList
+    .add("active");
+
+}
+  /* =====================================================
+   PILIH STATUS BARU DARI MODAL
+===================================================== */
+
+function pilihStatusModal(statusBaru) {
 
   const statusValid = [
     "IZIN",
@@ -2079,39 +2514,141 @@ function ubahStatusSiswa(idSiswa, namaSiswa, kelas, statusLama) {
   ];
 
   if (!statusValid.includes(statusBaru)) {
-
-    alert(
-      "Status tidak valid.\n\n" +
-      "Silakan masukkan IZIN, SAKIT, atau ALPA."
-    );
-
     return;
   }
 
-  const alasan = prompt(
-    "Masukkan alasan " +
-    statusBaru +
-    " untuk " +
-    namaSiswa +
-    ":"
-  );
+  siswaSedangDiubah.statusBaru = statusBaru;
 
-  if (alasan === null) return;
 
-  const keterangan = prompt(
-    "Masukkan keterangan tambahan (boleh dikosongkan):"
-  );
+  // Hapus pilihan sebelumnya
+  document
+    .querySelectorAll(".status-option")
+    .forEach(function(button) {
 
-  if (keterangan === null) return;
+      button.classList.remove("selected");
+
+    });
+
+
+  // Tandai pilihan yang dipilih
+  const tombol =
+    document.querySelector(
+      '.status-option[data-status="' +
+      statusBaru +
+      '"]'
+    );
+
+  if (tombol) {
+
+    tombol.classList.add("selected");
+
+  }
+
+}
+  /* =====================================================
+   RESET PILIHAN STATUS
+===================================================== */
+
+function resetPilihanStatus() {
+
+  siswaSedangDiubah.statusBaru = "";
+
+  document
+    .querySelectorAll(".status-option")
+    .forEach(function(button) {
+
+      button.classList.remove("selected");
+
+    });
+
+}
+  /* =====================================================
+   TUTUP MODAL STATUS
+===================================================== */
+
+function tutupModalStatus() {
+
+  document
+    .getElementById("modalStatus")
+    .classList.remove("active");
+
+}
+  /* =====================================================
+   SIMPAN PERUBAHAN STATUS DARI MODAL
+===================================================== */
+
+function simpanStatusModal() {
+
+  const data =
+    siswaSedangDiubah;
+
+
+  if (!data.statusBaru) {
+
+    alert(
+      "Silakan pilih status baru terlebih dahulu."
+    );
+
+    return;
+
+  }
+
+
+  const alasan =
+    document
+      .getElementById("Alasan")
+      .value
+      .trim();
+
+
+  const keterangan =
+    document
+      .getElementById("Keterangan")
+      .value
+      .trim();
+
+
+  if (!alasan) {
+
+    alert(
+      "Alasan wajib diisi."
+    );
+
+    document
+      .getElementById("Alasan")
+      .focus();
+
+    return;
+
+  }
+
+
+  if (
+    data.statusBaru ===
+    data.statusLama
+  ) {
+
+    alert(
+      "Status baru sama dengan status sebelumnya."
+    );
+
+    return;
+
+  }
+
 
   simpanStatusDariPortal(
-    idSiswa,
-    namaSiswa,
-    kelas,
-    statusBaru,
+    data.idSiswa,
+    data.namaSiswa,
+    data.kelas,
+    data.statusBaru,
     alasan,
     keterangan
   );
+
+
+  tutupModalStatus();
+
 }
 /* =====================================================
    SIMPAN STATUS ABSENSI
@@ -2521,7 +3058,165 @@ document
 
     }
   );
+<!-- =====================================================
+     MODAL UBAH STATUS SISWA
+===================================================== -->
 
+<div
+  id="modalStatus"
+  class="modal-status"
+>
+
+  <div class="modal-status-box">
+
+    <div class="modal-status-header">
+
+      <h3>
+        Ubah Status Absensi
+      </h3>
+
+      <button
+        type="button"
+        class="modal-close"
+        onclick="tutupModalStatus()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-status-body">
+
+      <div class="modal-siswa-info">
+
+        <div
+          id="modalNamaSiswa"
+          class="modal-nama-siswa"
+        >
+          -
+        </div>
+
+        <div
+          id="modalKelasSiswa"
+          class="modal-kelas-siswa"
+        >
+          -
+        </div>
+
+      </div>
+
+
+      <div class="modal-status-lama">
+
+        Status saat ini:
+
+        <strong id="modalStatusLama">
+          -
+        </strong>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Pilih Status Baru
+        </label>
+
+
+        <div class="status-options">
+
+          <button
+            type="button"
+            class="status-option"
+            data-status="IZIN"
+            onclick="pilihStatusModal('IZIN')"
+          >
+            IZIN
+          </button>
+
+
+          <button
+            type="button"
+            class="status-option"
+            data-status="SAKIT"
+            onclick="pilihStatusModal('SAKIT')"
+          >
+            SAKIT
+          </button>
+
+
+          <button
+            type="button"
+            class="status-option"
+            data-status="ALPA"
+            onclick="pilihStatusModal('ALPA')"
+          >
+            ALPA
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="modalAlasan">
+          Alasan
+        </label>
+
+        <textarea
+          id="modalAlasan"
+          rows="3"
+          placeholder="Masukkan alasan..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="modalKeterangan">
+          Keterangan Tambahan
+        </label>
+
+        <textarea
+          id="modalKeterangan"
+          rows="3"
+          placeholder="Boleh dikosongkan..."
+        ></textarea>
+
+      </div>
+
+    </div>
+
+
+    <div class="modal-status-footer">
+
+      <button
+        type="button"
+        class="btn-modal-batal"
+        onclick="tutupModalStatus()"
+      >
+        Batal
+      </button>
+
+
+      <button
+        type="button"
+        class="btn-modal-simpan"
+        onclick="simpanStatusModal()"
+      >
+        Simpan Perubahan
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 /* =====================================================
    MULAI
