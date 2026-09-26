@@ -1396,39 +1396,174 @@ th {
          REKAP BULANAN
     ================================================= -->
 
-    <section
-      id="page-rekap"
-      class="page"
-    >
+   <section
+  id="page-rekap"
+  class="page"
+>
 
-      <h2 class="page-title">
-        Rekap Bulanan
-      </h2>
+  <h2 class="page-title">
+    Rekap Bulanan
+  </h2>
 
-      <p class="page-description">
-        Rekap kehadiran peserta didik per bulan.
-      </p>
+  <p class="page-description">
+    Rekap kehadiran peserta didik berdasarkan bulan dan kelas.
+  </p>
 
 
-      <div class="development">
+  <!-- KONTROL REKAP -->
 
-        <div class="development-icon">
-          📊
-        </div>
+  <div class="control-card">
 
-        <h3>
-          Fitur sedang dikembangkan
-        </h3>
+    <div class="control-row">
 
-        <p>
-          Rekap bulanan akan kita bangun setelah
-          fitur Absensi Hari Ini selesai.
-        </p>
+      <div class="control-item">
+
+        <label for="rekapBulan">
+          Bulan
+        </label>
+
+        <select id="rekapBulan">
+
+          <option value="1">Januari</option>
+          <option value="2">Februari</option>
+          <option value="3">Maret</option>
+          <option value="4">April</option>
+          <option value="5">Mei</option>
+          <option value="6">Juni</option>
+          <option value="7">Juli</option>
+          <option value="8">Agustus</option>
+          <option value="9">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+
+        </select>
 
       </div>
 
-    </section>
 
+      <div class="control-item">
+
+        <label for="rekapTahun">
+          Tahun
+        </label>
+
+        <select id="rekapTahun">
+
+          <option value="2026">
+            2026
+          </option>
+
+          <option value="2027">
+            2027
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="control-item">
+
+        <label for="rekapKelasSelect">
+          Kelas
+        </label>
+
+        <select id="rekapKelasSelect">
+
+          <option value="">
+            Memuat daftar kelas...
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        class="btn btn-refresh"
+        onclick="loadRekapBulanan()"
+      >
+        Tampilkan Rekap
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- RINGKASAN -->
+
+  <div
+    id="rekapBulananRingkasan"
+    class="rekap-grid"
+  >
+
+    <div class="rekap-card">
+
+      <div class="label">
+        Hari Efektif
+      </div>
+
+      <div
+        class="number"
+        id="rekapHariEfektif"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="rekap-card">
+
+      <div class="label">
+        Jumlah Siswa
+      </div>
+
+      <div
+        class="number"
+        id="rekapJumlahSiswa"
+      >
+        0
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TABEL REKAP -->
+
+  <div class="table-card">
+
+    <div class="table-header">
+
+      Rekap Kehadiran
+
+      <span
+        id="rekapJudulPeriode"
+        style="font-weight:normal;color:#777;"
+      >
+      </span>
+
+    </div>
+
+
+    <div
+      id="rekapBulananContainer"
+      class="table-wrapper"
+    >
+
+      <div class="empty">
+        Silakan pilih bulan dan kelas terlebih dahulu.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
 
     <!-- =================================================
@@ -2046,6 +2181,10 @@ async function loadDaftarKelas() {
     document.getElementById(
       "kelasSelect"
     );
+  const rekapSelect =
+  document.getElementById(
+    "rekapKelasSelect"
+  );
 
   if (!select) {
     return;
@@ -2105,33 +2244,67 @@ async function loadDaftarKelas() {
       </option>
     `;
 
+    if (rekapSelect) {
+
+  rekapSelect.innerHTML = `
+    <option value="">
+      -- Pilih Kelas --
+    </option>
+  `;
+
+}
     data.forEach(function(kelas) {
 
-      const option =
-        document.createElement("option");
+  // ==========================================
+  // KELAS UNTUK ABSENSI HARI INI
+  // ==========================================
 
-      option.value =
-        kelas.namaKelas;
+  const option =
+    document.createElement("option");
 
-      option.textContent =
-        kelas.namaKelas;
+  option.value =
+    kelas.namaKelas;
 
-      option.dataset.kelasId =
-        kelas.kelasId;
+  option.textContent =
+    kelas.namaKelas;
 
-      option.dataset.waliKelas =
-        kelas.waliKelas;
+  option.dataset.kelasId =
+    kelas.kelasId;
 
-      option.dataset.tingkat =
-        kelas.tingkat;
+  option.dataset.waliKelas =
+    kelas.waliKelas;
 
-      option.dataset.tahunPelajaran =
-        kelas.tahunPelajaran;
+  option.dataset.tingkat =
+    kelas.tingkat;
 
-      select.appendChild(option);
+  option.dataset.tahunPelajaran =
+    kelas.tahunPelajaran;
 
-    });
+  select.appendChild(option);
 
+
+  // ==========================================
+  // KELAS UNTUK REKAP BULANAN
+  // ==========================================
+
+  if (rekapSelect) {
+
+    const optionRekap =
+      document.createElement("option");
+
+    optionRekap.value =
+      kelas.namaKelas;
+
+    optionRekap.textContent =
+      kelas.namaKelas;
+
+    rekapSelect.appendChild(
+      optionRekap
+    );
+
+  }
+
+});
     console.log(
       "Daftar kelas berhasil dimuat:",
       data.length,
@@ -2256,7 +2429,324 @@ async function loadAbsensi() {
 
 }
 
+/* =====================================================
+   REKAP ABSENSI BULANAN
+===================================================== */
 
+async function loadRekapBulanan() {
+
+  const bulan =
+    document
+      .getElementById("rekapBulan")
+      .value;
+
+  const tahun =
+    document
+      .getElementById("rekapTahun")
+      .value;
+
+  const kelas =
+    document
+      .getElementById("rekapKelasSelect")
+      .value
+      .trim();
+
+
+  const container =
+    document.getElementById(
+      "rekapBulananContainer"
+    );
+
+
+  if (!kelas) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Silakan pilih kelas terlebih dahulu.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+    <div class="loading">
+      Memuat rekap absensi...
+    </div>
+  `;
+
+
+  try {
+
+    const response =
+      await callAPI(
+        "rekapAbsensi",
+        {
+          bulan: bulan,
+          tahun: tahun,
+          kelas: kelas
+        }
+      );
+
+
+    console.log(
+      "Hasil rekap bulanan:",
+      response
+    );
+
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      container.innerHTML = `
+        <div class="empty">
+          ${
+            response &&
+            response.message
+              ? escapeHTML(
+                  response.message
+                )
+              : "Gagal mengambil rekap absensi."
+          }
+        </div>
+      `;
+
+      return;
+
+    }
+/* =====================================================
+   TABEL REKAP BULANAN
+===================================================== */
+
+function tampilkanTabelRekapBulanan(
+  data
+) {
+
+  const container =
+    document.getElementById(
+      "rekapBulananContainer"
+    );
+
+
+  if (!data || !data.length) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Tidak ada data rekap absensi.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  let html = `
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th style="width:55px;">
+            No
+          </th>
+
+          <th>
+            Nama Siswa
+          </th>
+
+          <th>
+            Hadir
+          </th>
+
+          <th>
+            Terlambat
+          </th>
+
+          <th>
+            Izin
+          </th>
+
+          <th>
+            Sakit
+          </th>
+
+          <th>
+            Alpha
+          </th>
+
+          <th>
+            Persentase
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+  `;
+
+
+  data.forEach(function(
+    siswa,
+    index
+  ) {
+
+    html += `
+
+      <tr>
+
+        <td>
+          ${index + 1}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            siswa.nama
+          )}
+        </td>
+
+        <td>
+          ${siswa.hadir || 0}
+        </td>
+
+        <td>
+          ${siswa.terlambat || 0}
+        </td>
+
+        <td>
+          ${siswa.izin || 0}
+        </td>
+
+        <td>
+          ${siswa.sakit || 0}
+        </td>
+
+        <td>
+          ${siswa.alpha || 0}
+        </td>
+
+        <td>
+          <strong>
+            ${Number(
+              siswa.persentase || 0
+            ).toFixed(2)}%
+          </strong>
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+
+  html += `
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  container.innerHTML =
+    html;
+
+}
+
+    // ==========================================
+    // RINGKASAN
+    // ==========================================
+
+    document
+      .getElementById(
+        "rekapHariEfektif"
+      )
+      .textContent =
+        response.hariEfektif || 0;
+
+
+    document
+      .getElementById(
+        "rekapJumlahSiswa"
+      )
+      .textContent =
+        response.jumlahSiswa || 0;
+
+
+    // ==========================================
+    // JUDUL PERIODE
+    // ==========================================
+
+    const namaBulan = [
+
+      "",
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember"
+
+    ];
+
+
+    document
+      .getElementById(
+        "rekapJudulPeriode"
+      )
+      .textContent =
+        " — " +
+        namaBulan[
+          Number(response.bulan)
+        ] +
+        " " +
+        response.tahun +
+        " — Kelas " +
+        response.kelas;
+
+
+    // ==========================================
+    // TABEL
+    // ==========================================
+
+    tampilkanTabelRekapBulanan(
+      response.data || []
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Gagal memuat rekap bulanan:",
+      error
+    );
+
+
+    container.innerHTML = `
+      <div class="empty">
+        ${escapeHTML(error.message)}
+      </div>
+    `;
+
+  }
+
+}
 /* =====================================================
    TAMPILKAN REKAP
 ===================================================== */
@@ -3003,7 +3493,25 @@ function showPage(
 
 }
 
+if (
+  pageName === "rekap"
+) {
 
+  const kelas =
+    document
+      .getElementById(
+        "rekapKelasSelect"
+      )
+      .value;
+
+
+  if (kelas) {
+
+    loadRekapBulanan();
+
+  }
+
+}
 /* =====================================================
    LOGOUT
 ===================================================== */
