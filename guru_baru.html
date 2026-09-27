@@ -2496,7 +2496,7 @@ if (riwayatSelect) {
     </option>
   `;
 }
-    data.forEach(function(kelas) {
+  data.forEach(function(kelas) {
 
   // ==========================================
   // KELAS UNTUK ABSENSI HARI INI
@@ -2547,6 +2547,28 @@ if (riwayatSelect) {
 
   }
 
+
+  // ==========================================
+  // KELAS UNTUK RIWAYAT ABSENSI
+  // ==========================================
+
+  if (riwayatSelect) {
+
+    const optionRiwayat =
+      document.createElement("option");
+
+    optionRiwayat.value =
+      kelas.namaKelas;
+
+    optionRiwayat.textContent =
+      kelas.namaKelas;
+
+    riwayatSelect.appendChild(
+      optionRiwayat
+    );
+
+  }
+
 });
     console.log(
       "Daftar kelas berhasil dimuat:",
@@ -2571,18 +2593,6 @@ if (riwayatSelect) {
 
   }
 
-}
-  if (riwayatSelect) {
-  const optionRiwayat =
-    document.createElement("option");
-
-  optionRiwayat.value =
-    kelas.namaKelas;
-
-  optionRiwayat.textContent =
-    kelas.namaKelas;
-
-  riwayatSelect.appendChild(optionRiwayat);
 }
   
 /* =====================================================
