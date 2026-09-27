@@ -1042,7 +1042,13 @@ th {
       >
         Absensi Hari Ini
       </button>
-
+      
+      <button
+        onclick="showPage('riwayat', this)"
+      >
+        Riwayat Absensi
+      </button>
+      
       <button
         onclick="showPage('rekap', this)"
       >
@@ -1391,7 +1397,234 @@ th {
     </section>
 
 
+<!-- ==========================================
+     RIWAYAT ABSENSI
+========================================== -->
 
+<section
+  id="page-riwayat"
+  class="page"
+>
+
+  <h2 class="page-title">
+    Riwayat Absensi
+  </h2>
+
+  <p class="page-description">
+    Riwayat kehadiran peserta didik berdasarkan tanggal.
+  </p>
+
+
+  <!-- ========================================
+       FILTER RIWAYAT
+  ========================================= -->
+
+  <div class="control-card">
+
+    <div class="control-row">
+
+
+      <!-- TANGGAL -->
+
+      <div class="control-item">
+
+        <label for="riwayatTanggal">
+          Tanggal
+        </label>
+
+        <input
+          type="date"
+          id="riwayatTanggal"
+        >
+
+      </div>
+
+
+      <!-- KELAS -->
+
+      <div class="control-item">
+
+        <label for="riwayatKelasSelect">
+          Kelas
+        </label>
+
+        <select
+          id="riwayatKelasSelect"
+        >
+
+          <option value="">
+            -- Pilih Kelas --
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- TOMBOL -->
+
+      <div class="control-item">
+
+        <label>
+          &nbsp;
+        </label>
+
+        <button
+          class="btn btn-refresh"
+          onclick="loadRiwayatAbsensiTanggal()"
+        >
+          Tampilkan Riwayat
+        </button>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================
+       RINGKASAN
+  ========================================= -->
+
+  <div
+    id="riwayatRingkasan"
+    class="rekap-grid"
+  >
+
+    <div class="rekap-card">
+
+      <div class="rekap-label">
+        Jumlah Siswa
+      </div>
+
+      <div
+        id="riwayatJumlahSiswa"
+        class="rekap-value"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <div class="rekap-card">
+
+      <div class="rekap-label">
+        Hadir
+      </div>
+
+      <div
+        id="riwayatHadir"
+        class="rekap-value"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <div class="rekap-card">
+
+      <div class="rekap-label">
+        Terlambat
+      </div>
+
+      <div
+        id="riwayatTerlambat"
+        class="rekap-value"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <div class="rekap-card">
+
+      <div class="rekap-label">
+        Izin
+      </div>
+
+      <div
+        id="riwayatIzin"
+        class="rekap-value"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <div class="rekap-card">
+
+      <div class="rekap-label">
+        Sakit
+      </div>
+
+      <div
+        id="riwayatSakit"
+        class="rekap-value"
+      >
+        -
+      </div>
+
+    </div>
+
+
+    <div class="rekap-card">
+
+      <div class="rekap-label">
+        Alpa
+      </div>
+
+      <div
+        id="riwayatAlpa"
+        class="rekap-value"
+      >
+        -
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================
+       TABEL RIWAYAT
+  ========================================= -->
+
+  <div class="table-card">
+
+    <div
+      class="table-header"
+      id="judulRiwayatAbsensi"
+    >
+      Riwayat Absensi
+    </div>
+
+
+    <div
+      id="riwayatAbsensiContainer"
+      class="table-wrapper"
+    >
+
+      <div class="empty">
+
+        Silakan pilih tanggal dan kelas,
+        kemudian klik
+        <strong>
+          Tampilkan Riwayat
+        </strong>.
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
     <!-- =================================================
          REKAP BULANAN
     ================================================= -->
