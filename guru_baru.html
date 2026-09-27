@@ -1056,6 +1056,12 @@ th {
       </button>
 
       <button
+        onclick="showPage('riwayatSiswa', this)"
+      >
+        Riwayat Siswa
+      </button>
+      
+      <button
         onclick="showPage('statistik', this)"
       >
         Statistik
@@ -1613,6 +1619,127 @@ th {
       <div class="empty">
 
         Silakan pilih tanggal dan kelas,
+        kemudian klik
+        <strong>
+          Tampilkan Riwayat
+        </strong>.
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+    <!-- =====================================================
+     PAGE RIWAYAT SISWA
+===================================================== -->
+
+<section
+  id="page-riwayatSiswa"
+  class="page"
+>
+
+  <h2 class="page-title">
+    Riwayat Siswa
+  </h2>
+
+  <p class="page-description">
+    Melihat riwayat kehadiran peserta didik berdasarkan nama.
+  </p>
+
+
+  <!-- =================================================
+       PILIH SISWA
+  ================================================== -->
+
+  <div class="control-card">
+
+    <div class="control-row">
+
+      <div class="control-item">
+
+        <label for="riwayatSiswaSelect">
+          Nama Siswa
+        </label>
+
+        <select
+          id="riwayatSiswaSelect"
+        >
+
+          <option value="">
+            -- Pilih Siswa --
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="control-item">
+
+        <label>&nbsp;</label>
+
+        <button
+          class="btn btn-refresh"
+          onclick="loadRiwayatAbsensiSiswa()"
+        >
+          Tampilkan Riwayat
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =================================================
+       INFORMASI SISWA
+  ================================================== -->
+
+  <div
+    id="infoRiwayatSiswa"
+    class="table-card"
+    style="display:none;"
+  >
+
+    <div class="table-header">
+      Informasi Siswa
+    </div>
+
+    <div
+      id="detailRiwayatSiswa"
+      style="padding:20px;"
+    >
+
+    </div>
+
+  </div>
+
+
+  <!-- =================================================
+       TABEL RIWAYAT
+  ================================================== -->
+
+  <div class="table-card">
+
+    <div
+      class="table-header"
+      id="judulRiwayatSiswa"
+    >
+      Riwayat Absensi Siswa
+    </div>
+
+    <div
+      id="riwayatSiswaContainer"
+      class="table-wrapper"
+    >
+
+      <div class="empty">
+
+        Silakan pilih nama siswa,
         kemudian klik
         <strong>
           Tampilkan Riwayat
