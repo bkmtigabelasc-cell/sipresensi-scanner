@@ -2486,6 +2486,16 @@ async function loadDaftarKelas() {
   `;
 
 }
+const riwayatSelect =
+  document.getElementById("riwayatKelasSelect");
+
+if (riwayatSelect) {
+  riwayatSelect.innerHTML = `
+    <option value="">
+      -- Pilih Kelas --
+    </option>
+  `;
+}
     data.forEach(function(kelas) {
 
   // ==========================================
@@ -2562,6 +2572,19 @@ async function loadDaftarKelas() {
   }
 
 }
+  if (riwayatSelect) {
+  const optionRiwayat =
+    document.createElement("option");
+
+  optionRiwayat.value =
+    kelas.namaKelas;
+
+  optionRiwayat.textContent =
+    kelas.namaKelas;
+
+  riwayatSelect.appendChild(optionRiwayat);
+}
+  
 /* =====================================================
    ABSENSI HARI INI
 ===================================================== */
@@ -2662,6 +2685,451 @@ async function loadAbsensi() {
 
 }
 
+  async function loadRiwayatAbsensiTanggal() {
+
+  const tanggal =
+    document.getElementById(
+      "riwayatTanggal"
+    ).value;
+
+  const kelas =
+    document.getElementById(
+      "riwayatKelasSelect"
+    ).value;
+
+  const container =
+    document.getElementById(
+      "riwayatAbsensiContainer"
+    );
+
+
+  // ======================================
+  // VALIDASI
+  // ======================================
+
+  if (!tanggal) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Silakan pilih tanggal terlebih dahulu.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  if (!kelas) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Silakan pilih kelas terlebih dahulu.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  // ======================================
+  // TAMPILKAN LOADING
+  // ======================================
+
+  container.innerHTML = `
+    <div class="loading">
+      Memuat riwayat absensi...
+    </div>
+  `;
+
+
+  try {
+
+    // ====================================
+    // PANGGIL BACKEND
+    // ====================================
+
+    const response =
+      await callAPI(
+        "riwayatAbsensiTanggal",
+        {
+          tanggal:
+            tanggal,
+
+          kelas:
+            kelas
+        }
+      );
+
+
+    // ====================================
+    // CEK RESPONSE
+    // ====================================
+
+    if (
+      !response ||
+      !response.success
+    ) {
+
+      container.innerHTML = `
+        <div class="empty">
+          ${
+            response &&
+            response.message
+              ? escapeHTML(
+                  response.message
+                )
+              : "Gagal mengambil riwayat absensi."
+          }
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    // ====================================
+    // JIKA LIBUR
+    // ====================================
+
+    if (
+      response.statusHari ===
+      "LIBUR"
+    ) {
+
+      container.innerHTML = `
+        <div class="empty">
+          <strong>
+            ${escapeHTML(
+              response.keteranganHari ||
+              "Hari Libur"
+            )}
+          </strong>
+          <br>
+          Tidak ada data absensi pada tanggal tersebut.
+        </div>
+      `;
+
+      resetRingkasanRiwayat();
+
+      return;
+
+    }
+
+
+    // ====================================
+    // TAMPILKAN RINGKASAN
+    // ====================================
+
+    tampilkanRingkasanRiwayat(
+      response.data || []
+    );
+
+
+    // ====================================
+    // TAMPILKAN TABEL
+    // ====================================
+
+    tampilkanTabelRiwayat(
+      response.data || []
+    );
+
+
+    // ====================================
+    // JUDUL
+    // ====================================
+
+    const judul =
+      document.getElementById(
+        "judulRiwayatAbsensi"
+      );
+
+    if (judul) {
+
+      judul.textContent =
+        "Riwayat Absensi " +
+        formatTanggal(tanggal) +
+        " — Kelas " +
+        kelas;
+
+    }
+
+
+  } catch (error) {
+
+    container.innerHTML = `
+      <div class="empty">
+        ${escapeHTML(
+          error.message ||
+          "Terjadi kesalahan saat mengambil data."
+        )}
+      </div>
+    `;
+
+  }
+
+}
+  function tampilkanRingkasanRiwayat(data) {
+
+  let hadir = 0;
+  let terlambat = 0;
+  let izin = 0;
+  let sakit = 0;
+  let alpa = 0;
+
+
+  data.forEach(
+    function(item) {
+
+      const status =
+        String(
+          item.status || ""
+        )
+        .trim()
+        .toUpperCase();
+
+
+      if (status === "HADIR") {
+
+        hadir++;
+
+      }
+      else if (
+        status === "TERLAMBAT"
+      ) {
+
+        terlambat++;
+
+      }
+      else if (
+        status === "IZIN"
+      ) {
+
+        izin++;
+
+      }
+      else if (
+        status === "SAKIT"
+      ) {
+
+        sakit++;
+
+      }
+      else if (
+        status === "ALPA"
+      ) {
+
+        alpa++;
+
+      }
+
+    }
+  );
+
+
+  document.getElementById(
+    "riwayatJumlahSiswa"
+  ).textContent =
+    data.length;
+
+  document.getElementById(
+    "riwayatHadir"
+  ).textContent =
+    hadir;
+
+  document.getElementById(
+    "riwayatTerlambat"
+  ).textContent =
+    terlambat;
+
+  document.getElementById(
+    "riwayatIzin"
+  ).textContent =
+    izin;
+
+  document.getElementById(
+    "riwayatSakit"
+  ).textContent =
+    sakit;
+
+  document.getElementById(
+    "riwayatAlpa"
+  ).textContent =
+    alpa;
+
+}
+  function resetRingkasanRiwayat() {
+
+  document.getElementById(
+    "riwayatJumlahSiswa"
+  ).textContent = "-";
+
+  document.getElementById(
+    "riwayatHadir"
+  ).textContent = "-";
+
+  document.getElementById(
+    "riwayatTerlambat"
+  ).textContent = "-";
+
+  document.getElementById(
+    "riwayatIzin"
+  ).textContent = "-";
+
+  document.getElementById(
+    "riwayatSakit"
+  ).textContent = "-";
+
+  document.getElementById(
+    "riwayatAlpa"
+  ).textContent = "-";
+
+}
+  function tampilkanTabelRiwayat(data) {
+
+  const container =
+    document.getElementById(
+      "riwayatAbsensiContainer"
+    );
+
+
+  if (!data || data.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty">
+        Tidak ada data siswa.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  let html = `
+
+    <table class="data-table">
+
+      <thead>
+
+        <tr>
+
+          <th>No</th>
+
+          <th>Nama Siswa</th>
+
+          <th>Kelas</th>
+
+          <th>Status</th>
+
+          <th>Jam</th>
+
+          <th>Sumber</th>
+
+          <th>Keterangan</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+  `;
+
+
+  data.forEach(
+    function(item, index) {
+
+      const status =
+        String(
+          item.status || "-"
+        )
+        .trim()
+        .toUpperCase();
+
+
+      let statusClass =
+        status
+          .toLowerCase()
+          .replace(
+            /[^a-z0-9]+/g,
+            "-"
+          );
+
+
+      html += `
+
+        <tr>
+
+          <td>
+            ${index + 1}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              item.nama || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              item.kelas || "-"
+            )}
+          </td>
+
+          <td>
+
+            <span
+              class="status-badge ${statusClass}"
+            >
+              ${escapeHTML(
+                status
+              )}
+            </span>
+
+          </td>
+
+          <td>
+            ${escapeHTML(
+              item.jamScan || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              item.sumber || "-"
+            )}
+          </td>
+
+          <td>
+            ${escapeHTML(
+              item.keterangan || "-"
+            )}
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+
+  html += `
+
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  container.innerHTML =
+    html;
+
+}
 /* =====================================================
    REKAP ABSENSI BULANAN
 ===================================================== */
